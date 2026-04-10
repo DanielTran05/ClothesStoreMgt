@@ -1,8 +1,3 @@
-Ngoài ra, ở phần **Tech Stack**, một số dòng đang bị thiếu dấu `**` ở đầu câu nên chữ không in đậm được (ví dụ: `Lập trình phía Máy chủ (T-SQL):**`).
-
-Để không phải sửa lắt nhắt nữa, bạn hãy **copy toàn bộ đoạn mã dưới đây và dán đè lên toàn bộ file `README.md` hiện tại** nhé. Lần này mình đã bọc lại cực kỳ chuẩn chỉnh cho bạn rồi:
-
-```markdown
 # CLOTHESSTOREMGT - HỆ THỐNG QUẢN LÝ CỬA HÀNG QUẦN ÁO
 
 Dự án phần mềm quản lý cửa hàng bán quần áo tích hợp thanh toán tự động, được xây dựng dựa trên mô hình Client-Server với API và giao diện quản trị nội bộ.
