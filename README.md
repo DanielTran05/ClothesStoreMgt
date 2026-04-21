@@ -38,3 +38,8 @@ dotnet restore
 
 ### 4: Run
 Set ClothesStore.GUI làm Startup Project và nhấn Build → Run proj
+
+### 5: Quy trình làm
+1. Clone proj → Set up env
+2. Khi làm thì chia branch làm trong branch khác → làm xong thì commit → rồi push vào branch mình đang làm → lên git tạo Pull request → chờ xác nhận từ owner (không được tự ý merge)
+3. Nhớ pull về lấy code mới nhất
