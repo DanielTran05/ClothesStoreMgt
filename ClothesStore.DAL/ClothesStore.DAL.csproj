@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClothesStore.DTO\ClothesStore.DTO.csproj" />
+    <ProjectReference Include="..\ClothesStore.ENUMS\ClothesStore.ENUMS.csproj" />
+    <ProjectReference Include="..\Helper\Helper.csproj" />
   </ItemGroup>
 
 </Project>

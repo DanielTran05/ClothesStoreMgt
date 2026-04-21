@@ -6,10 +6,11 @@ namespace ClothesStore.DAL.Enums
 {
     public enum OrderStatusEnum
     {
-        Pending = 0,    // Vua tao don, khach quet QR
-        Paid = 1,       // Reponse momo thanh cong, alter ve trang thai nay
-        Shipping = 2,   // Giao cho dvvc
-        Completed = 3,  // Giao hang thanh cong
-        Canceled = 4    // Huy hoac thanh toan Momo that bai
+        Pending = 1,       // cho thanh toan
+        Paid = 2,          // da thanh toan
+        Shipping = 3,      // dang giao
+        Completed = 4,     // thanh cong
+        Canceled = 5,      // da huy
+        Returned = 6       // tra hang
     }
 }
