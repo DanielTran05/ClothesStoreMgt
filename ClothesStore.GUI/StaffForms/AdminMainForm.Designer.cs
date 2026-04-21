@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
+            btnLogout = new Button();
             SuspendLayout();
             // 
             // label1
@@ -41,11 +42,22 @@
             label1.TabIndex = 0;
             label1.Text = "WELCOME TO ADMIN PAGE";
             // 
+            // btnLogout
+            // 
+            btnLogout.Location = new Point(725, 0);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(72, 34);
+            btnLogout.TabIndex = 1;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
+            // 
             // AdminMainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnLogout);
             Controls.Add(label1);
             Name = "AdminMainForm";
             Text = "AdminMainForm";
@@ -56,5 +68,6 @@
         #endregion
 
         private Label label1;
+        private Button btnLogout;
     }
 }

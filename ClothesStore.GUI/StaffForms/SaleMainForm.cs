@@ -8,11 +8,16 @@ using System.Windows.Forms;
 
 namespace ClothesStore.GUI.StaffForms
 {
-    public partial class SaleMainForm : Form
+    public partial class SaleMainForm : BaseForm
     {
         public SaleMainForm()
         {
             InitializeComponent();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            base.HandleLogout();
         }
     }
 }

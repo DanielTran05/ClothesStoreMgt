@@ -37,10 +37,13 @@ namespace ClothesStore.GUI
             userLoginRequest.Username = username;
             userLoginRequest.Password = pass;
 
-
             try
             {
                 var loggedInUser = AuthService.logIn(userLoginRequest);
+
+                GlobalSession.CurrentUser = loggedInUser;
+
+                this.Hide();
 
                 if (loggedInUser != null)
                 {
@@ -78,7 +81,6 @@ namespace ClothesStore.GUI
             } catch (Exception ex){
                     MessageBox.Show("System connection error: " + ex.Message);
             }
-
         }
     }
 }
