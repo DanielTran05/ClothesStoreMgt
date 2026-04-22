@@ -37,7 +37,10 @@ dotnet restore
 ```
 
 ### 4: Run
-Set ClothesStore.GUI làm Startup Project và nhấn Build → Run proj
+* Set ClothesStore.GUI làm Startup Project và nhấn Build → Run proj
+* Sau khi run User sẽ được tạo ra
+	* username: admin, sale, kho, customer, guest
+	* password: 123456
 
 ### 5: Quy trình làm
 1. Clone proj → Set up env
