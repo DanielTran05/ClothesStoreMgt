@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using ClothesStore.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClothesStore.DAL.Context;
+namespace ClothesStore.DAL.Models;
 
-public partial class ClothesStoreContext : DbContext
+public partial class ClothesstoremgtContext : DbContext
 {
-    public ClothesStoreContext()
+    public ClothesstoremgtContext()
     {
     }
 
-    public ClothesStoreContext(DbContextOptions<ClothesStoreContext> options)
+    public ClothesstoremgtContext(DbContextOptions<ClothesstoremgtContext> options)
         : base(options)
     {
     }
@@ -46,7 +45,7 @@ public partial class ClothesStoreContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=LAPTOP-A7OS4HL1;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=LAPTOP-A7OS4HL1;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -115,6 +114,7 @@ public partial class ClothesStoreContext : DbContext
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.OrderDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -126,6 +126,10 @@ public partial class ClothesStoreContext : DbContext
             entity.HasOne(d => d.Customer).WithMany(p => p.OrderCustomers)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Order_Customer");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.OrderEmployees)
+                .HasForeignKey(d => d.EmployeeId)
+                .HasConstraintName("FK_Order_Employee");
 
             entity.HasOne(d => d.ShippingProvider).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.ShippingProviderId)

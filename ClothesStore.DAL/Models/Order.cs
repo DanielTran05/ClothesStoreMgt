@@ -23,7 +23,11 @@ public partial class Order
 
     public int? ShippingProviderId { get; set; }
 
+    public Guid? EmployeeId { get; set; }
+
     public virtual User? Customer { get; set; }
+
+    public virtual User? Employee { get; set; }
 
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
 
