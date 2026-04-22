@@ -21,6 +21,8 @@ public partial class ClothesstoremgtContext : DbContext
 
     public virtual DbSet<CustomerService> CustomerServices { get; set; }
 
+    public virtual DbSet<InventoryTransaction> InventoryTransactions { get; set; }
+
     public virtual DbSet<Invoice> Invoices { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -85,6 +87,37 @@ public partial class ClothesstoremgtContext : DbContext
             entity.HasOne(d => d.Employee).WithMany(p => p.CustomerServiceEmployees)
                 .HasForeignKey(d => d.EmployeeId)
                 .HasConstraintName("FK_CS_Employee");
+        });
+
+        modelBuilder.Entity<InventoryTransaction>(entity =>
+        {
+            entity.HasKey(e => e.TransactionId).HasName("PK__Inventor__55433A4B03F878D4");
+
+            entity.HasIndex(e => e.CreatedAt, "IX_InvTrans_Date");
+
+            entity.HasIndex(e => e.VariantId, "IX_InvTrans_Variant");
+
+            entity.Property(e => e.TransactionId).HasColumnName("TransactionID");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ReceiptId).HasColumnName("ReceiptID");
+            entity.Property(e => e.TransactionType).HasMaxLength(50);
+            entity.Property(e => e.VariantId).HasColumnName("VariantID");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.InventoryTransactions)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_InvTrans_Order");
+
+            entity.HasOne(d => d.Receipt).WithMany(p => p.InventoryTransactions)
+                .HasForeignKey(d => d.ReceiptId)
+                .HasConstraintName("FK_InvTrans_Receipt");
+
+            entity.HasOne(d => d.Variant).WithMany(p => p.InventoryTransactions)
+                .HasForeignKey(d => d.VariantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InvTrans_Variant");
         });
 
         modelBuilder.Entity<Invoice>(entity =>

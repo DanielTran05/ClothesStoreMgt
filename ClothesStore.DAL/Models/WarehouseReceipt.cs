@@ -19,6 +19,8 @@ public partial class WarehouseReceipt
 
     public virtual User? Employee { get; set; }
 
+    public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; } = new List<InventoryTransaction>();
+
     public virtual Supplier? Supplier { get; set; }
 
     public virtual ICollection<WarehouseReceiptDetail> WarehouseReceiptDetails { get; set; } = new List<WarehouseReceiptDetail>();

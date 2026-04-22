@@ -23,6 +23,8 @@ public partial class ProductVariant
 
     public virtual Color? Color { get; set; }
 
+    public virtual ICollection<InventoryTransaction> InventoryTransactions { get; set; } = new List<InventoryTransaction>();
+
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     public virtual Product? Product { get; set; }
