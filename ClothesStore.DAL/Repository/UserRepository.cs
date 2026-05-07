@@ -2,16 +2,19 @@
 using ClothesStore.DAL.Enums;
 using ClothesStore.DAL.Models;
 using Helper;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
+using ClothesStore.DTO.UserDto;
 
 namespace ClothesStore.DAL.Repository
 {
     public class UserRepository
     {
         private readonly ClothesStoreContext clothesStoreContext;
-
+        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
         public UserRepository(ClothesStoreContext clothesStoreContext)
         {
             this.clothesStoreContext = clothesStoreContext;
@@ -62,6 +65,126 @@ namespace ClothesStore.DAL.Repository
             catch (Exception ex)
             {
                 throw new Exception("Data seeding error: " + ex.Message);
+            }
+        }
+
+        public List<ReadUserDTO> GetAllEmployees()
+        {
+            List<ReadUserDTO> list = new List<ReadUserDTO>();
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GetAllEmployees", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure; 
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader()) 
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new ReadUserDTO
+                            {
+                                UserID = reader.GetGuid(reader.GetOrdinal("UserID")),
+                                Username = reader.GetString(reader.GetOrdinal("Username")),
+                                FullName = reader.IsDBNull(reader.GetOrdinal("FullName")) ? null : reader.GetString(reader.GetOrdinal("FullName")),
+                                Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email")),
+                                PhoneNumber = reader.IsDBNull(reader.GetOrdinal("PhoneNumber")) ? null : reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                                Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader.GetString(reader.GetOrdinal("Address")),
+                                Role = reader.GetInt32(reader.GetOrdinal("Role")),
+                                IsActive = reader.IsDBNull(reader.GetOrdinal("IsActive")) ? (bool?)null : reader.GetBoolean(reader.GetOrdinal("IsActive")),
+                                CreatedAt = reader.IsDBNull(reader.GetOrdinal("CreatedAt")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("CreatedAt"))
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public void CreateEmployee(CreateUserRequest request, string hashedPassword)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_CreateEmployee", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Username", request.Username);
+                    cmd.Parameters.AddWithValue("@PasswordHash", hashedPassword); 
+                    cmd.Parameters.AddWithValue("@FullName", request.FullName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", request.Email ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", request.PhoneNumber ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", request.Address ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Role", request.Role);
+                    cmd.Parameters.AddWithValue("@IsActive", request.IsActive);
+                    conn.Open();
+                    cmd.ExecuteNonQuery(); 
+                }
+            }
+        }
+
+        public void UpdateEmployee(UpdateUserRequest request)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_UpdateEmployee", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@UserID", request.UserID);
+                    cmd.Parameters.AddWithValue("@FullName", request.FullName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Email", request.Email ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", request.PhoneNumber ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Address", request.Address ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Role", request.Role);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ToggleUserStatus(Guid userId, bool isActive)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ToggleUserStatus", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    cmd.Parameters.AddWithValue("@IsActive", isActive);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ResetUserPassword(Guid userId, string newHashedPassword)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ResetUserPassword", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    cmd.Parameters.AddWithValue("@PasswordHash", newHashedPassword);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public bool CheckUsernameExists(string username)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_CheckUsernameExists", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0; 
+                }
             }
         }
     }
