@@ -30,6 +30,8 @@
         {
             lblTitle = new Label();
             lblTotal = new Label();
+            dgvStatistic = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvStatistic).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
@@ -49,15 +51,26 @@
             lblTotal.Size = new Size(235, 25);
             lblTotal.TabIndex = 1;
             // 
+            // dgvStatistic
+            // 
+            dgvStatistic.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStatistic.Location = new Point(12, 48);
+            dgvStatistic.Name = "dgvStatistic";
+            dgvStatistic.RowHeadersWidth = 51;
+            dgvStatistic.Size = new Size(482, 169);
+            dgvStatistic.TabIndex = 2;
+            // 
             // StatisticForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(506, 229);
+            Controls.Add(dgvStatistic);
             Controls.Add(lblTotal);
             Controls.Add(lblTitle);
             Name = "StatisticForm";
             Text = "StatisticForm";
+            ((System.ComponentModel.ISupportInitialize)dgvStatistic).EndInit();
             ResumeLayout(false);
         }
 
@@ -65,5 +78,6 @@
 
         private Label lblTitle;
         private Label lblTotal;
+        private DataGridView dgvStatistic;
     }
 }

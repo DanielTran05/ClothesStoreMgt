@@ -18,5 +18,16 @@ namespace ClothesStore.BUS
 
         public decimal GetTodaySales()
             => repo.GetTodaySales();
+        public DataTable GetTodayStatistic()
+            => repo.GetTodayStatistic();
+        public void AddInventoryTransaction(int variantId, string transactionType, int quantityChange, int receiptId)
+        {
+            repo.AddInventoryTransaction(
+                variantId,
+                transactionType,
+                quantityChange,
+                receiptId
+            );
+        }
     }
 }

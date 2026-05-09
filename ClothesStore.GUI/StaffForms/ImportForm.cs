@@ -153,6 +153,13 @@ namespace ClothesStore.GUI.StaffForms
                 price
             );
 
+            warehouseService.AddInventoryTransaction(
+                variantId,
+                "IMPORT",
+                quantity,
+                currentReceiptId
+            );
+
             decimal total = quantity * price;
 
             detailsTable.Rows.Add(

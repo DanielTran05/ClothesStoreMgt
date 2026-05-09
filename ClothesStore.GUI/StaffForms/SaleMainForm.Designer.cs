@@ -31,6 +31,7 @@
             label1 = new Label();
             btnLogout = new Button();
             btnSearchProduct = new Button();
+            btnCustomerService = new Button();
             SuspendLayout();
             // 
             // label1
@@ -63,11 +64,22 @@
             btnSearchProduct.UseVisualStyleBackColor = true;
             btnSearchProduct.Click += btnSearchProduct_Click;
             // 
+            // btnCustomerService
+            // 
+            btnCustomerService.Location = new Point(116, 52);
+            btnCustomerService.Name = "btnCustomerService";
+            btnCustomerService.Size = new Size(93, 70);
+            btnCustomerService.TabIndex = 3;
+            btnCustomerService.Text = "Customer Service";
+            btnCustomerService.UseVisualStyleBackColor = true;
+            btnCustomerService.Click += btnCustomerService_Click;
+            // 
             // SaleMainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnCustomerService);
             Controls.Add(btnSearchProduct);
             Controls.Add(btnLogout);
             Controls.Add(label1);
@@ -82,5 +94,6 @@
         private Label label1;
         private Button btnLogout;
         private Button btnSearchProduct;
+        private Button btnCustomerService;
     }
 }
