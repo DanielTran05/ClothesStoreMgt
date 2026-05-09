@@ -1,7 +1,8 @@
 ﻿using ClothesStore.BUS;
 using System;
-using System.Windows.Forms;
+using System.Data;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace ClothesStore.GUI.StaffForms
 {
@@ -10,12 +11,14 @@ namespace ClothesStore.GUI.StaffForms
         SupplierService service = new SupplierService();
 
         private int selectedId = -1;
+        private DataTable supplierTable;
 
         public SupplierForm()
         {
             InitializeComponent();
 
             SetupUI();
+            SetupSearchControls();
             LoadData();
         }
 
@@ -65,11 +68,65 @@ namespace ClothesStore.GUI.StaffForms
             btnUpdate.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnDelete.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnLoad.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            lblSearch.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lblSearch.ForeColor = Color.FromArgb(52, 73, 94);
+
+            lbName.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lbName.ForeColor = Color.FromArgb(52, 73, 94);
+
+            lbPhone.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            lbPhone.ForeColor = Color.FromArgb(52, 73, 94);
+
+            txtSearch.Font = new Font("Segoe UI", 10);
+            txtSearch.BorderStyle = BorderStyle.FixedSingle;
+
+            cboSearchType.Font = new Font("Segoe UI", 10);
+            cboSearchType.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void SetupSearchControls()
+        {
+            cboSearchType.Items.Add("Tên nhà cung cấp");
+            cboSearchType.Items.Add("Số điện thoại");
+
+            cboSearchType.SelectedIndex = 0;
+
+            cboSearchType.SelectedIndexChanged += CboSearchType_SelectedIndexChanged;
         }
 
         void LoadData()
         {
-            dgvSuppliers.DataSource = service.GetAll();
+            supplierTable = service.GetAll();
+            dgvSuppliers.DataSource = supplierTable;
+        }
+
+        private void CboSearchType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TxtSearch_TextChanged(sender, e);
+        }
+
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (supplierTable == null) return;
+
+            string keyword = txtSearch.Text.Trim().Replace("'", "''");
+
+            DataView dv = supplierTable.DefaultView;
+
+            switch (cboSearchType.SelectedIndex)
+            {
+                case 0:
+                    dv.RowFilter = $"SupplierName LIKE '%{keyword}%'";
+                    break;
+
+                case 1:
+                    dv.RowFilter = $"PhoneNumber LIKE '%{keyword}%'";
+                    break;
+            }
+
+            dgvSuppliers.DataSource = null;
+            dgvSuppliers.DataSource = dv;
         }
 
         private void dgvSuppliers_CellClick(object sender, DataGridViewCellEventArgs e)

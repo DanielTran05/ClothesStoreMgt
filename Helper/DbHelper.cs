@@ -7,7 +7,7 @@ namespace Helper
         public static SqlConnection GetConnection()
         {
             return new SqlConnection(
-                "Data Source=.;Initial Catalog=clothesstoremgt;Integrated Security=True;Trust Server Certificate=True;"
+                "Data Source=DESKTOP-J4ST655;Initial Catalog=clothesstoremgt;Integrated Security=True;Trust Server Certificate=True;"
             );
         }
     }

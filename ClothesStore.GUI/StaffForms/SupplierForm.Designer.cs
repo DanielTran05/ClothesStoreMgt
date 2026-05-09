@@ -37,6 +37,9 @@
             btnLoad = new Button();
             lbPhone = new Label();
             lbName = new Label();
+            txtSearch = new TextBox();
+            lblSearch = new Label();
+            cboSearchType = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dgvSuppliers).BeginInit();
             SuspendLayout();
             // 
@@ -106,7 +109,7 @@
             // 
             // lbPhone
             // 
-            lbPhone.Location = new Point(594, 12);
+            lbPhone.Location = new Point(595, 15);
             lbPhone.Name = "lbPhone";
             lbPhone.Size = new Size(62, 25);
             lbPhone.TabIndex = 3;
@@ -114,17 +117,44 @@
             // 
             // lbName
             // 
-            lbName.Location = new Point(395, 12);
+            lbName.Location = new Point(395, 14);
             lbName.Name = "lbName";
             lbName.Size = new Size(62, 25);
             lbName.TabIndex = 3;
             lbName.Text = "Name:";
+            // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(264, 9);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(125, 27);
+            txtSearch.TabIndex = 4;
+            txtSearch.TextChanged += TxtSearch_TextChanged;
+            // 
+            // lblSearch
+            // 
+            lblSearch.Location = new Point(180, 11);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(78, 25);
+            lblSearch.TabIndex = 3;
+            lblSearch.Text = "Search:";
+            // 
+            // cboSearchType
+            // 
+            cboSearchType.FormattingEnabled = true;
+            cboSearchType.Location = new Point(12, 8);
+            cboSearchType.Name = "cboSearchType";
+            cboSearchType.Size = new Size(151, 28);
+            cboSearchType.TabIndex = 5;
             // 
             // SupplierForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 325);
+            Controls.Add(cboSearchType);
+            Controls.Add(txtSearch);
+            Controls.Add(lblSearch);
             Controls.Add(lbName);
             Controls.Add(lbPhone);
             Controls.Add(btnLoad);
@@ -152,5 +182,8 @@
         private Button btnLoad;
         private Label lbPhone;
         private Label lbName;
+        private TextBox txtSearch;
+        private Label lblSearch;
+        private ComboBox cboSearchType;
     }
 }

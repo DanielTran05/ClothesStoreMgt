@@ -24,5 +24,10 @@ namespace ClothesStore.GUI.StaffForms
         {
             new ProductSearchForm().ShowDialog();
         }
+
+        private void btnCustomerService_Click(object sender, EventArgs e)
+        {
+            new CustomerServiceForm().ShowDialog();
+        }
     }
 }

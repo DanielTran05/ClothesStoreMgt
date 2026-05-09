@@ -59,5 +59,41 @@ namespace ClothesStore.DAL.Repository
             var result = cmd.ExecuteScalar();
             return result == DBNull.Value ? 0 : Convert.ToDecimal(result);
         }
+
+        public void AddInventoryTransaction(int variantId, string transactionType, int quantityChange, int receiptId)
+        {
+            using var conn = DbHelper.GetConnection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand(
+                "sp_AddInventoryTransaction",
+                conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@VariantID", variantId);
+            cmd.Parameters.AddWithValue("@TransactionType", transactionType);
+            cmd.Parameters.AddWithValue("@QuantityChange", quantityChange);
+            cmd.Parameters.AddWithValue("@ReceiptID", receiptId);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public DataTable GetTodayStatistic()
+        {
+            using var conn = DbHelper.GetConnection();
+
+            SqlDataAdapter da =
+                new SqlDataAdapter("sp_TodayStatistic", conn);
+
+            da.SelectCommand.CommandType =
+                CommandType.StoredProcedure;
+
+            DataTable dt = new DataTable();
+
+            da.Fill(dt);
+
+            return dt;
+        }
     }
 }
