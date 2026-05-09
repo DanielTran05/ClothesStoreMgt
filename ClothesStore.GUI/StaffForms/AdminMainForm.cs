@@ -19,5 +19,14 @@ namespace ClothesStore.GUI
         {
             base.HandleLogout();
         }
+
+        private void btnQuanLyNhanVien_Click(object sender, EventArgs e)
+        {
+            ucUserManagement uc = new ucUserManagement();
+            uc.Dock = DockStyle.Fill;
+            pnlMain.Controls.Clear();
+            pnlMain.Controls.Add(uc);
+            uc.BringToFront();
+        }
     }
 }
