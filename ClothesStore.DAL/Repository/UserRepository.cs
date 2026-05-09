@@ -14,7 +14,8 @@ namespace ClothesStore.DAL.Repository
     public class UserRepository
     {
         private readonly ClothesStoreContext clothesStoreContext;
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True";
+        
         public UserRepository(ClothesStoreContext clothesStoreContext)
         {
             this.clothesStoreContext = clothesStoreContext;
