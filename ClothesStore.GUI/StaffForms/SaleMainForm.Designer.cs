@@ -30,6 +30,7 @@
         {
             label1 = new Label();
             btnLogout = new Button();
+            btnSearchProduct = new Button();
             SuspendLayout();
             // 
             // label1
@@ -52,11 +53,22 @@
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
+            // btnSearchProduct
+            // 
+            btnSearchProduct.Location = new Point(12, 52);
+            btnSearchProduct.Name = "btnSearchProduct";
+            btnSearchProduct.Size = new Size(94, 69);
+            btnSearchProduct.TabIndex = 2;
+            btnSearchProduct.Text = "Search Product";
+            btnSearchProduct.UseVisualStyleBackColor = true;
+            btnSearchProduct.Click += btnSearchProduct_Click;
+            // 
             // SaleMainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnSearchProduct);
             Controls.Add(btnLogout);
             Controls.Add(label1);
             Name = "SaleMainForm";
@@ -69,5 +81,6 @@
 
         private Label label1;
         private Button btnLogout;
+        private Button btnSearchProduct;
     }
 }

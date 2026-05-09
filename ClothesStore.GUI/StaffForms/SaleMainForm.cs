@@ -19,5 +19,10 @@ namespace ClothesStore.GUI.StaffForms
         {
             base.HandleLogout();
         }
+
+        private void btnSearchProduct_Click(object sender, EventArgs e)
+        {
+            new ProductSearchForm().ShowDialog();
+        }
     }
 }
