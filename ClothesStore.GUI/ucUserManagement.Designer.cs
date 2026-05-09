@@ -87,10 +87,10 @@
             pnlInputSide.Dock = DockStyle.Right;
             pnlInputSide.FillColor = Color.Bisque;
             pnlInputSide.ForeColor = SystemColors.ActiveCaption;
-            pnlInputSide.Location = new Point(624, 0);
+            pnlInputSide.Location = new Point(902, 0);
             pnlInputSide.Name = "pnlInputSide";
             pnlInputSide.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlInputSide.Size = new Size(346, 640);
+            pnlInputSide.Size = new Size(346, 1084);
             pnlInputSide.TabIndex = 0;
             pnlInputSide.Visible = false;
             // 
@@ -289,7 +289,7 @@
             pnlToolBar.Location = new Point(0, 0);
             pnlToolBar.Name = "pnlToolBar";
             pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges28;
-            pnlToolBar.Size = new Size(624, 55);
+            pnlToolBar.Size = new Size(902, 55);
             pnlToolBar.TabIndex = 2;
             // 
             // btnLock
@@ -305,7 +305,7 @@
             btnLock.FillColor = Color.NavajoWhite;
             btnLock.Font = new Font("Segoe UI", 9F);
             btnLock.ForeColor = Color.Black;
-            btnLock.Location = new Point(277, 3);
+            btnLock.Location = new Point(424, 3);
             btnLock.Name = "btnLock";
             btnLock.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnLock.Size = new Size(164, 48);
@@ -326,7 +326,7 @@
             btnAdd.FillColor = Color.NavajoWhite;
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.Black;
-            btnAdd.Location = new Point(3, 4);
+            btnAdd.Location = new Point(55, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnAdd.Size = new Size(131, 48);
@@ -347,7 +347,7 @@
             btnUpdate.FillColor = Color.NavajoWhite;
             btnUpdate.Font = new Font("Segoe UI", 9F);
             btnUpdate.ForeColor = Color.Black;
-            btnUpdate.Location = new Point(140, 4);
+            btnUpdate.Location = new Point(237, 3);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnUpdate.Size = new Size(131, 48);
@@ -368,7 +368,7 @@
             guna2Button1.FillColor = Color.NavajoWhite;
             guna2Button1.Font = new Font("Segoe UI", 9F);
             guna2Button1.ForeColor = Color.Black;
-            guna2Button1.Location = new Point(447, 4);
+            guna2Button1.Location = new Point(646, 4);
             guna2Button1.Name = "guna2Button1";
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges26;
             guna2Button1.Size = new Size(171, 48);
@@ -404,7 +404,7 @@
             dgvUsers.ReadOnly = true;
             dgvUsers.RowHeadersVisible = false;
             dgvUsers.RowHeadersWidth = 62;
-            dgvUsers.Size = new Size(970, 640);
+            dgvUsers.Size = new Size(1248, 1084);
             dgvUsers.TabIndex = 0;
             dgvUsers.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvUsers.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -436,7 +436,7 @@
             Controls.Add(pnlInputSide);
             Controls.Add(dgvUsers);
             Name = "ucUserManagement";
-            Size = new Size(970, 640);
+            Size = new Size(1248, 1084);
             Load += ucUserManagement_Load;
             pnlInputSide.ResumeLayout(false);
             pnlInputSide.PerformLayout();
