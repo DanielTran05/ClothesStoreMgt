@@ -10,11 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class ProductRepository
     {
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
         public DataTable SearchStaff(string keyword)
         {
             using var conn = DbHelper.GetConnection();
@@ -31,7 +31,7 @@ namespace ClothesStore.DAL.Repository
         public List<ProductDTO> GetAllProducts()
         {
             var list = new List<ProductDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllProducts", conn))
                 {
@@ -58,7 +58,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateProduct(ProductDTO product)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateProduct", conn))
                 {
@@ -74,7 +74,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateProduct(ProductDTO product)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateProduct", conn))
                 {
@@ -91,7 +91,7 @@ namespace ClothesStore.DAL.Repository
 
         public void DeleteProduct(int productId)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_DeleteProduct", conn))
                 {

@@ -14,7 +14,6 @@ namespace ClothesStore.DAL.Repository
     public class UserRepository
     {
         private readonly ClothesStoreContext clothesStoreContext;
-        private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True";
         
         public UserRepository(ClothesStoreContext clothesStoreContext)
         {
@@ -72,7 +71,7 @@ namespace ClothesStore.DAL.Repository
         public List<ReadUserDTO> GetAllEmployees()
         {
             List<ReadUserDTO> list = new List<ReadUserDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllEmployees", conn))
                 {
@@ -103,7 +102,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateEmployee(CreateUserRequest request, string hashedPassword)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateEmployee", conn))
                 {
@@ -124,7 +123,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateEmployee(UpdateUserRequest request)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateEmployee", conn))
                 {
@@ -145,7 +144,7 @@ namespace ClothesStore.DAL.Repository
 
         public void ToggleUserStatus(Guid userId, bool isActive)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_ToggleUserStatus", conn))
                 {
@@ -161,7 +160,7 @@ namespace ClothesStore.DAL.Repository
 
         public void ResetUserPassword(Guid userId, string newHashedPassword)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_ResetUserPassword", conn))
                 {
@@ -176,7 +175,7 @@ namespace ClothesStore.DAL.Repository
 
         public bool CheckUsernameExists(string username)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CheckUsernameExists", conn))
                 {

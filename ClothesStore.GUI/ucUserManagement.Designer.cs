@@ -36,8 +36,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -46,6 +46,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -64,6 +66,7 @@
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgvUsers = new Guna.UI2.WinForms.Guna2DataGridView();
             pnlInputSide.SuspendLayout();
             pnlToolBar.SuspendLayout();
@@ -284,11 +287,12 @@
             pnlToolBar.Controls.Add(btnAdd);
             pnlToolBar.Controls.Add(btnUpdate);
             pnlToolBar.Controls.Add(guna2Button1);
-            pnlToolBar.CustomizableEdges = customizableEdges27;
+            pnlToolBar.Controls.Add(txtSearch);
+            pnlToolBar.CustomizableEdges = customizableEdges29;
             pnlToolBar.Dock = DockStyle.Top;
             pnlToolBar.Location = new Point(0, 0);
             pnlToolBar.Name = "pnlToolBar";
-            pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges30;
             pnlToolBar.Size = new Size(902, 55);
             pnlToolBar.TabIndex = 2;
             // 
@@ -305,7 +309,7 @@
             btnLock.FillColor = Color.NavajoWhite;
             btnLock.Font = new Font("Segoe UI", 9F);
             btnLock.ForeColor = Color.Black;
-            btnLock.Location = new Point(424, 3);
+            btnLock.Location = new Point(277, 4);
             btnLock.Name = "btnLock";
             btnLock.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnLock.Size = new Size(164, 48);
@@ -326,7 +330,7 @@
             btnAdd.FillColor = Color.NavajoWhite;
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.Black;
-            btnAdd.Location = new Point(55, 3);
+            btnAdd.Location = new Point(3, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnAdd.Size = new Size(131, 48);
@@ -347,7 +351,7 @@
             btnUpdate.FillColor = Color.NavajoWhite;
             btnUpdate.Font = new Font("Segoe UI", 9F);
             btnUpdate.ForeColor = Color.Black;
-            btnUpdate.Location = new Point(237, 3);
+            btnUpdate.Location = new Point(140, 4);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnUpdate.Size = new Size(131, 48);
@@ -368,13 +372,39 @@
             guna2Button1.FillColor = Color.NavajoWhite;
             guna2Button1.Font = new Font("Segoe UI", 9F);
             guna2Button1.ForeColor = Color.Black;
-            guna2Button1.Location = new Point(646, 4);
+            guna2Button1.Location = new Point(447, 4);
             guna2Button1.Name = "guna2Button1";
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges26;
             guna2Button1.Size = new Size(171, 48);
             guna2Button1.TabIndex = 0;
             guna2Button1.Text = "Reset Password";
             guna2Button1.Click += btnResetPass_Click;
+            // 
+            // txtSearch
+            // 
+            txtSearch.BorderRadius = 8;
+            txtSearch.Cursor = Cursors.IBeam;
+            txtSearch.CustomizableEdges = customizableEdges27;
+            txtSearch.DefaultText = "";
+            txtSearch.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtSearch.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtSearch.DisabledState.ForeColor = Color.FromArgb(166, 166, 166);
+            txtSearch.DisabledState.PlaceholderForeColor = Color.FromArgb(166, 166, 166);
+            txtSearch.FillColor = Color.Gainsboro;
+            txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Font = new Font("Segoe UI", 10F);
+            txtSearch.ForeColor = Color.Black;
+            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Location = new Point(625, 5);
+            txtSearch.Margin = new Padding(4, 5, 4, 5);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderForeColor = Color.FromArgb(150, 150, 150);
+            txtSearch.PlaceholderText = "Tìm kiếm";
+            txtSearch.SelectedText = "";
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            txtSearch.Size = new Size(270, 45);
+            txtSearch.TabIndex = 6;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // dgvUsers
             // 
@@ -462,5 +492,6 @@
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2Button btnLock;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2TextBox txtSearch;
     }
 }

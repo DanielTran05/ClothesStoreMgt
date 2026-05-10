@@ -6,17 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-
+using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class SizeRepository
     {
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public List<SizeDTO> GetAllSizes()
         {
             var list = new List<SizeDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllSizes", conn))
                 {
@@ -40,7 +39,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateSize(SizeDTO size)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateSize", conn))
                 {
@@ -54,7 +53,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateSize(SizeDTO size)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateSize", conn))
                 {
@@ -69,7 +68,7 @@ namespace ClothesStore.DAL.Repository
 
         public void DeleteSize(int sizeId)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_DeleteSize", conn))
                 {

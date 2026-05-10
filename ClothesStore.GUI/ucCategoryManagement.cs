@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -17,14 +18,21 @@ namespace ClothesStore.GUI
         private readonly CategoryService _categoryService;
         private readonly ColorService _colorService;
         private readonly SizeService _sizeService;
+        private List<CategoryDTO> _allCategories = new List<CategoryDTO>();
+        private List<ColorDTO> _allColors = new List<ColorDTO>();
+        private List<SizeDTO> _allSizes = new List<SizeDTO>();
         private bool isAddMode = false;
         private int _selectedId = -1;
+
         public ucCategoryManagement()
         {
             InitializeComponent();
             _categoryService = new CategoryService();
             _colorService = new ColorService();
             _sizeService = new SizeService();
+
+            this.Load -= ucCategoryManagement_Load;
+            this.Load += ucCategoryManagement_Load;
 
             tab.SelectedIndexChanged -= tab_SelectedIndexChanged;
             tab.SelectedIndexChanged += tab_SelectedIndexChanged;
@@ -54,13 +62,10 @@ namespace ClothesStore.GUI
         private void ucCategoryManagement_Load(object sender, EventArgs e)
         {
             pnlInputSide.Visible = false;
-
             pnlToolBar.SendToBack();
             pnlInputSide.SendToBack();
-            tab.BringToFront(); 
-
+            tab.BringToFront();
             LoadAllData();
-
             UpdateUIContext();
         }
 
@@ -68,13 +73,18 @@ namespace ClothesStore.GUI
         {
             try
             {
-                dgvCategories.DataSource = _categoryService.GetAllCategories();
-                dgvColors.DataSource = _colorService.GetAllColors();
-                dgvSize.DataSource = _sizeService.GetAllSizes();
+                _allCategories = _categoryService.GetAllCategories();
+                _allColors = _colorService.GetAllColors();
+                _allSizes = _sizeService.GetAllSizes();
+
+                dgvCategories.DataSource = _allCategories;
+                dgvColors.DataSource = _allColors;
+                dgvSize.DataSource = _allSizes;
 
                 FormatGrid(dgvCategories);
                 FormatGrid(dgvColors);
                 FormatGrid(dgvSize);
+                tab.BringToFront();
             }
             catch (Exception ex)
             {
@@ -98,7 +108,7 @@ namespace ClothesStore.GUI
                 else if (prop == "categoryname")
                 {
                     col.HeaderText = "Tên Loại Sản Phẩm";
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; 
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
                 else if (prop == "description") col.HeaderText = "Mô Tả";
                 else if (prop == "colorname") col.HeaderText = "Tên Màu";
@@ -109,44 +119,49 @@ namespace ClothesStore.GUI
         private void tab_SelectedIndexChanged(object sender, EventArgs e)
         {
             pnlInputSide.Visible = false;
-
+            if (txtSearch != null) txtSearch.Text = "";
             UpdateUIContext();
         }
+
         private void UpdateUIContext()
         {
             if (tab.SelectedTab.Name == "tabCategories")
             {
                 if (lblTitle != null) lblTitle.Text = "QUẢN LÝ LOẠI SẢN PHẨM";
-                txtDescription.Visible = true; 
+                txtDescription.Visible = true;
             }
             else if (tab.SelectedTab.Name == "tabColors")
             {
                 if (lblTitle != null) lblTitle.Text = "QUẢN LÝ MÀU SẮC";
-                txtDescription.Visible = false; 
+                txtDescription.Visible = false;
             }
             else if (tab.SelectedTab.Name == "tabSize")
             {
                 if (lblTitle != null) lblTitle.Text = "QUẢN LÝ KÍCH CỠ";
-                txtDescription.Visible = false; 
+                txtDescription.Visible = false;
             }
 
-           
             txtName.Text = "";
             txtDescription.Text = "";
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            isAddMode = true; 
+            isAddMode = true;
             txtName.Text = "";
             txtDescription.Text = "";
-            pnlInputSide.Visible = true; 
+            pnlInputSide.Visible = true;
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            isAddMode = false; 
-            pnlInputSide.Visible = true; 
+            if (_selectedId == -1)
+            {
+                MessageBox.Show("Vui lòng chọn một dòng dưới lưới để sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            isAddMode = false;
+            pnlInputSide.Visible = true;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -184,7 +199,7 @@ namespace ClothesStore.GUI
                 MessageBox.Show("Lưu dữ liệu thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadAllData();
                 pnlInputSide.Visible = false;
-                _selectedId = -1; 
+                _selectedId = -1;
             }
             catch (Exception ex)
             {
@@ -243,7 +258,7 @@ namespace ClothesStore.GUI
                     MessageBox.Show("Xóa thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadAllData();
                     pnlInputSide.Visible = false;
-                    _selectedId = -1; 
+                    _selectedId = -1;
                 }
                 catch (SqlException ex)
                 {
@@ -260,6 +275,29 @@ namespace ClothesStore.GUI
                 {
                     MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearch.Text.Trim().ToLower();
+            if (tab.SelectedTab.Name == "tabCategories")
+            {
+                dgvCategories.DataSource = string.IsNullOrEmpty(keyword)
+                    ? _allCategories
+                    : _allCategories.Where(x => x.CategoryName.ToLower().Contains(keyword)).ToList();
+            }
+            else if (tab.SelectedTab.Name == "tabColors")
+            {
+                dgvColors.DataSource = string.IsNullOrEmpty(keyword)
+                    ? _allColors
+                    : _allColors.Where(x => x.ColorName.ToLower().Contains(keyword)).ToList();
+            }
+            else if (tab.SelectedTab.Name == "tabSize")
+            {
+                dgvSize.DataSource = string.IsNullOrEmpty(keyword)
+                    ? _allSizes
+                    : _allSizes.Where(x => x.SizeName.ToLower().Contains(keyword)).ToList();
             }
         }
     }
