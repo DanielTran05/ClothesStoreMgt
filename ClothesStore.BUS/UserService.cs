@@ -56,5 +56,10 @@ namespace ClothesStore.BUS
             string hashedPassword = Helper.PasswordHelper.HashPassword(newPlainPassword);
             _userRepo.ResetUserPassword(userId, hashedPassword);
         }
+
+        public List<ReadUserDTO> GetAllCustomers()
+        {
+            return _userRepo.GetAllCustomers();
+        }
     }
 }

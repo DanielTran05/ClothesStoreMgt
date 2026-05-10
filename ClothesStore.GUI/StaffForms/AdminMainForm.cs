@@ -50,5 +50,14 @@ namespace ClothesStore.GUI
 
             ucProduct.BringToFront();
         }
+
+        private void btnCustomerManagement_Click(object sender, EventArgs e)
+        {
+            ucCustomerManagement ucCustomer = new ucCustomerManagement();
+            ucCustomer.Dock = DockStyle.Fill;
+            pnlMain.Controls.Clear();
+            pnlMain.Controls.Add(ucCustomer);
+            ucCustomer.BringToFront();
+        }
     }
 }
