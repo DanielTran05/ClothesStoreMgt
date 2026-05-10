@@ -6,17 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-
+using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class ProductVariantRepository
     {
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public List<ProductVariantDTO> GetVariantsByProductID(int productId)
         {
             var list = new List<ProductVariantDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetVariantsByProductID", conn))
                 {
@@ -49,7 +48,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateVariant(ProductVariantDTO variant)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateVariant", conn))
                 {
@@ -69,7 +68,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateVariant(ProductVariantDTO variant)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateVariant", conn))
                 {
@@ -89,7 +88,7 @@ namespace ClothesStore.DAL.Repository
 
         public void DeleteVariant(int variantId)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_DeleteVariant", conn))
                 {

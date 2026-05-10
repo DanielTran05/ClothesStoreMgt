@@ -6,17 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-
+using Helper; 
 namespace ClothesStore.DAL.Repository
 {
     public class CategoryRepository
     {
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public List<CategoryDTO> GetAllCategories()
         {
             var list = new List<CategoryDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllCategories", conn))
                 {
@@ -41,7 +40,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateCategory(CategoryDTO category)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateCategory", conn))
                 {
@@ -57,7 +56,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateCategory(CategoryDTO category)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateCategory", conn))
                 {
@@ -74,7 +73,7 @@ namespace ClothesStore.DAL.Repository
 
         public void DeleteCategory(int categoryId)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_DeleteCategory", conn))
                 {

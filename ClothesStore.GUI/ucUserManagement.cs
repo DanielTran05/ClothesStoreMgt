@@ -9,9 +9,8 @@ namespace ClothesStore.GUI
     public partial class ucUserManagement : UserControl
     {
         private readonly UserService _userService;
-        private bool _isEditMode = false; 
-        private Guid _selectedUserId;    
-        
+        private bool _isEditMode = false;
+        private Guid _selectedUserId;
         public ucUserManagement()
         {
             InitializeComponent();
@@ -61,7 +60,7 @@ namespace ClothesStore.GUI
                     else if (prop == "createdat")
                     {
                         col.HeaderText = "Ngày tạo";
-                        col.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm"; 
+                        col.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
                     }
                 }
                 if (dgvUsers.Columns.Contains("Email"))
@@ -85,8 +84,8 @@ namespace ClothesStore.GUI
             txtFullName.Clear();
             txtEmail.Clear();
             txtPhone.Clear();
-            txtUsername.Enabled = true; 
-            txtPassword.Enabled = true; 
+            txtUsername.Enabled = true;
+            txtPassword.Enabled = true;
             lblTitle.Text = "THÊM NHÂN VIÊN MỚI";
         }
 
@@ -108,8 +107,8 @@ namespace ClothesStore.GUI
             txtPhone.Text = selectedUser.PhoneNumber;
             cbRole.SelectedValue = selectedUser.Role;
 
-            txtUsername.Enabled = false; 
-            txtPassword.Enabled = false; 
+            txtUsername.Enabled = false;
+            txtPassword.Enabled = false;
             pnlInputSide.Visible = true;
             dgvUsers.BringToFront();
             lblTitle.Text = "CẬP NHẬT THÔNG TIN";
@@ -119,12 +118,12 @@ namespace ClothesStore.GUI
         {
             try
             {
-                if (!_isEditMode) 
+                if (!_isEditMode)
                 {
                     var request = new CreateUserRequest
                     {
                         Username = txtUsername.Text.Trim(),
-                        Password = txtPassword.Text, 
+                        Password = txtPassword.Text,
                         FullName = txtFullName.Text.Trim(),
                         Email = txtEmail.Text.Trim(),
                         PhoneNumber = txtPhone.Text.Trim(),
@@ -134,7 +133,7 @@ namespace ClothesStore.GUI
                     _userService.CreateEmployee(request);
                     MessageBox.Show("Thêm nhân viên thành công!");
                 }
-                else 
+                else
                 {
                     var request = new UpdateUserRequest
                     {
@@ -163,12 +162,12 @@ namespace ClothesStore.GUI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ShowAddPanel(); 
+            ShowAddPanel();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            ShowUpdatePanel(); 
+            ShowUpdatePanel();
         }
 
         private void btnLock_Click(object sender, EventArgs e)
@@ -231,6 +230,23 @@ namespace ClothesStore.GUI
                 {
                     MessageBox.Show("Lỗi khi reset mật khẩu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                LoadUserData();
+            }
+            else
+            {
+                var data = _userService.GetAllEmployees();
+                if (data == null) return;
+                var filteredList = data.Where(u => u.Username.ToLower().Contains(keyword)).ToList();
+                dgvUsers.DataSource = filteredList;
             }
         }
     }
