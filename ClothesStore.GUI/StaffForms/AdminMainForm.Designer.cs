@@ -50,7 +50,7 @@
             pnlMain = new Guna.UI2.WinForms.Guna2Panel();
             pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             btnStat = new Guna.UI2.WinForms.Guna2Button();
-            gtnPriceManagement = new Guna.UI2.WinForms.Guna2Button();
+            gtnCustManagement = new Guna.UI2.WinForms.Guna2Button();
             btnProManagement = new Guna.UI2.WinForms.Guna2Button();
             guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             btnManageE = new Guna.UI2.WinForms.Guna2Button();
@@ -116,7 +116,7 @@
             // pnlSidebar
             // 
             pnlSidebar.Controls.Add(btnStat);
-            pnlSidebar.Controls.Add(gtnPriceManagement);
+            pnlSidebar.Controls.Add(gtnCustManagement);
             pnlSidebar.Controls.Add(btnProManagement);
             pnlSidebar.Controls.Add(guna2Button2);
             pnlSidebar.Controls.Add(btnManageE);
@@ -156,33 +156,33 @@
             btnStat.TextAlign = HorizontalAlignment.Left;
             btnStat.Click += btnQuanLyDanhMuc_Click;
             // 
-            // gtnPriceManagement
+            // gtnCustManagement
             // 
-            gtnPriceManagement.BackColor = Color.Silver;
-            gtnPriceManagement.BorderColor = Color.Ivory;
-            gtnPriceManagement.BorderRadius = 4;
-            gtnPriceManagement.BorderThickness = 4;
-            gtnPriceManagement.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            gtnPriceManagement.CheckedState.CustomBorderColor = Color.FromArgb(24, 119, 242);
-            gtnPriceManagement.CheckedState.FillColor = Color.FromArgb(230, 240, 253);
-            gtnPriceManagement.CheckedState.ForeColor = Color.Black;
-            gtnPriceManagement.CustomBorderThickness = new Padding(4, 0, 0, 0);
-            gtnPriceManagement.CustomizableEdges = customizableEdges7;
-            gtnPriceManagement.DisabledState.BorderColor = Color.DarkGray;
-            gtnPriceManagement.DisabledState.CustomBorderColor = Color.DarkGray;
-            gtnPriceManagement.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            gtnPriceManagement.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            gtnPriceManagement.FillColor = Color.Transparent;
-            gtnPriceManagement.Font = new Font("Segoe UI", 10F);
-            gtnPriceManagement.ForeColor = Color.Black;
-            gtnPriceManagement.Location = new Point(12, 285);
-            gtnPriceManagement.Name = "gtnPriceManagement";
-            gtnPriceManagement.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            gtnPriceManagement.Size = new Size(200, 60);
-            gtnPriceManagement.TabIndex = 0;
-            gtnPriceManagement.Text = "Quản lý Giá cả";
-            gtnPriceManagement.TextAlign = HorizontalAlignment.Left;
-            gtnPriceManagement.Click += btnQuanLyDanhMuc_Click;
+            gtnCustManagement.BackColor = Color.Silver;
+            gtnCustManagement.BorderColor = Color.Ivory;
+            gtnCustManagement.BorderRadius = 4;
+            gtnCustManagement.BorderThickness = 4;
+            gtnCustManagement.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            gtnCustManagement.CheckedState.CustomBorderColor = Color.FromArgb(24, 119, 242);
+            gtnCustManagement.CheckedState.FillColor = Color.FromArgb(230, 240, 253);
+            gtnCustManagement.CheckedState.ForeColor = Color.Black;
+            gtnCustManagement.CustomBorderThickness = new Padding(4, 0, 0, 0);
+            gtnCustManagement.CustomizableEdges = customizableEdges7;
+            gtnCustManagement.DisabledState.BorderColor = Color.DarkGray;
+            gtnCustManagement.DisabledState.CustomBorderColor = Color.DarkGray;
+            gtnCustManagement.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            gtnCustManagement.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            gtnCustManagement.FillColor = Color.Transparent;
+            gtnCustManagement.Font = new Font("Segoe UI", 10F);
+            gtnCustManagement.ForeColor = Color.Black;
+            gtnCustManagement.Location = new Point(12, 285);
+            gtnCustManagement.Name = "gtnCustManagement";
+            gtnCustManagement.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            gtnCustManagement.Size = new Size(200, 60);
+            gtnCustManagement.TabIndex = 0;
+            gtnCustManagement.Text = "Quản lý Khách hàng";
+            gtnCustManagement.TextAlign = HorizontalAlignment.Left;
+            gtnCustManagement.Click += btnCustomerManagement_Click;
             // 
             // btnProManagement
             // 
@@ -299,7 +299,7 @@
         private Guna.UI2.WinForms.Guna2Button guna2Button3;
         private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private Guna.UI2.WinForms.Guna2Button btnStat;
-        private Guna.UI2.WinForms.Guna2Button gtnPriceManagement;
+        private Guna.UI2.WinForms.Guna2Button gtnCustManagement;
         private Guna.UI2.WinForms.Guna2Button btnProManagement;
     }
 }

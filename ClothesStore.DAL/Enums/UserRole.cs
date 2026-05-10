@@ -10,6 +10,6 @@ namespace ClothesStore.DAL.Enums
         SaleStaff = 2,
         WarehouseStaff = 3,
         Customer = 4,
-        Guess = 5
+        Guess = 5   
     }
 }
