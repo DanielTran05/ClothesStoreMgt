@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-
+using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class ColorRepository
@@ -16,7 +16,7 @@ namespace ClothesStore.DAL.Repository
         public List<ColorDTO> GetAllColors()
         {
             var list = new List<ColorDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllColors", conn))
                 {
@@ -40,7 +40,7 @@ namespace ClothesStore.DAL.Repository
 
         public void CreateColor(ColorDTO color)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateColor", conn))
                 {
@@ -54,7 +54,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateColor(ColorDTO color)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateColor", conn))
                 {
@@ -69,7 +69,7 @@ namespace ClothesStore.DAL.Repository
 
         public void DeleteColor(int colorId)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_DeleteColor", conn))
                 {

@@ -1,53 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq; 
 using System.Windows.Forms;
-using ClothesStore.BUS; 
-using ClothesStore.DTO.UserDto; 
+using ClothesStore.BUS;
+using ClothesStore.DTO.UserDto;
 
 namespace ClothesStore.GUI
 {
-    public partial class ucUserManagement : UserControl
+    public partial class ucCustomerManagement : UserControl
     {
         private readonly UserService _userService;
         private bool _isEditMode = false;
         private Guid _selectedUserId;
-        public ucUserManagement()
+
+        private List<ReadUserDTO> _allCustomers = new List<ReadUserDTO>();
+
+        public ucCustomerManagement()
         {
             InitializeComponent();
             _userService = new UserService();
         }
 
-        private void ucUserManagement_Load(object sender, EventArgs e)
+        private void ucCustomerManagement_Load(object sender, EventArgs e)
         {
             pnlInputSide.Visible = false;
             pnlToolBar.SendToBack();
             pnlInputSide.SendToBack();
             dgvUsers.BringToFront();
-            LoadUserData();
-            Dictionary<int, string> roles = new Dictionary<int, string>
-    {
-        { 1, "Quản trị viên" },
-        { 2, "Nhân viên bán hàng" },
-        { 3, "Thủ kho" }
-    };
-            cbRole.DataSource = new BindingSource(roles, null);
-            cbRole.DisplayMember = "Value";
-            cbRole.ValueMember = "Key";
+
+            LoadCustomerData();
         }
 
-        private void LoadUserData()
+        private void LoadCustomerData()
         {
             try
             {
-                var data = _userService.GetAllEmployees();
-                if (data == null) return;
-                dgvUsers.DataSource = data;
+                _allCustomers = _userService.GetAllCustomers();
+                if (_allCustomers == null) return;
+
+                dgvUsers.DataSource = _allCustomers;
                 dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 dgvUsers.ScrollBars = ScrollBars.Both;
+
                 foreach (DataGridViewColumn col in dgvUsers.Columns)
                 {
                     string prop = (col.DataPropertyName ?? col.Name).ToLower();
-                    if (prop == "userid" || prop == "password" || prop == "passwordhash" || prop == "address")
+                    if (prop == "userid" || prop == "password" || prop == "passwordhash" || prop == "address" || prop == "role")
                     {
                         col.Visible = false;
                     }
@@ -55,7 +53,6 @@ namespace ClothesStore.GUI
                     else if (prop == "fullname") col.HeaderText = "Họ và tên";
                     else if (prop == "email") col.HeaderText = "Email";
                     else if (prop == "phonenumber") col.HeaderText = "Số điện thoại";
-                    else if (prop == "role") col.HeaderText = "Vai trò";
                     else if (prop == "isactive") col.HeaderText = "Trạng thái";
                     else if (prop == "createdat")
                     {
@@ -70,7 +67,7 @@ namespace ClothesStore.GUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi load dữ liệu: " + ex.Message);
+                MessageBox.Show("Lỗi load dữ liệu khách hàng: " + ex.Message);
             }
         }
 
@@ -86,14 +83,14 @@ namespace ClothesStore.GUI
             txtPhone.Clear();
             txtUsername.Enabled = true;
             txtPassword.Enabled = true;
-            lblTitle.Text = "THÊM NHÂN VIÊN MỚI";
+            lblTitle.Text = "THÊM KHÁCH HÀNG MỚI";
         }
 
         public void ShowUpdatePanel()
         {
             if (dgvUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn nhân viên trong bảng!");
+                MessageBox.Show("Vui lòng chọn khách hàng trong bảng!");
                 return;
             }
 
@@ -105,13 +102,12 @@ namespace ClothesStore.GUI
             txtFullName.Text = selectedUser.FullName;
             txtEmail.Text = selectedUser.Email;
             txtPhone.Text = selectedUser.PhoneNumber;
-            cbRole.SelectedValue = selectedUser.Role;
 
             txtUsername.Enabled = false;
             txtPassword.Enabled = false;
             pnlInputSide.Visible = true;
             dgvUsers.BringToFront();
-            lblTitle.Text = "CẬP NHẬT THÔNG TIN";
+            lblTitle.Text = "CẬP NHẬT KHÁCH HÀNG";
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -127,11 +123,11 @@ namespace ClothesStore.GUI
                         FullName = txtFullName.Text.Trim(),
                         Email = txtEmail.Text.Trim(),
                         PhoneNumber = txtPhone.Text.Trim(),
-                        Role = (int)cbRole.SelectedValue,
+                        Role = 4, 
                         IsActive = true
                     };
                     _userService.CreateEmployee(request);
-                    MessageBox.Show("Thêm nhân viên thành công!");
+                    MessageBox.Show("Thêm Khách hàng thành công!");
                 }
                 else
                 {
@@ -141,20 +137,22 @@ namespace ClothesStore.GUI
                         FullName = txtFullName.Text.Trim(),
                         Email = txtEmail.Text.Trim(),
                         PhoneNumber = txtPhone.Text.Trim(),
-                        Role = (int)cbRole.SelectedValue
+                        Role = 4
                     };
                     _userService.UpdateEmployee(request);
                     MessageBox.Show("Cập nhật thành công!");
                 }
 
                 pnlInputSide.Visible = false;
-                LoadUserData();
+                LoadCustomerData();
+                txtSearch.Text = ""; 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             pnlInputSide.Visible = false;
@@ -174,14 +172,14 @@ namespace ClothesStore.GUI
         {
             if (dgvUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn một nhân viên trong danh sách!");
+                MessageBox.Show("Vui lòng chọn một khách hàng trong danh sách!");
                 return;
             }
             var selectedUser = (ReadUserDTO)dgvUsers.SelectedRows[0].DataBoundItem;
 
             bool newStatus = !(bool)selectedUser.IsActive;
             string actionText = newStatus ? "MỞ KHÓA" : "KHÓA";
-            DialogResult result = MessageBox.Show($"Bạn có chắc chắn muốn {actionText} tài khoản '{selectedUser.Username}'?",
+            DialogResult result = MessageBox.Show($"Bạn có chắc chắn muốn {actionText} tài khoản khách hàng '{selectedUser.Username}'?",
                 "Xác nhận thay đổi", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -189,10 +187,9 @@ namespace ClothesStore.GUI
                 try
                 {
                     _userService.ToggleUserStatus(selectedUser.UserID, newStatus);
-
-                    MessageBox.Show($"Đã {actionText} nhân viên thành công!");
-
-                    LoadUserData();
+                    MessageBox.Show($"Đã {actionText} khách hàng thành công!");
+                    LoadCustomerData();
+                    txtSearch.Text = ""; 
                 }
                 catch (Exception ex)
                 {
@@ -205,14 +202,14 @@ namespace ClothesStore.GUI
         {
             if (dgvUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn nhân viên cần reset mật khẩu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn khách hàng cần reset mật khẩu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             var selectedUser = (ReadUserDTO)dgvUsers.SelectedRows[0].DataBoundItem;
 
             DialogResult result = MessageBox.Show(
-                $"Bạn có chắc chắn muốn đưa mật khẩu của tài khoản '{selectedUser.Username}' về mặc định (123456)?",
+                $"Bạn có chắc chắn muốn đưa mật khẩu của khách hàng '{selectedUser.Username}' về mặc định (123456)?",
                 "Xác nhận Reset",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
@@ -223,7 +220,7 @@ namespace ClothesStore.GUI
                 {
                     _userService.ResetUserPassword(selectedUser.UserID, "123456");
 
-                    MessageBox.Show($"Reset mật khẩu thành công!\nNhân viên {selectedUser.Username} có thể đăng nhập bằng mật khẩu: 123456",
+                    MessageBox.Show($"Reset mật khẩu thành công!\nKhách hàng {selectedUser.Username} có thể đăng nhập bằng mật khẩu: 123456",
                         "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
@@ -239,13 +236,17 @@ namespace ClothesStore.GUI
 
             if (string.IsNullOrEmpty(keyword))
             {
-                LoadUserData();
+                dgvUsers.DataSource = _allCustomers;
             }
             else
             {
-                var data = _userService.GetAllEmployees();
-                if (data == null) return;
-                var filteredList = data.Where(u => u.Username.ToLower().Contains(keyword)).ToList();
+                var filteredList = _allCustomers.Where(c =>
+                    (c.Username != null && c.Username.ToLower().Contains(keyword)) ||
+                    (c.FullName != null && c.FullName.ToLower().Contains(keyword)) ||
+                    (c.PhoneNumber != null && c.PhoneNumber.ToLower().Contains(keyword)) ||
+                    (c.Email != null && c.Email.ToLower().Contains(keyword))
+                ).ToList();
+
                 dgvUsers.DataSource = filteredList;
             }
         }

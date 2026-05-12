@@ -3,6 +3,8 @@ using ClothesStore.DTO;
 using ClothesStore.DTO.ProductDto;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ClothesStore.GUI
@@ -19,6 +21,9 @@ namespace ClothesStore.GUI
         private bool isAddModeVar = false;
         private int _selectedProductId = -1;
         private int _selectedVariantId = -1;
+
+        private List<ProductDTO> _allProducts = new List<ProductDTO>();
+        private List<ProductVariantDTO> _currentVariants = new List<ProductVariantDTO>();
 
         public ucProductManagement()
         {
@@ -64,6 +69,20 @@ namespace ClothesStore.GUI
 
             btnDeleteProVar.Click -= btnDeleteProVar_Click;
             btnDeleteProVar.Click += btnDeleteProVar_Click;
+
+            var searchPro = this.Controls.Find("txtSearchPro", true).FirstOrDefault();
+            if (searchPro != null)
+            {
+                searchPro.TextChanged -= txtSearchPro_TextChanged;
+                searchPro.TextChanged += txtSearchPro_TextChanged;
+            }
+
+            var searchVar = this.Controls.Find("txtSearchVar", true).FirstOrDefault();
+            if (searchVar != null)
+            {
+                searchVar.TextChanged -= txtSearchVar_TextChanged;
+                searchVar.TextChanged += txtSearchVar_TextChanged;
+            }
         }
 
         private void ucProductManagement_Load(object sender, EventArgs e)
@@ -100,7 +119,8 @@ namespace ClothesStore.GUI
         {
             try
             {
-                dgvProducts.DataSource = _productService.GetAllProducts();
+                _allProducts = _productService.GetAllProducts();
+                dgvProducts.DataSource = _allProducts;
                 FormatProductGrid();
             }
             catch (Exception ex)
@@ -160,7 +180,8 @@ namespace ClothesStore.GUI
         {
             try
             {
-                dgvVariants.DataSource = _variantService.GetVariantsByProductID(productId);
+                _currentVariants = _variantService.GetVariantsByProductID(productId);
+                dgvVariants.DataSource = _currentVariants;
                 FormatVariantGrid();
             }
             catch (Exception ex)
@@ -435,6 +456,49 @@ namespace ClothesStore.GUI
                     MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void txtSearchPro_TextChanged(object sender, EventArgs e)
+        {
+            var txt = sender as Control;
+            if (txt == null) return;
+
+            string keyword = txt.Text.Trim().ToLower();
+            dgvProducts.DataSource = string.IsNullOrEmpty(keyword)
+                ? _allProducts
+                : _allProducts.Where(p => p.ProductName.ToLower().Contains(keyword)).ToList();
+
+            dgvVariants.DataSource = null;
+            _currentVariants.Clear();
+            _selectedProductId = -1;
+            _selectedVariantId = -1;
+            pnlInputSidePro.Visible = false;
+            pnlInputSideProVar.Visible = false;
+        }
+
+        private void txtSearchVar_TextChanged(object sender, EventArgs e)
+        {
+            var txt = sender as Control;
+            if (txt == null) return;
+
+            if (_selectedProductId == -1)
+            {
+                if (!string.IsNullOrEmpty(txt.Text))
+                {
+                    MessageBox.Show("Vui lòng chọn một Sản phẩm ở bảng trên trước khi tìm kiếm biến thể!", "Cảnh báo thao tác", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txt.Text = "";
+                }
+                return;
+            }
+
+            string keyword = txt.Text.Trim().ToLower();
+            dgvVariants.DataSource = string.IsNullOrEmpty(keyword)
+                ? _currentVariants
+                : _currentVariants.Where(v =>
+                    (v.SKU != null && v.SKU.ToLower().Contains(keyword)) ||
+                    (v.ColorName != null && v.ColorName.ToLower().Contains(keyword)) ||
+                    (v.SizeName != null && v.SizeName.ToLower().Contains(keyword))
+                  ).ToList();
         }
     }
 }
