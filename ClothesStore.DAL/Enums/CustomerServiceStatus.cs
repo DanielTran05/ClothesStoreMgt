@@ -6,7 +6,8 @@ namespace ClothesStore.DAL.Enums
 {
     public enum CustomerServiceStatus
     {
-        Solved = 1,         
-        Rejected = 2,    
+        New = 1,
+        Processing = 2,
+        Solved = 3,
     }
 }

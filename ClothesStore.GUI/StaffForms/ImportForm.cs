@@ -1,4 +1,8 @@
 ﻿using ClothesStore.BUS;
+using System.Data;
+using System.Runtime.InteropServices.Marshalling;
+
+using ClothesStore.BUS;
 using System;
 using System.Data;
 using System.Drawing;
@@ -8,26 +12,38 @@ namespace ClothesStore.GUI.StaffForms
 {
     public partial class ImportForm : Form
     {
-        private WarehouseService warehouseService = new WarehouseService();
-        private SupplierService supplierService = new SupplierService();
+        private WarehouseService warehouseService =
+            new WarehouseService();
 
-        private DataTable detailsTable = new DataTable();
+        private SupplierService supplierService =
+            new SupplierService();
 
-        private int currentReceiptId = -1;
+        private ProductService productService =
+            new ProductService();
+
+        private DataTable detailsTable =
+            new DataTable();
 
         public ImportForm()
         {
             InitializeComponent();
 
             LoadSupplier();
+
+            LoadVariant();
+
             SetupGrid();
+
             SetupUI();
         }
 
         private void SetupUI()
         {
-            BackColor = Color.White;
-            StartPosition = FormStartPosition.CenterScreen;
+            BackColor =
+                Color.White;
+
+            StartPosition =
+                FormStartPosition.CenterScreen;
 
             dgvDetail.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
@@ -35,17 +51,23 @@ namespace ClothesStore.GUI.StaffForms
             dgvDetail.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
 
-            dgvDetail.MultiSelect = false;
+            dgvDetail.MultiSelect =
+                false;
 
-            dgvDetail.AllowUserToAddRows = false;
+            dgvDetail.AllowUserToAddRows =
+                false;
 
-            dgvDetail.RowHeadersVisible = false;
+            dgvDetail.RowHeadersVisible =
+                false;
 
-            dgvDetail.BorderStyle = BorderStyle.None;
+            dgvDetail.BorderStyle =
+                BorderStyle.None;
 
-            dgvDetail.BackgroundColor = Color.White;
+            dgvDetail.BackgroundColor =
+                Color.White;
 
-            dgvDetail.EnableHeadersVisualStyles = false;
+            dgvDetail.EnableHeadersVisualStyles =
+                false;
 
             dgvDetail.ColumnHeadersBorderStyle =
                 DataGridViewHeaderBorderStyle.None;
@@ -68,112 +90,243 @@ namespace ClothesStore.GUI.StaffForms
             dgvDetail.DefaultCellStyle.SelectionForeColor =
                 Color.White;
 
-            dgvDetail.RowTemplate.Height = 32;
+            dgvDetail.RowTemplate.Height =
+                32;
 
-            dgvDetail.ColumnHeadersHeight = 38;
+            dgvDetail.ColumnHeadersHeight =
+                38;
 
             btnCreateReceipt.BackColor =
                 Color.FromArgb(46, 204, 113);
 
-            btnCreateReceipt.ForeColor = Color.White;
+            btnCreateReceipt.ForeColor =
+                Color.White;
 
-            btnCreateReceipt.FlatStyle = FlatStyle.Flat;
+            btnCreateReceipt.FlatStyle =
+                FlatStyle.Flat;
 
-            btnCreateReceipt.FlatAppearance.BorderSize = 0;
+            btnCreateReceipt.FlatAppearance.BorderSize =
+                0;
 
             btnAddDetail.BackColor =
                 Color.FromArgb(52, 152, 219);
 
-            btnAddDetail.ForeColor = Color.White;
+            btnAddDetail.ForeColor =
+                Color.White;
 
-            btnAddDetail.FlatStyle = FlatStyle.Flat;
+            btnAddDetail.FlatStyle =
+                FlatStyle.Flat;
 
-            btnAddDetail.FlatAppearance.BorderSize = 0;
+            btnAddDetail.FlatAppearance.BorderSize =
+                0;
+
+            cbSupplier.DropDownStyle =
+                ComboBoxStyle.DropDownList;
+
+            cbSupplier.Font =
+                new Font("Segoe UI", 10);
+
+            cbVariant.DropDownStyle =
+                ComboBoxStyle.DropDownList;
+
+            cbVariant.Font =
+                new Font("Segoe UI", 10);
         }
 
         private void LoadSupplier()
         {
-            DataTable dt = supplierService.GetAll();
+            DataTable dt =
+                supplierService.GetAll();
 
-            cbSupplier.DataSource = dt;
-            cbSupplier.DisplayMember = "SupplierName";
-            cbSupplier.ValueMember = "SupplierID";
+            cbSupplier.DataSource =
+                null;
+
+            cbSupplier.DisplayMember =
+                "SupplierName";
+
+            cbSupplier.ValueMember =
+                "SupplierID";
+
+            cbSupplier.DataSource =
+                dt;
+
+            cbSupplier.SelectedIndex =
+                -1;
+        }
+
+        private void LoadVariant()
+        {
+            DataTable dt =
+                productService.SearchProductForStaff("");
+
+            cbVariant.DataSource =
+                null;
+
+            if (dt != null &&
+                dt.Rows.Count > 0)
+            {
+                cbVariant.DisplayMember =
+                    "SKU";
+
+                cbVariant.ValueMember =
+                    "VariantID";
+
+                cbVariant.DataSource =
+                    dt;
+
+                cbVariant.SelectedIndex =
+                    -1;
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Không có dữ liệu sản phẩm!");
+            }
         }
 
         private void SetupGrid()
         {
-            detailsTable.Columns.Add("VariantID");
-            detailsTable.Columns.Add("Quantity");
-            detailsTable.Columns.Add("ImportPrice");
-            detailsTable.Columns.Add("Total");
+            detailsTable.Columns.Add(
+                "VariantID");
 
-            dgvDetail.DataSource = detailsTable;
+            detailsTable.Columns.Add(
+                "SKU");
+
+            detailsTable.Columns.Add(
+                "Quantity");
+
+            detailsTable.Columns.Add(
+                "ImportPrice");
+
+            detailsTable.Columns.Add(
+                "Total");
+
+            dgvDetail.DataSource =
+                detailsTable;
         }
 
-        private void btnCreateReceipt_Click(object sender, EventArgs e)
+        private void btnAddDetail_Click(
+            object sender,
+            EventArgs e)
         {
-            if (cbSupplier.SelectedValue == null)
+            if (cbVariant.SelectedValue == null ||
+                string.IsNullOrWhiteSpace(
+                    txtQuantity.Text) ||
+                string.IsNullOrWhiteSpace(
+                    txtPrice.Text))
             {
-                MessageBox.Show("Vui lòng chọn nhà cung cấp!");
+                MessageBox.Show(
+                    "Vui lòng nhập đầy đủ thông tin!");
+
                 return;
             }
 
-            currentReceiptId = warehouseService.CreateReceipt(
-                Convert.ToInt32(cbSupplier.SelectedValue),
-                GlobalSession.CurrentUser.UserId
-            );
+            int variantId =
+                Convert.ToInt32(
+                    cbVariant.SelectedValue);
 
-            MessageBox.Show("Tạo phiếu nhập thành công!");
-        }
+            string sku =
+                cbVariant.Text;
 
-        private void btnAddDetail_Click(object sender, EventArgs e)
-        {
-            if (currentReceiptId == -1)
-            {
-                MessageBox.Show("Vui lòng tạo phiếu trước!");
-                return;
-            }
+            int quantity =
+                Convert.ToInt32(
+                    txtQuantity.Text);
 
-            if (string.IsNullOrWhiteSpace(txtVariantId.Text) ||
-                string.IsNullOrWhiteSpace(txtQuantity.Text) ||
-                string.IsNullOrWhiteSpace(txtPrice.Text))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!");
-                return;
-            }
+            decimal price =
+                Convert.ToDecimal(
+                    txtPrice.Text);
 
-            int variantId = Convert.ToInt32(txtVariantId.Text);
-            int quantity = Convert.ToInt32(txtQuantity.Text);
-            decimal price = Convert.ToDecimal(txtPrice.Text);
-
-            warehouseService.AddReceiptDetail(
-                currentReceiptId,
-                variantId,
-                quantity,
-                price
-            );
-
-            warehouseService.AddInventoryTransaction(
-                variantId,
-                "IMPORT",
-                quantity,
-                currentReceiptId
-            );
-
-            decimal total = quantity * price;
+            decimal total =
+                quantity * price;
 
             detailsTable.Rows.Add(
                 variantId,
+                sku,
                 quantity,
                 price,
                 total
             );
 
-            MessageBox.Show("Đã thêm sản phẩm!");
+            MessageBox.Show(
+                "Đã thêm vào danh sách nhập!");
 
-            txtVariantId.Clear();
             txtQuantity.Clear();
+
             txtPrice.Clear();
+
+            cbVariant.SelectedIndex =
+                -1;
+        }
+
+        private void btnCreateReceipt_Click(
+            object sender,
+            EventArgs e)
+        {
+            if (cbSupplier.SelectedValue == null)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn nhà cung cấp!");
+
+                return;
+            }
+
+            if (detailsTable.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng thêm sản phẩm nhập!");
+
+                return;
+            }
+
+            int receiptId =
+                warehouseService.CreateReceipt(
+                    Convert.ToInt32(
+                        cbSupplier.SelectedValue),
+
+                    GlobalSession
+                    .CurrentUser
+                    .UserId
+                );
+
+            foreach (DataRow row
+                in detailsTable.Rows)
+            {
+                int variantId =
+                    Convert.ToInt32(
+                        row["VariantID"]);
+
+                int quantity =
+                    Convert.ToInt32(
+                        row["Quantity"]);
+
+                decimal price =
+                    Convert.ToDecimal(
+                        row["ImportPrice"]);
+
+                warehouseService
+                    .AddReceiptDetail(
+                        receiptId,
+                        variantId,
+                        quantity,
+                        price
+                    );
+
+                warehouseService
+                    .AddInventoryTransaction(
+                        variantId,
+                        "IMPORT",
+                        quantity,
+                        receiptId
+                    );
+            }
+
+            MessageBox.Show(
+                "Tạo phiếu nhập thành công!");
+
+            detailsTable.Clear();
+
+            cbSupplier.SelectedIndex =
+                -1;
         }
     }
 }

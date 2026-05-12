@@ -18,6 +18,8 @@ namespace ClothesStore.GUI.StaffForms
             InitializeComponent();
 
             SetupUI();
+            SetupFilter();
+
             LoadData();
         }
 
@@ -72,81 +74,169 @@ namespace ClothesStore.GUI.StaffForms
             btnAdd.BackColor =
                 Color.FromArgb(52, 152, 219);
 
-            btnAdd.ForeColor = Color.White;
+            btnAdd.ForeColor =
+                Color.White;
 
-            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.FlatStyle =
+                FlatStyle.Flat;
 
             btnAdd.FlatAppearance.BorderSize = 0;
 
             btnHandle.BackColor =
-                Color.FromArgb(46, 204, 113);
+                Color.FromArgb(241, 196, 15);
 
-            btnHandle.ForeColor = Color.White;
+            btnHandle.ForeColor =
+                Color.White;
 
-            btnHandle.FlatStyle = FlatStyle.Flat;
+            btnHandle.FlatStyle =
+                FlatStyle.Flat;
 
             btnHandle.FlatAppearance.BorderSize = 0;
+
+            btnSolve.BackColor =
+                Color.FromArgb(46, 204, 113);
+
+            btnSolve.ForeColor =
+                Color.White;
+
+            btnSolve.FlatStyle =
+                FlatStyle.Flat;
+
+            btnSolve.FlatAppearance.BorderSize = 0;
 
             btnReject.BackColor =
                 Color.FromArgb(231, 76, 60);
 
-            btnReject.ForeColor = Color.White;
+            btnReject.ForeColor =
+                Color.White;
 
-            btnReject.FlatStyle = FlatStyle.Flat;
+            btnReject.FlatStyle =
+                FlatStyle.Flat;
 
             btnReject.FlatAppearance.BorderSize = 0;
 
             btnLoad.BackColor =
                 Color.FromArgb(52, 73, 94);
 
-            btnLoad.ForeColor = Color.White;
+            btnLoad.ForeColor =
+                Color.White;
 
-            btnLoad.FlatStyle = FlatStyle.Flat;
+            btnLoad.FlatStyle =
+                FlatStyle.Flat;
 
             btnLoad.FlatAppearance.BorderSize = 0;
+
+            btnFilter.BackColor =
+                Color.FromArgb(155, 89, 182);
+
+            btnFilter.ForeColor =
+                Color.White;
+
+            btnFilter.FlatStyle =
+                FlatStyle.Flat;
+
+            btnFilter.FlatAppearance.BorderSize = 0;
+        }
+
+        private void SetupFilter()
+        {
+            cbStatus.Items.Clear();
+
+            cbStatus.Items.Add("Tất cả");
+            cbStatus.Items.Add("New");
+            cbStatus.Items.Add("Processing");
+            cbStatus.Items.Add("Solved");
+            cbStatus.Items.Add("Rejected");
+
+            cbStatus.SelectedIndex = 0;
         }
 
         private void LoadData()
         {
-            DataTable dt = service.GetAll();
+            DataTable dt =
+                service.GetAll();
 
             if (!dt.Columns.Contains("StatusText"))
-                dt.Columns.Add("StatusText", typeof(string));
+            {
+                dt.Columns.Add(
+                    "StatusText",
+                    typeof(string));
+            }
 
             foreach (DataRow row in dt.Rows)
             {
                 int status =
-                    Convert.ToInt32(row["Status"]);
+                    Convert.ToInt32(
+                        row["Status"]);
 
                 if (status == 0)
+                {
                     row["StatusText"] =
-                        "Chưa xử lý";
-
+                        "New";
+                }
                 else if (status == 1)
+                {
                     row["StatusText"] =
-                        "Đã xử lý";
-
-                else
+                        "Processing";
+                }
+                else if (status == 2)
+                {
                     row["StatusText"] =
-                        "Từ chối";
+                        "Solved";
+                }
+                else if (status == 3)
+                {
+                    row["StatusText"] =
+                        "Rejected";
+                }
             }
 
-            dgvCustomerService.DataSource = dt;
+            DataView dv =
+                dt.DefaultView;
+
+            string filter = "";
+
+            if (cbStatus.SelectedIndex > 0)
+            {
+                int status =
+                    cbStatus.SelectedIndex - 1;
+
+                filter =
+                    $"Status = {status}";
+            }
+
+            dv.RowFilter = filter;
+
+            dgvCustomerService.DataSource =
+                dv;
 
             dgvCustomerService.Columns["CustomerServiceID"]
-                .HeaderText = "Mã Khiếu Nại";
+                .HeaderText =
+                "Mã Khiếu Nại";
 
             dgvCustomerService.Columns["CustomerID"]
-                .HeaderText = "Mã Khách Hàng";
+                .HeaderText =
+                "Mã Khách Hàng";
 
             dgvCustomerService.Columns["Reason"]
-                .HeaderText = "Lý Do";
+                .HeaderText =
+                "Lý Do";
 
             dgvCustomerService.Columns["Date"]
-                .HeaderText = "Ngày Gửi";
+                .HeaderText =
+                "Ngày Gửi";
+
+            dgvCustomerService.Columns["EmployeeResponse"]
+                .HeaderText =
+                "Phản Hồi";
+
+            dgvCustomerService.Columns["ResponseDate"]
+                .HeaderText =
+                "Ngày Phản Hồi";
 
             dgvCustomerService.Columns["StatusText"]
-                .HeaderText = "Trạng Thái";
+                .HeaderText =
+                "Trạng Thái";
 
             dgvCustomerService.Columns["Status"]
                 .Visible = false;
@@ -156,8 +246,11 @@ namespace ClothesStore.GUI.StaffForms
             object sender,
             EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtCustomerId.Text) ||
-                string.IsNullOrWhiteSpace(txtReason.Text))
+            if (string.IsNullOrWhiteSpace(
+                    txtCustomerId.Text) ||
+
+                string.IsNullOrWhiteSpace(
+                    txtReason.Text))
             {
                 MessageBox.Show(
                     "Vui lòng nhập đầy đủ thông tin!");
@@ -166,8 +259,11 @@ namespace ClothesStore.GUI.StaffForms
             }
 
             service.Add(
-                Guid.Parse(txtCustomerId.Text),
-                txtReason.Text);
+                Guid.Parse(
+                    txtCustomerId.Text),
+
+                txtReason.Text
+            );
 
             MessageBox.Show(
                 "Gửi khiếu nại thành công!");
@@ -185,11 +281,29 @@ namespace ClothesStore.GUI.StaffForms
             if (e.RowIndex < 0)
                 return;
 
-            selectedId = Convert.ToInt32(
-                dgvCustomerService
+            selectedId =
+                Convert.ToInt32(
+                    dgvCustomerService
+                    .Rows[e.RowIndex]
+                    .Cells["CustomerServiceID"]
+                    .Value);
+
+            if (dgvCustomerService
                 .Rows[e.RowIndex]
-                .Cells["CustomerServiceID"]
-                .Value);
+                .Cells["EmployeeResponse"]
+                .Value != DBNull.Value)
+            {
+                txtResponse.Text =
+                    dgvCustomerService
+                    .Rows[e.RowIndex]
+                    .Cells["EmployeeResponse"]
+                    .Value
+                    .ToString();
+            }
+            else
+            {
+                txtResponse.Clear();
+            }
         }
 
         private void btnHandle_Click(
@@ -206,10 +320,50 @@ namespace ClothesStore.GUI.StaffForms
 
             service.Handle(
                 selectedId,
-                GlobalSession.CurrentUser.UserId);
+                GlobalSession
+                .CurrentUser
+                .UserId
+            );
 
             MessageBox.Show(
-                "Đã xử lý khiếu nại!");
+                "Đã chuyển sang Processing!");
+
+            LoadData();
+        }
+
+        private void btnSolve_Click(
+            object sender,
+            EventArgs e)
+        {
+            if (selectedId == -1)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn khiếu nại!");
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                    txtResponse.Text))
+            {
+                MessageBox.Show(
+                    "Vui lòng nhập phản hồi!");
+
+                return;
+            }
+
+            service.Solve(
+                selectedId,
+                txtResponse.Text,
+                GlobalSession
+                .CurrentUser
+                .UserId
+            );
+
+            MessageBox.Show(
+                "Đã giải quyết khiếu nại!");
+
+            txtResponse.Clear();
 
             LoadData();
         }
@@ -238,6 +392,20 @@ namespace ClothesStore.GUI.StaffForms
         }
 
         private void btnLoad_Click(
+            object sender,
+            EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void btnFilter_Click(
+            object sender,
+            EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void cbStatus_SelectedIndexChanged(
             object sender,
             EventArgs e)
         {
