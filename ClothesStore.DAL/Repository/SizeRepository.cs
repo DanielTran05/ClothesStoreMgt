@@ -11,7 +11,7 @@ namespace ClothesStore.DAL.Repository
 {
     public class SizeRepository
     {
-
+        private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
         public List<SizeDTO> GetAllSizes()
         {
             var list = new List<SizeDTO>();

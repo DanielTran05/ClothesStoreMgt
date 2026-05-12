@@ -17,6 +17,9 @@ public partial class CustomerService
 
     public Guid? EmployeeId { get; set; }
 
+    public string? EmployeeResponse { get; set; }
+    public DateTime? ResponseDate { get; set; }
+
     public virtual User? Customer { get; set; }
 
     public virtual User? Employee { get; set; }
