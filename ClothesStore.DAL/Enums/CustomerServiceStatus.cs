@@ -8,6 +8,6 @@ namespace ClothesStore.DAL.Enums
     {
         New = 1,
         Processing = 2,
-        Solved = 3,
+        Solved = 3,   
     }
 }

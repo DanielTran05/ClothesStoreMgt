@@ -14,7 +14,6 @@ namespace ClothesStore.DAL.Repository
     public class UserRepository
     {
         private readonly ClothesStoreContext clothesStoreContext;
-        private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True";
         
         public UserRepository(ClothesStoreContext clothesStoreContext)
         {
@@ -72,7 +71,7 @@ namespace ClothesStore.DAL.Repository
         public List<ReadUserDTO> GetAllEmployees()
         {
             List<ReadUserDTO> list = new List<ReadUserDTO>();
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_GetAllEmployees", conn))
                 {
@@ -101,9 +100,41 @@ namespace ClothesStore.DAL.Repository
             return list;
         }
 
+        public List<ReadUserDTO> GetAllCustomers()
+        {
+            List<ReadUserDTO> list = new List<ReadUserDTO>();
+            using (SqlConnection conn = DbHelper.GetConnection())
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GetAllCustomers", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(new ReadUserDTO
+                            {
+                                UserID = reader.GetGuid(reader.GetOrdinal("UserID")),
+                                Username = reader.GetString(reader.GetOrdinal("Username")),
+                                FullName = reader.IsDBNull(reader.GetOrdinal("FullName")) ? null : reader.GetString(reader.GetOrdinal("FullName")),
+                                Email = reader.IsDBNull(reader.GetOrdinal("Email")) ? null : reader.GetString(reader.GetOrdinal("Email")),
+                                PhoneNumber = reader.IsDBNull(reader.GetOrdinal("PhoneNumber")) ? null : reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                                Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? null : reader.GetString(reader.GetOrdinal("Address")),
+                                Role = reader.GetInt32(reader.GetOrdinal("Role")),
+                                IsActive = reader.IsDBNull(reader.GetOrdinal("IsActive")) ? (bool?)null : reader.GetBoolean(reader.GetOrdinal("IsActive")),
+                                CreatedAt = reader.IsDBNull(reader.GetOrdinal("CreatedAt")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("CreatedAt"))
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
         public void CreateEmployee(CreateUserRequest request, string hashedPassword)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CreateEmployee", conn))
                 {
@@ -124,7 +155,7 @@ namespace ClothesStore.DAL.Repository
 
         public void UpdateEmployee(UpdateUserRequest request)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_UpdateEmployee", conn))
                 {
@@ -145,7 +176,7 @@ namespace ClothesStore.DAL.Repository
 
         public void ToggleUserStatus(Guid userId, bool isActive)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_ToggleUserStatus", conn))
                 {
@@ -161,7 +192,7 @@ namespace ClothesStore.DAL.Repository
 
         public void ResetUserPassword(Guid userId, string newHashedPassword)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_ResetUserPassword", conn))
                 {
@@ -176,7 +207,7 @@ namespace ClothesStore.DAL.Repository
 
         public bool CheckUsernameExists(string username)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = DbHelper.GetConnection())
             {
                 using (SqlCommand cmd = new SqlCommand("sp_CheckUsernameExists", conn))
                 {

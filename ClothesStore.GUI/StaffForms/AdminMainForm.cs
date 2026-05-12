@@ -28,5 +28,36 @@ namespace ClothesStore.GUI
             pnlMain.Controls.Add(uc);
             uc.BringToFront();
         }
+
+        private void btnQuanLyDanhMuc_Click(object sender, EventArgs e)
+        {
+            ucCategoryManagement ucCategory = new ucCategoryManagement();
+            ucCategory.Dock = DockStyle.Fill;
+
+            pnlMain.Controls.Clear();
+            pnlMain.Controls.Add(ucCategory);
+            ucCategory.BringToFront();
+        }
+
+        private void btnQuanLySanPham_Click(object sender, EventArgs e)
+        {
+            ucProductManagement ucProduct = new ucProductManagement();
+            ucProduct.Dock = DockStyle.Fill;
+
+            pnlMain.Controls.Clear();
+
+            pnlMain.Controls.Add(ucProduct);
+
+            ucProduct.BringToFront();
+        }
+
+        private void btnCustomerManagement_Click(object sender, EventArgs e)
+        {
+            ucCustomerManagement ucCustomer = new ucCustomerManagement();
+            ucCustomer.Dock = DockStyle.Fill;
+            pnlMain.Controls.Clear();
+            pnlMain.Controls.Add(ucCustomer);
+            ucCustomer.BringToFront();
+        }
     }
 }
