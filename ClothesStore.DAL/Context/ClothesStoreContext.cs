@@ -46,7 +46,7 @@ public partial class ClothesStoreContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
-    => optionsBuilder.UseSqlServer("Server=DESKTOP-J4ST655;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;");
+    => optionsBuilder.UseSqlServer("Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

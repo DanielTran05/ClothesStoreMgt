@@ -14,7 +14,7 @@ namespace ClothesStore.DAL.Repository
 {
     public class ProductRepository
     {
-        private readonly string _connectionString = "Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
         public DataTable SearchStaff(string keyword)
         {
             using var conn = DbHelper.GetConnection();
