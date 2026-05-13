@@ -90,10 +90,10 @@
             pnlInputSide.Dock = DockStyle.Right;
             pnlInputSide.FillColor = Color.Bisque;
             pnlInputSide.ForeColor = SystemColors.ActiveCaption;
-            pnlInputSide.Location = new Point(902, 0);
+            pnlInputSide.Location = new Point(1416, 0);
             pnlInputSide.Name = "pnlInputSide";
             pnlInputSide.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlInputSide.Size = new Size(346, 1084);
+            pnlInputSide.Size = new Size(346, 1104);
             pnlInputSide.TabIndex = 0;
             pnlInputSide.Visible = false;
             // 
@@ -293,7 +293,7 @@
             pnlToolBar.Location = new Point(0, 0);
             pnlToolBar.Name = "pnlToolBar";
             pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges30;
-            pnlToolBar.Size = new Size(902, 55);
+            pnlToolBar.Size = new Size(1416, 55);
             pnlToolBar.TabIndex = 2;
             // 
             // btnLock
@@ -434,7 +434,7 @@
             dgvUsers.ReadOnly = true;
             dgvUsers.RowHeadersVisible = false;
             dgvUsers.RowHeadersWidth = 62;
-            dgvUsers.Size = new Size(1248, 1084);
+            dgvUsers.Size = new Size(1762, 1104);
             dgvUsers.TabIndex = 0;
             dgvUsers.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvUsers.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -466,7 +466,7 @@
             Controls.Add(pnlInputSide);
             Controls.Add(dgvUsers);
             Name = "ucUserManagement";
-            Size = new Size(1248, 1084);
+            Size = new Size(1762, 1104);
             Load += ucUserManagement_Load;
             pnlInputSide.ResumeLayout(false);
             pnlInputSide.PerformLayout();

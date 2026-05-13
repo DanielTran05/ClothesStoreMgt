@@ -98,7 +98,7 @@
             pnlToolBar.Location = new Point(0, 0);
             pnlToolBar.Name = "pnlToolBar";
             pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            pnlToolBar.Size = new Size(1248, 55);
+            pnlToolBar.Size = new Size(1762, 55);
             pnlToolBar.TabIndex = 3;
             // 
             // title
@@ -213,10 +213,10 @@
             pnlInputSide.Dock = DockStyle.Right;
             pnlInputSide.FillColor = Color.Bisque;
             pnlInputSide.ForeColor = SystemColors.ActiveCaption;
-            pnlInputSide.Location = new Point(902, 55);
+            pnlInputSide.Location = new Point(1416, 55);
             pnlInputSide.Name = "pnlInputSide";
             pnlInputSide.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlInputSide.Size = new Size(346, 1029);
+            pnlInputSide.Size = new Size(346, 1049);
             pnlInputSide.TabIndex = 5;
             pnlInputSide.Visible = false;
             // 
@@ -306,7 +306,7 @@
             tab.Location = new Point(0, 55);
             tab.Name = "tab";
             tab.SelectedIndex = 0;
-            tab.Size = new Size(902, 1029);
+            tab.Size = new Size(1416, 1049);
             tab.TabButtonHoverState.BorderColor = Color.Empty;
             tab.TabButtonHoverState.FillColor = Color.FromArgb(40, 52, 70);
             tab.TabButtonHoverState.Font = new Font("Segoe UI Semibold", 10F);
@@ -332,7 +332,7 @@
             tabCategories.Location = new Point(184, 4);
             tabCategories.Name = "tabCategories";
             tabCategories.Padding = new Padding(3);
-            tabCategories.Size = new Size(714, 1021);
+            tabCategories.Size = new Size(1228, 1041);
             tabCategories.TabIndex = 0;
             tabCategories.Text = "Loại sản phẩm";
             tabCategories.UseVisualStyleBackColor = true;
@@ -365,7 +365,7 @@
             dgvCategories.Name = "dgvCategories";
             dgvCategories.RowHeadersVisible = false;
             dgvCategories.RowHeadersWidth = 62;
-            dgvCategories.Size = new Size(708, 1015);
+            dgvCategories.Size = new Size(1222, 1035);
             dgvCategories.TabIndex = 0;
             dgvCategories.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvCategories.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -523,7 +523,7 @@
             Controls.Add(pnlInputSide);
             Controls.Add(pnlToolBar);
             Name = "ucCategoryManagement";
-            Size = new Size(1248, 1084);
+            Size = new Size(1762, 1104);
             pnlToolBar.ResumeLayout(false);
             pnlToolBar.PerformLayout();
             pnlInputSide.ResumeLayout(false);
