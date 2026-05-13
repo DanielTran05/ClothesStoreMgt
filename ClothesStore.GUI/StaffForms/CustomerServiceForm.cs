@@ -20,7 +20,6 @@ namespace ClothesStore.GUI.StaffForms
             LoadData();
         }
 
-        // ================= UI =================
         private void SetupUI()
         {
             dgvCustomerService.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -63,7 +62,6 @@ namespace ClothesStore.GUI.StaffForms
             btnLoad.ForeColor = Color.White;
         }
 
-        // ================= FILTER =================
         private void SetupFilter()
         {
             cbStatus.Items.Clear();
@@ -75,7 +73,6 @@ namespace ClothesStore.GUI.StaffForms
             cbStatus.SelectedIndex = 0;
         }
 
-        // ================= LOAD DATA =================
         private void LoadData()
         {
             DataTable dt = service.GetAll();
@@ -104,7 +101,6 @@ namespace ClothesStore.GUI.StaffForms
 
             dgvCustomerService.DataSource = dv;
 
-            // ================= COLUMN HEADER =================
             SetHeader("CustomerServiceID", "Mã Khiếu Nại");
 
             SetHeader("CustomerID", "Mã KH");
@@ -136,7 +132,6 @@ namespace ClothesStore.GUI.StaffForms
                 dgvCustomerService.Columns[col].Visible = false;
         }
 
-        // ================= ADD (FIX NULL CUSTOMERID) =================
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtReason.Text))
@@ -156,7 +151,6 @@ namespace ClothesStore.GUI.StaffForms
             txtReason.Clear();
         }
 
-        // ================= SELECT =================
         private void dgvCustomerService_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -167,7 +161,6 @@ namespace ClothesStore.GUI.StaffForms
             );
         }
 
-        // ================= HANDLE =================
         private void btnHandle_Click(object sender, EventArgs e)
         {
             if (selectedId == -1)
@@ -210,7 +203,6 @@ namespace ClothesStore.GUI.StaffForms
             MessageBox.Show("Trạng thái không hợp lệ!");
         }
 
-        // ================= REJECT =================
         private void btnReject_Click(object sender, EventArgs e)
         {
             if (selectedId == -1)
