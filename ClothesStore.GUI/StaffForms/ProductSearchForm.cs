@@ -8,11 +8,13 @@ namespace ClothesStore.GUI.StaffForms
     public partial class ProductSearchForm : Form
     {
         private ProductService service = new ProductService();
+        private readonly ProductService _productService = new ProductService();
 
         public ProductSearchForm()
         {
             InitializeComponent();
             SetupUI();
+            LoadProductData();
         }
 
         private void SetupUI()
@@ -45,6 +47,34 @@ namespace ClothesStore.GUI.StaffForms
             btnSearch.Cursor = Cursors.Hand;
 
             txtSearch.Font = new Font("Segoe UI", 11);
+        }
+
+        private void LoadProductData()
+        {
+            try
+            {
+                // 1. Lấy danh sách từ BUS
+                var products = _productService.GetAllProducts();
+
+                // 2. Gán vào DataGridView (ví dụ tên là dgvProducts)
+                dgvResult.DataSource = null; // Xóa dữ liệu cũ để tránh lỗi binding
+                dgvResult.DataSource = products;
+
+                // 3. Định dạng lại tiêu đề cột (HeaderText) cho đẹp
+                if (dgvResult.Columns.Count > 0)
+                {
+                    dgvResult.Columns["ProductID"].HeaderText = "Mã SP";
+                    dgvResult.Columns["ProductName"].HeaderText = "Tên Sản Phẩm";
+                    dgvResult.Columns["Description"].HeaderText = "Mô tả";
+                    dgvResult.Columns["CategoryID"].HeaderText = "Mã Loại";
+                    // Ẩn các cột không cần thiết nếu muốn
+                    // dgvProducts.Columns["Description"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải dữ liệu sản phẩm: " + ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

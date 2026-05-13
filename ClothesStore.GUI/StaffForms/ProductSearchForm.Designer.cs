@@ -36,14 +36,14 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(526, 12);
+            txtSearch.Location = new Point(1158, 12);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(262, 27);
             txtSearch.TabIndex = 0;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(413, 12);
+            btnSearch.Location = new Point(1045, 12);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(94, 29);
             btnSearch.TabIndex = 1;
@@ -54,17 +54,17 @@
             // dgvResult
             // 
             dgvResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvResult.Location = new Point(12, 67);
+            dgvResult.Location = new Point(12, 59);
             dgvResult.Name = "dgvResult";
             dgvResult.RowHeadersWidth = 51;
-            dgvResult.Size = new Size(776, 283);
+            dgvResult.Size = new Size(1422, 591);
             dgvResult.TabIndex = 2;
             // 
             // ProductSearchForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 362);
+            ClientSize = new Size(1432, 653);
             Controls.Add(dgvResult);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);

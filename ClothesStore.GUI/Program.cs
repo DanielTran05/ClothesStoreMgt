@@ -1,5 +1,6 @@
 using ClothesStore.DAL.Context;
 using ClothesStore.DAL.Repository;
+using ClothesStore.GUI.StaffForms;
 using Helper;
 using System.Diagnostics;
 
@@ -23,7 +24,7 @@ namespace ClothesStore.GUI
             //    MessageBox.Show("Du lieu co san hoac khong the tao do bi connectionString cua DB: " + ex.Message);
             //}
 
-            Application.Run(new LoginForm());
+            Application.Run(new AdminMainForm());
         }
     }
 }

@@ -59,5 +59,7 @@ namespace ClothesStore.GUI
             pnlMain.Controls.Add(ucCustomer);
             ucCustomer.BringToFront();
         }
+
+      
     }
 }

@@ -8,26 +8,33 @@ using System.Windows.Forms;
 
 namespace ClothesStore.GUI.StaffForms
 {
-    public partial class SaleMainForm : BaseForm
+    public partial class SaleMainForm : Form
     {
         public SaleMainForm()
         {
             InitializeComponent();
         }
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            base.HandleLogout();
+            ProductSearchForm search = new ProductSearchForm();
+            this.Hide();
+            search.ShowDialog();
         }
 
-        private void btnSearchProduct_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            new ProductSearchForm().ShowDialog();
-        }
+            ucOrderManagement ucOrder = new ucOrderManagement();
 
-        private void btnCustomerService_Click(object sender, EventArgs e)
-        {
-            new CustomerServiceForm().ShowDialog();
+            // 2. Thiết lập hiển thị tràn đầy vùng pnlMain
+            ucOrder.Dock = DockStyle.Fill;
+
+            // 3. Xóa các Control cũ đang hiển thị trong pnlMain
+            this.Controls.Clear();
+
+            // 4. Thêm UserControl vào Form hiện tại
+            this.Controls.Add(ucOrder);
+            ucOrder.BringToFront();
         }
     }
 }

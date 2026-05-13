@@ -63,20 +63,18 @@
             mainTitle.AutoSize = true;
             mainTitle.BorderStyle = BorderStyle.Fixed3D;
             mainTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            mainTitle.Location = new Point(4, 3);
-            mainTitle.Margin = new Padding(4, 0, 4, 0);
+            mainTitle.Location = new Point(3, 2);
             mainTitle.Name = "mainTitle";
-            mainTitle.Size = new Size(488, 50);
+            mainTitle.Size = new Size(411, 43);
             mainTitle.TabIndex = 0;
             mainTitle.Text = "WELCOME TO ADMIN PAGE";
             // 
             // btnLogout
             // 
             btnLogout.BackColor = Color.LemonChiffon;
-            btnLogout.Location = new Point(1334, 8);
-            btnLogout.Margin = new Padding(4);
+            btnLogout.Location = new Point(1067, 6);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(140, 45);
+            btnLogout.Size = new Size(112, 36);
             btnLogout.TabIndex = 1;
             btnLogout.Text = "Logout";
             btnLogout.UseVisualStyleBackColor = false;
@@ -89,9 +87,10 @@
             pnlHeader.CustomizableEdges = customizableEdges1;
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(2);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            pnlHeader.Size = new Size(1478, 60);
+            pnlHeader.Size = new Size(1182, 48);
             pnlHeader.TabIndex = 2;
             // 
             // pnlMain
@@ -105,12 +104,13 @@
             pnlMain.CustomizableEdges = customizableEdges3;
             pnlMain.Dock = DockStyle.Fill;
             pnlMain.FillColor = Color.White;
-            pnlMain.Location = new Point(230, 60);
+            pnlMain.Location = new Point(184, 48);
+            pnlMain.Margin = new Padding(2);
             pnlMain.Name = "pnlMain";
             pnlMain.ShadowDecoration.Color = Color.LightGray;
             pnlMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
             pnlMain.ShadowDecoration.Enabled = true;
-            pnlMain.Size = new Size(1248, 1084);
+            pnlMain.Size = new Size(998, 867);
             pnlMain.TabIndex = 4;
             // 
             // pnlSidebar
@@ -122,10 +122,11 @@
             pnlSidebar.Controls.Add(btnManageE);
             pnlSidebar.CustomizableEdges = customizableEdges15;
             pnlSidebar.Dock = DockStyle.Left;
-            pnlSidebar.Location = new Point(0, 60);
+            pnlSidebar.Location = new Point(0, 48);
+            pnlSidebar.Margin = new Padding(2);
             pnlSidebar.Name = "pnlSidebar";
             pnlSidebar.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlSidebar.Size = new Size(230, 1084);
+            pnlSidebar.Size = new Size(184, 867);
             pnlSidebar.TabIndex = 3;
             // 
             // btnStat
@@ -147,10 +148,11 @@
             btnStat.FillColor = Color.Transparent;
             btnStat.Font = new Font("Segoe UI", 10F);
             btnStat.ForeColor = Color.Black;
-            btnStat.Location = new Point(12, 375);
+            btnStat.Location = new Point(11, 297);
+            btnStat.Margin = new Padding(2);
             btnStat.Name = "btnStat";
             btnStat.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnStat.Size = new Size(200, 60);
+            btnStat.Size = new Size(160, 48);
             btnStat.TabIndex = 0;
             btnStat.Text = "Thống kê";
             btnStat.TextAlign = HorizontalAlignment.Left;
@@ -175,10 +177,11 @@
             gtnCustManagement.FillColor = Color.Transparent;
             gtnCustManagement.Font = new Font("Segoe UI", 10F);
             gtnCustManagement.ForeColor = Color.Black;
-            gtnCustManagement.Location = new Point(12, 285);
+            gtnCustManagement.Location = new Point(10, 228);
+            gtnCustManagement.Margin = new Padding(2);
             gtnCustManagement.Name = "gtnCustManagement";
             gtnCustManagement.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            gtnCustManagement.Size = new Size(200, 60);
+            gtnCustManagement.Size = new Size(160, 48);
             gtnCustManagement.TabIndex = 0;
             gtnCustManagement.Text = "Quản lý Khách hàng";
             gtnCustManagement.TextAlign = HorizontalAlignment.Left;
@@ -203,10 +206,11 @@
             btnProManagement.FillColor = Color.Transparent;
             btnProManagement.Font = new Font("Segoe UI", 10F);
             btnProManagement.ForeColor = Color.Black;
-            btnProManagement.Location = new Point(12, 194);
+            btnProManagement.Location = new Point(10, 155);
+            btnProManagement.Margin = new Padding(2);
             btnProManagement.Name = "btnProManagement";
             btnProManagement.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnProManagement.Size = new Size(200, 60);
+            btnProManagement.Size = new Size(160, 48);
             btnProManagement.TabIndex = 0;
             btnProManagement.Text = "Quản lý Sản phẩm";
             btnProManagement.TextAlign = HorizontalAlignment.Left;
@@ -231,10 +235,11 @@
             guna2Button2.FillColor = Color.Transparent;
             guna2Button2.Font = new Font("Segoe UI", 10F);
             guna2Button2.ForeColor = Color.Black;
-            guna2Button2.Location = new Point(12, 104);
+            guna2Button2.Location = new Point(10, 83);
+            guna2Button2.Margin = new Padding(2);
             guna2Button2.Name = "guna2Button2";
             guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            guna2Button2.Size = new Size(200, 60);
+            guna2Button2.Size = new Size(160, 48);
             guna2Button2.TabIndex = 0;
             guna2Button2.Text = "Quản lý Danh mục";
             guna2Button2.TextAlign = HorizontalAlignment.Left;
@@ -259,10 +264,11 @@
             btnManageE.FillColor = Color.Transparent;
             btnManageE.Font = new Font("Segoe UI", 10F);
             btnManageE.ForeColor = Color.Black;
-            btnManageE.Location = new Point(12, 15);
+            btnManageE.Location = new Point(10, 12);
+            btnManageE.Margin = new Padding(2);
             btnManageE.Name = "btnManageE";
             btnManageE.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnManageE.Size = new Size(200, 60);
+            btnManageE.Size = new Size(160, 48);
             btnManageE.TabIndex = 0;
             btnManageE.Text = "Quản lý Nhân viên";
             btnManageE.TextAlign = HorizontalAlignment.Left;
@@ -270,14 +276,13 @@
             // 
             // AdminMainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 240, 246);
-            ClientSize = new Size(1478, 1144);
+            ClientSize = new Size(1182, 915);
             Controls.Add(pnlMain);
             Controls.Add(pnlSidebar);
             Controls.Add(pnlHeader);
-            Margin = new Padding(4);
             MaximizeBox = false;
             Name = "AdminMainForm";
             Text = "AdminMainForm";
