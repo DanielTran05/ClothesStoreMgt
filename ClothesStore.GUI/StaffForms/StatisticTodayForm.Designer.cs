@@ -1,6 +1,6 @@
 ﻿namespace ClothesStore.GUI.StaffForms
 {
-    partial class StatisticForm
+    partial class StatisticTodayForm
     {
         /// <summary>
         /// Required designer variable.

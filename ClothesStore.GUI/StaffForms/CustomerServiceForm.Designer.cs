@@ -39,8 +39,6 @@
             cbStatus = new ComboBox();
             lblResponse = new Label();
             txtResponse = new TextBox();
-            btnSolve = new Button();
-            btnFilter = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).BeginInit();
             SuspendLayout();
             // 
@@ -159,33 +157,11 @@
             txtResponse.Size = new Size(235, 28);
             txtResponse.TabIndex = 5;
             // 
-            // btnSolve
-            // 
-            btnSolve.Location = new Point(354, 424);
-            btnSolve.Name = "btnSolve";
-            btnSolve.Size = new Size(94, 45);
-            btnSolve.TabIndex = 13;
-            btnSolve.Text = "Solve";
-            btnSolve.UseVisualStyleBackColor = true;
-            btnSolve.Click += btnSolve_Click;
-            // 
-            // btnFilter
-            // 
-            btnFilter.Location = new Point(254, 424);
-            btnFilter.Name = "btnFilter";
-            btnFilter.Size = new Size(94, 45);
-            btnFilter.TabIndex = 14;
-            btnFilter.Text = "Filter";
-            btnFilter.UseVisualStyleBackColor = true;
-            btnFilter.Click += btnFilter_Click;
-            // 
             // CustomerServiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(884, 481);
-            Controls.Add(btnFilter);
-            Controls.Add(btnSolve);
             Controls.Add(btnLoad);
             Controls.Add(btnReject);
             Controls.Add(btnHandle);
@@ -228,7 +204,5 @@
         private Label lblResponse;
 
         private TextBox txtResponse;
-        private Button btnSolve;
-        private Button btnFilter;
     }
 }

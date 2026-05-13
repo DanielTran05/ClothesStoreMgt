@@ -119,8 +119,6 @@ namespace ClothesStore.GUI.StaffForms
             cboSearchType.Items.Add("ProductID");
 
             cboSearchType.SelectedIndex = 0;
-
-            txtSearch.TextChanged += SearchChanged;
             cboSearchType.SelectedIndexChanged += SearchChanged;
         }
 

@@ -8,9 +8,7 @@ namespace ClothesStore.GUI.StaffForms
 {
     public partial class CustomerServiceForm : Form
     {
-        private CustomerService service =
-            new CustomerService();
-
+        private CustomerService service = new CustomerService();
         private int selectedId = -1;
 
         public CustomerServiceForm()
@@ -19,42 +17,26 @@ namespace ClothesStore.GUI.StaffForms
 
             SetupUI();
             SetupFilter();
-
             LoadData();
         }
 
+        // ================= UI =================
         private void SetupUI()
         {
-            dgvCustomerService.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
-
-            dgvCustomerService.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
-
+            dgvCustomerService.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCustomerService.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCustomerService.MultiSelect = false;
-
             dgvCustomerService.AllowUserToAddRows = false;
-
             dgvCustomerService.RowHeadersVisible = false;
+            dgvCustomerService.BorderStyle = BorderStyle.None;
+            dgvCustomerService.BackgroundColor = Color.White;
 
-            dgvCustomerService.BorderStyle =
-                BorderStyle.None;
-
-            dgvCustomerService.BackgroundColor =
-                Color.White;
-
-            dgvCustomerService.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
-
-            dgvCustomerService.EnableHeadersVisualStyles =
-                false;
+            dgvCustomerService.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvCustomerService.EnableHeadersVisualStyles = false;
 
             dgvCustomerService.ColumnHeadersDefaultCellStyle.BackColor =
                 Color.FromArgb(52, 152, 219);
-
-            dgvCustomerService.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
-
+            dgvCustomerService.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvCustomerService.ColumnHeadersDefaultCellStyle.Font =
                 new Font("Segoe UI", 11, FontStyle.Bold);
 
@@ -66,348 +48,199 @@ namespace ClothesStore.GUI.StaffForms
             dgvCustomerService.DefaultCellStyle.SelectionBackColor =
                 Color.FromArgb(41, 128, 185);
 
-            dgvCustomerService.DefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgvCustomerService.DefaultCellStyle.SelectionForeColor = Color.White;
 
             dgvCustomerService.RowTemplate.Height = 35;
 
-            btnAdd.BackColor =
-                Color.FromArgb(52, 152, 219);
+            btnAdd.BackColor = Color.FromArgb(52, 152, 219);
+            btnHandle.BackColor = Color.FromArgb(241, 196, 15);
+            btnReject.BackColor = Color.FromArgb(231, 76, 60);
+            btnLoad.BackColor = Color.FromArgb(52, 73, 94);
 
-            btnAdd.ForeColor =
-                Color.White;
-
-            btnAdd.FlatStyle =
-                FlatStyle.Flat;
-
-            btnAdd.FlatAppearance.BorderSize = 0;
-
-            btnHandle.BackColor =
-                Color.FromArgb(241, 196, 15);
-
-            btnHandle.ForeColor =
-                Color.White;
-
-            btnHandle.FlatStyle =
-                FlatStyle.Flat;
-
-            btnHandle.FlatAppearance.BorderSize = 0;
-
-            btnSolve.BackColor =
-                Color.FromArgb(46, 204, 113);
-
-            btnSolve.ForeColor =
-                Color.White;
-
-            btnSolve.FlatStyle =
-                FlatStyle.Flat;
-
-            btnSolve.FlatAppearance.BorderSize = 0;
-
-            btnReject.BackColor =
-                Color.FromArgb(231, 76, 60);
-
-            btnReject.ForeColor =
-                Color.White;
-
-            btnReject.FlatStyle =
-                FlatStyle.Flat;
-
-            btnReject.FlatAppearance.BorderSize = 0;
-
-            btnLoad.BackColor =
-                Color.FromArgb(52, 73, 94);
-
-            btnLoad.ForeColor =
-                Color.White;
-
-            btnLoad.FlatStyle =
-                FlatStyle.Flat;
-
-            btnLoad.FlatAppearance.BorderSize = 0;
-
-            btnFilter.BackColor =
-                Color.FromArgb(155, 89, 182);
-
-            btnFilter.ForeColor =
-                Color.White;
-
-            btnFilter.FlatStyle =
-                FlatStyle.Flat;
-
-            btnFilter.FlatAppearance.BorderSize = 0;
+            btnAdd.ForeColor = Color.White;
+            btnHandle.ForeColor = Color.White;
+            btnReject.ForeColor = Color.White;
+            btnLoad.ForeColor = Color.White;
         }
 
+        // ================= FILTER =================
         private void SetupFilter()
         {
             cbStatus.Items.Clear();
-
             cbStatus.Items.Add("Tất cả");
             cbStatus.Items.Add("New");
             cbStatus.Items.Add("Processing");
             cbStatus.Items.Add("Solved");
             cbStatus.Items.Add("Rejected");
-
             cbStatus.SelectedIndex = 0;
         }
 
+        // ================= LOAD DATA =================
         private void LoadData()
         {
-            DataTable dt =
-                service.GetAll();
+            DataTable dt = service.GetAll();
+            if (dt == null) return;
 
             if (!dt.Columns.Contains("StatusText"))
-            {
-                dt.Columns.Add(
-                    "StatusText",
-                    typeof(string));
-            }
+                dt.Columns.Add("StatusText", typeof(string));
 
             foreach (DataRow row in dt.Rows)
             {
-                int status =
-                    Convert.ToInt32(
-                        row["Status"]);
+                int status = Convert.ToInt32(row["Status"]);
 
-                if (status == 0)
-                {
-                    row["StatusText"] =
-                        "New";
-                }
-                else if (status == 1)
-                {
-                    row["StatusText"] =
-                        "Processing";
-                }
-                else if (status == 2)
-                {
-                    row["StatusText"] =
-                        "Solved";
-                }
-                else if (status == 3)
-                {
-                    row["StatusText"] =
-                        "Rejected";
-                }
+                row["StatusText"] =
+                    status == 0 ? "New" :
+                    status == 1 ? "Processing" :
+                    status == 2 ? "Solved" :
+                    "Rejected";
             }
 
-            DataView dv =
-                dt.DefaultView;
-
-            string filter = "";
+            DataView dv = dt.DefaultView;
 
             if (cbStatus.SelectedIndex > 0)
-            {
-                int status =
-                    cbStatus.SelectedIndex - 1;
+                dv.RowFilter = $"Status = {cbStatus.SelectedIndex - 1}";
+            else
+                dv.RowFilter = "";
 
-                filter =
-                    $"Status = {status}";
-            }
+            dgvCustomerService.DataSource = dv;
 
-            dv.RowFilter = filter;
+            // ================= COLUMN HEADER =================
+            SetHeader("CustomerServiceID", "Mã Khiếu Nại");
 
-            dgvCustomerService.DataSource =
-                dv;
+            SetHeader("CustomerID", "Mã KH");
+            SetHeader("CustomerName", "Tên Khách Hàng");
 
-            dgvCustomerService.Columns["CustomerServiceID"]
-                .HeaderText =
-                "Mã Khiếu Nại";
+            SetHeader("EmployeeID", "Mã NV");
+            SetHeader("EmployeeName", "Tên Nhân Viên");
 
-            dgvCustomerService.Columns["CustomerID"]
-                .HeaderText =
-                "Mã Khách Hàng";
+            SetHeader("Reason", "Lý Do");
+            SetHeader("Date", "Ngày Gửi");
 
-            dgvCustomerService.Columns["Reason"]
-                .HeaderText =
-                "Lý Do";
+            SetHeader("EmployeeResponse", "Phản Hồi");
+            SetHeader("ResponseDate", "Ngày Phản Hồi");
 
-            dgvCustomerService.Columns["Date"]
-                .HeaderText =
-                "Ngày Gửi";
+            SetHeader("StatusText", "Trạng Thái");
 
-            dgvCustomerService.Columns["EmployeeResponse"]
-                .HeaderText =
-                "Phản Hồi";
-
-            dgvCustomerService.Columns["ResponseDate"]
-                .HeaderText =
-                "Ngày Phản Hồi";
-
-            dgvCustomerService.Columns["StatusText"]
-                .HeaderText =
-                "Trạng Thái";
-
-            dgvCustomerService.Columns["Status"]
-                .Visible = false;
+            HideColumn("Status");
         }
 
-        private void btnAdd_Click(
-            object sender,
-            EventArgs e)
+        private void SetHeader(string col, string text)
         {
-            if (string.IsNullOrWhiteSpace(
-                    txtCustomerId.Text) ||
+            if (dgvCustomerService.Columns.Contains(col))
+                dgvCustomerService.Columns[col].HeaderText = text;
+        }
 
-                string.IsNullOrWhiteSpace(
-                    txtReason.Text))
+        private void HideColumn(string col)
+        {
+            if (dgvCustomerService.Columns.Contains(col))
+                dgvCustomerService.Columns[col].Visible = false;
+        }
+
+        // ================= ADD (FIX NULL CUSTOMERID) =================
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtReason.Text))
             {
-                MessageBox.Show(
-                    "Vui lòng nhập đầy đủ thông tin!");
-
+                MessageBox.Show("Vui lòng nhập lý do!");
                 return;
             }
 
             service.Add(
-                Guid.Parse(
-                    txtCustomerId.Text),
-
+                GlobalSession.CurrentUser.UserId,   // 🔥 FIX QUAN TRỌNG
                 txtReason.Text
             );
 
-            MessageBox.Show(
-                "Gửi khiếu nại thành công!");
+            MessageBox.Show("Gửi khiếu nại thành công!");
 
             LoadData();
-
-            txtCustomerId.Clear();
             txtReason.Clear();
         }
 
-        private void dgvCustomerService_CellClick(
-            object sender,
-            DataGridViewCellEventArgs e)
+        // ================= SELECT =================
+        private void dgvCustomerService_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-                return;
+            if (e.RowIndex < 0) return;
 
-            selectedId =
-                Convert.ToInt32(
-                    dgvCustomerService
-                    .Rows[e.RowIndex]
-                    .Cells["CustomerServiceID"]
-                    .Value);
-
-            if (dgvCustomerService
-                .Rows[e.RowIndex]
-                .Cells["EmployeeResponse"]
-                .Value != DBNull.Value)
-            {
-                txtResponse.Text =
-                    dgvCustomerService
-                    .Rows[e.RowIndex]
-                    .Cells["EmployeeResponse"]
-                    .Value
-                    .ToString();
-            }
-            else
-            {
-                txtResponse.Clear();
-            }
+            selectedId = Convert.ToInt32(
+                dgvCustomerService.Rows[e.RowIndex]
+                .Cells["CustomerServiceID"].Value
+            );
         }
 
-        private void btnHandle_Click(
-            object sender,
-            EventArgs e)
+        // ================= HANDLE =================
+        private void btnHandle_Click(object sender, EventArgs e)
         {
             if (selectedId == -1)
             {
-                MessageBox.Show(
-                    "Vui lòng chọn khiếu nại!");
-
+                MessageBox.Show("Vui lòng chọn khiếu nại!");
                 return;
             }
 
-            service.Handle(
-                selectedId,
-                GlobalSession
-                .CurrentUser
-                .UserId
+            int status = Convert.ToInt32(
+                dgvCustomerService.CurrentRow.Cells["Status"].Value
             );
 
-            MessageBox.Show(
-                "Đã chuyển sang Processing!");
+            if (status == 0)
+            {
+                service.Handle(selectedId, GlobalSession.CurrentUser.UserId);
+                MessageBox.Show("Processing...");
+                LoadData();
+                return;
+            }
 
-            LoadData();
+            if (status == 1)
+            {
+                using (var frm = new ResponseForm())
+                {
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        service.Solve(
+                            selectedId,
+                            frm.ResponseText,
+                            GlobalSession.CurrentUser.UserId
+                        );
+
+                        MessageBox.Show("Solved!");
+                        LoadData();
+                    }
+                }
+                return;
+            }
+
+            MessageBox.Show("Trạng thái không hợp lệ!");
         }
 
-        private void btnSolve_Click(
-            object sender,
-            EventArgs e)
+        // ================= REJECT =================
+        private void btnReject_Click(object sender, EventArgs e)
         {
             if (selectedId == -1)
             {
-                MessageBox.Show(
-                    "Vui lòng chọn khiếu nại!");
-
+                MessageBox.Show("Vui lòng chọn khiếu nại!");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(
-                    txtResponse.Text))
-            {
-                MessageBox.Show(
-                    "Vui lòng nhập phản hồi!");
-
-                return;
-            }
-
-            service.Solve(
-                selectedId,
-                txtResponse.Text,
-                GlobalSession
-                .CurrentUser
-                .UserId
+            int status = Convert.ToInt32(
+                dgvCustomerService.CurrentRow.Cells["Status"].Value
             );
 
-            MessageBox.Show(
-                "Đã giải quyết khiếu nại!");
-
-            txtResponse.Clear();
-
-            LoadData();
-        }
-
-        private void btnReject_Click(
-            object sender,
-            EventArgs e)
-        {
-            if (selectedId == -1)
+            if (status == 2 || status == 3)
             {
-                MessageBox.Show(
-                    "Vui lòng chọn khiếu nại!");
-
+                MessageBox.Show("Không thể reject!");
                 return;
             }
 
-            service.Reject(
-                selectedId,
-                GlobalSession.CurrentUser.UserId
-            );
+            service.Reject(selectedId, GlobalSession.CurrentUser.UserId);
 
-            MessageBox.Show(
-                "Đã từ chối khiếu nại!");
-
+            MessageBox.Show("Rejected!");
             LoadData();
         }
 
-        private void btnLoad_Click(
-            object sender,
-            EventArgs e)
+        private void btnLoad_Click(object sender, EventArgs e)
         {
             LoadData();
         }
 
-        private void btnFilter_Click(
-            object sender,
-            EventArgs e)
-        {
-            LoadData();
-        }
-
-        private void cbStatus_SelectedIndexChanged(
-            object sender,
-            EventArgs e)
+        private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadData();
         }
