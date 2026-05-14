@@ -141,7 +141,7 @@ namespace ClothesStore.GUI.StaffForms
             }
 
             service.Add(
-                GlobalSession.CurrentUser.UserId,   // 🔥 FIX QUAN TRỌNG
+                GlobalSession.CurrentUser.UserId,   
                 txtReason.Text
             );
 

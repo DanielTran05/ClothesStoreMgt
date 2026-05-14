@@ -134,13 +134,7 @@ namespace ClothesStore.GUI.StaffForms
             cbFilterType.Items.Add(
                 "Theo công ty");
 
-            cbFilterType.SelectedIndex = 0;
-
-            cbFilterType.SelectedIndexChanged +=
-                cbFilterType_SelectedIndexChanged;
-
-            dtImportDate.ValueChanged +=
-                dtImportDate_ValueChanged;
+            cbFilterType.SelectedIndex = 1;
         }
 
         private void SetupGrid()
@@ -475,34 +469,47 @@ namespace ClothesStore.GUI.StaffForms
             }
         }
 
-        private void FilterHistory()
+        private void cbSupplier_SelectedIndexChanged(
+            object? sender,
+            EventArgs e)
         {
-            string supplier = "";
-
             if (cbFilterType.SelectedIndex == 1)
             {
-                supplier =
-                    cbSupplier.Text?.Trim() ?? "";
+                FilterHistory();
             }
+        }
 
+        private void FilterHistory()
+        {
             DataTable dt =
                 warehouseService
-                .GetImportHistory(
-                    supplier
-                );
+                .GetImportHistory("");
 
             DataView dv =
                 dt.DefaultView;
 
             if (cbFilterType.SelectedIndex == 0)
             {
-                string date =
-                    dtImportDate.Value
-                    .Date
-                    .ToString("yyyy-MM-dd");
+                DateTime selectedDate =
+                    dtImportDate.Value.Date;
 
                 dv.RowFilter =
-                    $"Convert(ImportDate, 'System.String') LIKE '%{date}%'";
+                    $"ImportDate >= #{selectedDate:MM/dd/yyyy}# " +
+                    $"AND ImportDate < #{selectedDate.AddDays(1):MM/dd/yyyy}#";
+            }
+            else
+            {
+                string supplier =
+                    cbSupplier.Text?.Trim() ?? "";
+
+                if (!string.IsNullOrWhiteSpace(supplier))
+                {
+                    supplier =
+                        supplier.Replace("'", "''");
+
+                    dv.RowFilter =
+                        $"SupplierName LIKE '%{supplier}%'";
+                }
             }
 
             dgvHistory.DataSource =
