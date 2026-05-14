@@ -17,33 +17,40 @@ namespace ClothesStore.GUI
         private readonly OrderService _orderService = new OrderService();
         private readonly ShippingService _shippingService = new ShippingService();
         private readonly InvoiceService _invoiceService = new InvoiceService();
-        public ucOrderManagement()
+        private Form _parentForm;
+        public ucOrderManagement(Form parent)
         {
             InitializeComponent();
+            _parentForm = parent;
             LoadOrderData();
-            LoadShippingComboBox();
-            LoadPaymentMethodComboBox();
+            LoadStatusToComboBox();
+            dtpFromDate.Value = DateTime.Now.AddMonths(-2);
+            dtpToDate.Value = DateTime.Now;
+            ExecuteAutoFilter();
         }
         public void LoadOrderData()
         {
             try
             {
-                // Lấy dữ liệu từ BUS
                 var orders = _orderService.GetOrders();
 
-                // Gán vào DataGridView
-                dgvOrders.DataSource = null; // Reset để cập nhật mới
+                dgvOrders.DataSource = null;
                 dgvOrders.DataSource = orders;
 
-                // Định dạng tiêu đề cột (Header)
+
                 if (dgvOrders.Columns.Count > 0)
                 {
                     dgvOrders.Columns["OrderId"].HeaderText = "Mã Đơn";
                     dgvOrders.Columns["OrderDate"].HeaderText = "Ngày Đặt";
-                    dgvOrders.Columns["OrderStatus"].HeaderText = "Trạng Thái";
+
+                    if (dgvOrders.Columns["State"] != null)
+                        dgvOrders.Columns["State"].Visible = false;
+
+                    if (dgvOrders.Columns["StatusName"] != null)
+                        dgvOrders.Columns["StatusName"].HeaderText = "Trạng Thái";
+
                     dgvOrders.Columns["TotalMoney"].HeaderText = "Tổng Tiền";
 
-                    // Định dạng tiền tệ cho cột Tổng Tiền
                     dgvOrders.Columns["TotalMoney"].DefaultCellStyle.Format = "N0";
                 }
             }
@@ -54,180 +61,187 @@ namespace ClothesStore.GUI
         }
         private void LoadShippingComboBox()
         {
-            try
-            {
-                // 1. Lấy danh sách từ BUS
-                var shippers = _shippingService.GetShippers();
-
-                // 2. Thiết lập ComboBox (ví dụ tên là cboShipping)
-                cboShipping.DataSource = shippers;
-
-                // Hiển thị tên nhà vận chuyển
-                cboShipping.DisplayMember = "Name";
-
-                // Giá trị lưu trữ là ID để gán vào bảng Orders
-                cboShipping.ValueMember = "ShippingProviderId";
-
-                // 3. (Tùy chọn) Để ComboBox không chọn sẵn mục nào khi mới load
-                cboShipping.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải danh sách vận chuyển: " + ex.Message);
-            }
         }
 
         private void LoadPaymentMethodComboBox()
         {
-            try
-            {
-                List<string> methods = _invoiceService.GetPaymentMethods();
-
-                cboPaymentMethod.DataSource = methods;
-
-                cboPaymentMethod.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message);
-            }
         }
 
         private void txtSearchOrder_TextChanged(object sender, EventArgs e)
         {
-            dgvOrders.DataSource = _orderService.Search(txtSearchOrder.Text);
+            ExecuteAutoFilter();
         }
 
         private void btnCreateOrder_Click(object sender, EventArgs e)
         {
-            // Kiểm tra xem đã chọn đơn vị vận chuyển chưa
-            if (cboShipping.SelectedValue == null)
-            {
-                MessageBox.Show("Vui lòng chọn đơn vị vận chuyển!");
-                return;
-            }
+            Form mainForm = this.FindForm();
 
-            if (cboPaymentMethod.SelectedItem == null)
-            {
-                MessageBox.Show("Vui lòng chọn phương thức thanh toán!");
-                return;
-            }
+            CreateOrderForm form = new CreateOrderForm();
 
-            Order newOrder = new Order
-            {
-                OrderStatus = 2,
-                OrderDate = DateTime.Now,
-                ReceiverName = txtReceiverName.Text,
-                ReceiverPhone = txtReceiverPhone.Text,
-                TotalMoney = Decimal.Parse(txtTotalMoney.Text.Trim()),
+            form.FormClosed += (s, args) => mainForm.Show();
 
-                // Lấy ID từ ComboBox đã được liên kết với bảng ShippingProviders
-                ShippingProviderId = (int)cboShipping.SelectedValue
-            };
-
-            string paymentMethod = cboPaymentMethod.SelectedItem.ToString();
-            // Gọi hàm SaveOrder mà chúng ta đã tích hợp tạo Invoice (Status = 2)
-            string result = _orderService.CreateOrder(newOrder, paymentMethod);
-            MessageBox.Show(result);
-            LoadOrderData();
+            mainForm.Hide();
+            form.Show();
         }
 
         private void btnCancelOrder_Click(object sender, EventArgs e)
         {
-            if (dgvOrders.CurrentRow != null)
+            if (dgvOrders.CurrentRow == null)
             {
-                // 2. Lấy giá trị ID của dòng đang chọn (OrderID hoặc ProductID)
-                // Lưu ý: "OrderId" phải là tên cột (Name) bạn đã đặt trong DataGridView
-                int idToDelete = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
-
-                // 3. Hiển thị hộp thoại xác nhận để tránh xóa nhầm
-                DialogResult confirm = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn xóa mục có mã {idToDelete} không?",
-                    "Xác nhận xóa",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (confirm == DialogResult.Yes)
-                {
-                    // 4. Gọi Service để thực hiện xóa trong CSDL
-                    string result = _orderService.RemoveOrder(idToDelete);
-
-                    // 5. Thông báo kết quả và tải lại dữ liệu lên Grid
-                    MessageBox.Show(result);
-                    if (result.Contains("thành công"))
-                    {
-                        LoadOrderData(); // Hàm tải lại dữ liệu bạn đã viết ở trên
-                    }
-                }
+                MessageBox.Show("Vui lòng chọn một đơn hàng để xóa!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            int orderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
+
+            DialogResult confirm = MessageBox.Show(
+                $"Bạn có chắc chắn muốn xóa đơn hàng #{orderId}?\n\n" +
+                "Tất cả dữ liệu liên quan (OrderDetails, Invoice) sẽ bị xóa\n" +
+                "và tồn kho sẽ được hoàn trả.",
+                "XÁC NHẬN XÓA ĐƠN HÀNG",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
             {
-                MessageBox.Show("Vui lòng chọn một dòng trong danh sách trước khi xóa!");
+                string result = _orderService.RemoveOrder(orderId);
+
+                MessageBox.Show(result,
+                                "Kết quả",
+                                MessageBoxButtons.OK,
+                                result.Contains("thành công") ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+
+                if (result.Contains("thành công"))
+                {
+                    LoadOrderData();
+                }
             }
         }
 
         private void btnUpdateOrder_Click(object sender, EventArgs e)
         {
-            if (dgvOrders.CurrentRow != null)
+            if (dgvOrders.CurrentRow == null)
             {
-                int currentState = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderStatus"].Value);
-
-                // Kiểm tra nếu trạng thái là 2 (Đã thanh toán/Hoàn thành)
-                if (currentState == 2)
-                {
-                    MessageBox.Show("Đơn hàng đã thanh toán không thể sửa đổi!", "Thông báo",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                // 1. Lấy ID từ dòng đang chọn
-                int orderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
-
-                // 2. Kiểm tra dữ liệu đầu vào cơ bản
-                if (cboShipping.SelectedValue == null || cboPaymentMethod.SelectedItem == null)
-                {
-                    MessageBox.Show("Vui lòng chọn đầy đủ đơn vị vận chuyển và phương thức thanh toán!");
-                    return;
-                }
-
-                // 3. Đóng gói dữ liệu vào đối tượng Order
-                Order updatedOrder = new Order
-                {
-                    OrderId = orderId,
-                    ReceiverName = txtReceiverName.Text.Trim(),
-                    ReceiverPhone = txtReceiverPhone.Text.Trim(),
-                    ShippingAddress = txtAddress.Text.Trim(),
-                    TotalMoney = Decimal.Parse(txtTotalMoney.Text.Trim()),
-                    ShippingProviderId = (int)cboShipping.SelectedValue
-                    // OrderStatus giữ nguyên hoặc lấy từ UI nếu có
-                };
-
-                string paymentMethod = cboPaymentMethod.SelectedItem.ToString();
-
-                // 4. Hỏi xác nhận cập nhật
-                if (MessageBox.Show($"Bạn có muốn cập nhật đơn hàng {orderId}?", "Xác nhận",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    // 5. Gọi Service xử lý (Lưu ý: Service cần hàm UpdateOrder nhận thêm paymentMethod)
-                    string message = _orderService.UpdateOrder(updatedOrder, paymentMethod);
-                    MessageBox.Show(message);
-
-                    if (message.Contains("thành công"))
-                    {
-                        LoadOrderData();
-                    }
-                }
+                MessageBox.Show("Vui lòng chọn một đơn hàng để sửa!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            string statusName = dgvOrders.CurrentRow.Cells["StatusName"].Value?.ToString() ?? "";
+
+            if (statusName != "Pending")
             {
-                MessageBox.Show("Vui lòng chọn một đơn hàng để cập nhật!");
+                MessageBox.Show("Chỉ cho phép sửa đơn hàng ở trạng thái **Pending**!",
+                    "Không cho phép", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int orderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
+
+            using (EditOrderForm editForm = new EditOrderForm(orderId))
+            {
+                DialogResult result = editForm.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    LoadOrderData(); 
+                }
             }
         }
 
         private void InvoiceHistory_Click(object sender, EventArgs e)
         {
-            InvoiceHistoryForm form = new InvoiceHistoryForm();
-            this.Hide();
-            form.Show();
+            Form mainForm = this.FindForm();
+
+            InvoiceHistoryForm form = new InvoiceHistoryForm(mainForm);
+
+            mainForm.Hide(); 
+            form.Show();     
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (this.Parent != null)
+            {
+                this.Parent.Controls.Remove(this);
+            }
+
+            this.Dispose();
+        }
+
+        private void LoadStatusToComboBox()
+        {
+            cboFilterStatus.Items.Clear();
+            cboFilterStatus.Items.Add("-- Tất cả trạng thái --");
+            cboFilterStatus.Items.Add("Pending");
+            cboFilterStatus.Items.Add("Paid");
+            cboFilterStatus.Items.Add("Shipping");
+            cboFilterStatus.Items.Add("Completed");
+            cboFilterStatus.Items.Add("Canceled");
+            cboFilterStatus.Items.Add("Returned");
+            cboFilterStatus.SelectedIndex = 0;
+        }
+
+        private void viewOrderDetail_Click(object sender, EventArgs e)
+        {
+            if (dgvOrders.CurrentRow != null)
+            {
+                int selectedOrderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
+                OrderDetailForm detailForm = new OrderDetailForm(selectedOrderId);
+                detailForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn một đơn hàng để xem chi tiết!", "Thông báo");
+            }
+        }
+        private void ExecuteAutoFilter()
+        {
+            int? statusInDb = null;
+
+            if (cboFilterStatus.SelectedIndex > 0)
+            {
+                statusInDb = cboFilterStatus.SelectedIndex - 1;
+            }
+
+            var result = _orderService.GetOrdersFiltered(
+                dtpFromDate.Value,
+                dtpToDate.Value,
+                statusInDb,
+                txtSearchOrder.Text.Trim()
+            );
+
+            dgvOrders.DataSource = null;
+            dgvOrders.DataSource = result;
+
+            if (dgvOrders.Columns.Count > 0)
+            {
+                if (dgvOrders.Columns["State"] != null) dgvOrders.Columns["State"].Visible = false;
+
+                if (dgvOrders.Columns["TotalMoney"] != null)
+                    dgvOrders.Columns["TotalMoney"].DefaultCellStyle.Format = "N0";
+
+                if (dgvOrders.Columns["OrderDate"] != null)
+                    dgvOrders.Columns["OrderDate"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            }
+        }
+
+        private void dtpFromDate_ValueChanged(object sender, EventArgs e)
+        {
+            ExecuteAutoFilter();
+        }
+
+        private void dtpToDate_ValueChanged(object sender, EventArgs e)
+        {
+            ExecuteAutoFilter();
+        }
+
+        private void cboFilterStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ExecuteAutoFilter();
+        }
+
+
     }
 }

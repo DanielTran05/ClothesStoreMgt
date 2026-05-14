@@ -10,6 +10,7 @@ namespace ClothesStore.BUS
     {
         private readonly ProductVariantRepository _variantRepository;
 
+
         public ProductVariantService()
         {
             _variantRepository = new ProductVariantRepository();
@@ -47,6 +48,19 @@ namespace ClothesStore.BUS
 
             if (!string.IsNullOrWhiteSpace(variant.SKU))
                 variant.SKU = variant.SKU.Trim();
+        }
+        public List<(string ProductName, decimal Price, int VariantID)> GetAllVariantsForGrid()
+        {
+            return _variantRepository.GetVariantDetailsForGrid();
+        }
+        public dynamic GetVariantById(int variantId)
+        {
+            return _variantRepository.GetVariantById(variantId);
+        }
+        public ProductVariantDTO GetVariantBySKU(string sku)
+        {
+            if (string.IsNullOrWhiteSpace(sku)) return null;
+            return _variantRepository.GetVariantBySKU(sku);
         }
     }
 }

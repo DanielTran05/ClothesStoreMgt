@@ -29,5 +29,9 @@ namespace ClothesStore.BUS
                 receiptId
             );
         }
+        public bool SubtractStock(int variantId, int quantity)
+        {
+            return repo.UpdateWarehouseStock(variantId, quantity);
+        }
     }
 }

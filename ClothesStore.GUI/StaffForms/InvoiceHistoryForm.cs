@@ -1,10 +1,5 @@
 ﻿using ClothesStore.BUS;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ClothesStore.GUI.StaffForms
@@ -12,79 +7,75 @@ namespace ClothesStore.GUI.StaffForms
     public partial class InvoiceHistoryForm : Form
     {
         private readonly InvoiceService _invoiceService = new InvoiceService();
+        private Form _parentForm;
 
-        int currentPage = 1;
-        int totalPages = 1;
-        public InvoiceHistoryForm()
+        private int currentPage = 1;
+        private int totalPages = 1;
+
+        public InvoiceHistoryForm(Form parentForm)
         {
             InitializeComponent();
+            _parentForm = parentForm;
+
             LoadStatusSimple();
-            LoadHistory();
+            LoadHistory();   // Load trang 1 ban đầu
         }
+
         private void LoadHistory()
         {
             try
             {
-                // Gọi Service lấy dữ liệu trang hiện tại
                 var result = _invoiceService.GetInvoicesByPage(currentPage);
 
-                // Đổ dữ liệu vào Grid
-                dgvInvoices.DataSource = null;
                 dgvInvoices.DataSource = result.Data;
-
-                // Cập nhật biến tổng số trang
                 totalPages = result.TotalPages;
 
-                // Hiển thị thông tin lên nhãn (Ví dụ: lblPageInfo)
-                lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
-
-                // Điều khiển trạng thái nút bấm
-                btnPrev.Enabled = currentPage > 1;
-                btnNext.Enabled = currentPage < totalPages;
+                UpdatePaginationUI();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi phân trang: " + ex.Message);
+                MessageBox.Show("Lỗi tải lịch sử: " + ex.Message);
             }
         }
 
         private void ExecuteFilter()
         {
-            // Lấy ngày thuần túy (.Date)
-            DateTime fromDate = dtpFrom.Value.Date;
-            DateTime toDate = dtpTo.Value.Date;
-
-            int? status = null;
-            if (cboStatus.SelectedIndex > 0)
+            try
             {
-                status = cboStatus.SelectedIndex; // 1: Pending, 2: Paid, 3: Cancelled
+                DateTime fromDate = dtpFrom.Value.Date;
+                DateTime toDate = dtpTo.Value.Date;
+
+                int? status = null;
+                if (cboStatus.SelectedIndex > 0)
+                {
+                    status = cboStatus.SelectedIndex;   // tùy theo mapping của bạn
+                }
+
+                var result = _invoiceService.GetHistory(fromDate, toDate, status, currentPage);
+
+                dgvInvoices.DataSource = result.Data;
+                totalPages = result.TotalPages;
+
+                UpdatePaginationUI();
             }
-
-            // Gọi Service
-            var result = _invoiceService.GetHistory(fromDate, toDate, status, currentPage);
-
-            dgvInvoices.DataSource = null;
-            dgvInvoices.DataSource = result.Data;
-
-            // Cập nhật nhãn trang
-            totalPages = result.TotalPages;
-            lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi lọc dữ liệu: " + ex.Message);
+            }
         }
 
-        private void LoadStatusSimple()
+        // Cập nhật giao diện phân trang (quan trọng)
+        private void UpdatePaginationUI()
         {
-            cboStatus.Items.Clear();
-            cboStatus.Items.Add("Tất cả trạng thái"); // Index 0 -> null (Tất cả)
-            cboStatus.Items.Add("Pending");           // Index 1 -> Số 1
-            cboStatus.Items.Add("Paid");              // Index 2 -> Số 2
-            cboStatus.Items.Add("Cancelled");         // Index 3 -> Số 3
+            lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
 
-            cboStatus.SelectedIndex = 0; // Mặc định chọn cái đầu tiên
+            btnPrev.Enabled = currentPage > 1;
+            btnNext.Enabled = currentPage < totalPages;
         }
 
         private void ResetAndLoad()
         {
-            currentPage = 1; // Luôn về trang đầu khi tiêu chí lọc thay đổi
+            currentPage = 1;
             ExecuteFilter();
         }
 
@@ -93,7 +84,7 @@ namespace ClothesStore.GUI.StaffForms
             if (currentPage > 1)
             {
                 currentPage--;
-                ExecuteFilter(); // Phải gọi ExecuteFilter để giữ bộ lọc ngày/status
+                ExecuteFilter();
             }
         }
 
@@ -102,33 +93,29 @@ namespace ClothesStore.GUI.StaffForms
             if (currentPage < totalPages)
             {
                 currentPage++;
-                ExecuteFilter(); // Phải gọi ExecuteFilter để giữ bộ lọc ngày/status
+                ExecuteFilter();
             }
         }
 
-        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        // Các event filter
+        private void dtpFrom_ValueChanged(object sender, EventArgs e) => ResetAndLoad();
+        private void dtpTo_ValueChanged(object sender, EventArgs e) => ResetAndLoad();
+        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e) => ResetAndLoad();
+
+        private void LoadStatusSimple()
         {
-            currentPage = 1;
-            ExecuteFilter(); // Hoặc LoadHistory() tùy theo tên hàm bạn đặt
+            cboStatus.Items.Clear();
+            cboStatus.Items.Add("Tất cả trạng thái");
+            cboStatus.Items.Add("Pending");
+            cboStatus.Items.Add("Paid");
+            cboStatus.Items.Add("Cancelled");
+            cboStatus.SelectedIndex = 0;
         }
 
-        private void dtpTo_ValueChanged(object sender, EventArgs e)
+        private void back_Click(object sender, EventArgs e)
         {
-            currentPage = 1;
-            ExecuteFilter();
-        }
-
-        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Kiểm tra xem ComboBox có dữ liệu chưa để tránh chạy bậy khi đang khởi tạo
-            if (cboStatus.SelectedIndex == -1) return;
-
-            // Mỗi khi tiêu chí lọc thay đổi (ví dụ đổi từ Paid sang Cancelled)
-            // chúng ta PHẢI quay về trang 1 để xem dữ liệu mới nhất
-            currentPage = 1;
-
-            // Gọi hàm lọc mà bạn đã chuẩn bị
-            ExecuteFilter();
+            _parentForm?.Show();
+            this.Close();
         }
     }
 }

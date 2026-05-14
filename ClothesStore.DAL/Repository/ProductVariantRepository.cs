@@ -1,17 +1,21 @@
-﻿using ClothesStore.DTO;
+﻿using ClothesStore.DAL.Context;
+using ClothesStore.DTO;
 using ClothesStore.DTO.ProductDto;
+using Helper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class ProductVariantRepository
     {
         private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
+        private readonly ClothesStoreContext _context = new ClothesStoreContext();
+
 
         public List<ProductVariantDTO> GetVariantsByProductID(int productId)
         {
@@ -100,5 +104,44 @@ namespace ClothesStore.DAL.Repository
                 }
             }
         }
+
+        public List<(string ProductName, decimal Price, int VariantID)> GetVariantDetailsForGrid()
+        {
+            using (var db = new ClothesStoreContext())
+            {
+                var query = from pv in db.ProductVariants
+                            join p in db.Products on pv.ProductId equals p.ProductId
+                            select new { p.ProductName, pv.Price, pv.VariantId };
+
+                return query.AsEnumerable()
+                            .Select(x => (x.ProductName, x.Price, x.VariantId))
+                            .ToList();
+            }
+        }
+        public dynamic GetVariantById(int variantId)
+        {
+            return _context.ProductVariants
+                .Where(v => v.VariantId == variantId)
+                .Select(v => new
+                {
+                    v.VariantId,
+                    ProductName = v.Product.ProductName
+                })
+                .FirstOrDefault();
+        }
+
+        public ProductVariantDTO GetVariantBySKU(string sku)
+        {
+            return _context.ProductVariants
+                .Where(v => v.Sku == sku)
+                .Select(v => new ProductVariantDTO
+                {
+                    VariantID = v.VariantId,
+                    SKU = v.Sku
+                })
+                .FirstOrDefault();
+        }
+
+
     }
 }

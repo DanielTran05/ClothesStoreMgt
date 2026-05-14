@@ -13,14 +13,11 @@ namespace ClothesStore.DAL.Repository
     {
         private readonly ClothesStoreContext _context = new ClothesStoreContext();
 
-        // Lấy danh sách hóa đơn (EF Core sử dụng LINQ để Join)
         public List<object> GetAllInvoices()
         {
             var query = from i in _context.Invoices
-                        // Join với Orders (thường luôn có OrderId nên join thường cũng được)
                         join o in _context.Orders on i.OrderId equals o.OrderId
 
-                        // LEFT JOIN với Users để lấy tên khách hàng (nếu có)
                         join u in _context.Users on o.CustomerId equals u.UserId into userGroup
                         from u in userGroup.DefaultIfEmpty()
 
@@ -28,7 +25,6 @@ namespace ClothesStore.DAL.Repository
                         {
                             i.InvoiceId,
                             i.OrderId,
-                            // Nếu u null thì hiện "Khách lẻ", không làm mất dòng dữ liệu
                             CustomerName = u != null ? u.FullName : "Khách lẻ",
                             i.Amount,
                             i.PaymentDate,
@@ -40,7 +36,6 @@ namespace ClothesStore.DAL.Repository
 
         public List<object> GetAllInvoicesRaw()
         {
-            // Lấy toàn bộ danh sách, không lọc, sắp xếp theo ngày mới nhất
             return _context.Invoices
                            .OrderByDescending(i => i.PaymentDate)
                            .Select(i => new {
@@ -55,7 +50,6 @@ namespace ClothesStore.DAL.Repository
                            .ToList<object>();
         }
 
-        // Cập nhật trạng thái hóa đơn
         public bool UpdateInvoiceStatus(int invoiceId, int status)
         {
             var invoice = _context.Invoices.Find(invoiceId);
@@ -68,36 +62,30 @@ namespace ClothesStore.DAL.Repository
         }
         public List<object> SearchInvoices(string keyword, DateTime? fromDate, DateTime? toDate, int? status)
         {
-            // Chỉ lấy từ bảng Invoices (có thể Join thêm Orders nếu cần lấy thông tin đơn hàng)
             var query = _context.Invoices.AsQueryable();
 
-            // 1. Lọc theo từ khóa (Mã đơn hàng hoặc Mã hóa đơn)
             if (!string.IsNullOrEmpty(keyword))
             {
                 query = query.Where(i => i.OrderId.ToString().Contains(keyword)
                                       || i.InvoiceId.ToString().Contains(keyword));
             }
 
-            // 2. Lọc theo ngày bắt đầu
             if (fromDate.HasValue)
             {
                 query = query.Where(i => i.PaymentDate >= fromDate.Value.Date);
             }
 
-            // 3. Lọc theo ngày kết thúc (Lấy hết dữ liệu trong ngày đó)
             if (toDate.HasValue)
             {
                 var nextDay = toDate.Value.Date.AddDays(1);
                 query = query.Where(i => i.PaymentDate < nextDay);
             }
 
-            // 4. Lọc theo trạng thái
             if (status.HasValue)
             {
                 query = query.Where(i => i.Status == status.Value);
             }
 
-            // 5. Trả về kết quả
             return query.Select(i => new
             {
                 i.InvoiceId,
@@ -116,12 +104,11 @@ namespace ClothesStore.DAL.Repository
         {
             try
             {
-                // Tìm hóa đơn liên kết với OrderID này
                 var invoice = _context.Invoices.FirstOrDefault(i => i.OrderId == orderId);
 
                 if (invoice != null)
                 {
-                    invoice.Status = status; // Cập nhật trạng thái thành 2
+                    invoice.Status = status;
                     return _context.SaveChanges() > 0;
                 }
                 return false;
@@ -133,7 +120,6 @@ namespace ClothesStore.DAL.Repository
         }
         public List<string> GetExistingPaymentMethods()
         {
-            // Lấy danh sách các giá trị PaymentMethod duy nhất từ bảng Invoices
             return _context.Invoices
                            .Select(i => i.PaymentMethod)
                            .Distinct()
@@ -149,22 +135,18 @@ namespace ClothesStore.DAL.Repository
         {
             var query = _context.Invoices.AsQueryable();
 
-            // 1. Lọc theo ngày bắt đầu (00:00:00)
             if (fromDate.HasValue)
             {
                 DateTime start = fromDate.Value.Date;
                 query = query.Where(i => i.PaymentDate >= start);
             }
 
-            // 2. Lọc theo ngày kết thúc (Phải lấy đến 23:59:59 của ngày đó)
             if (toDate.HasValue)
             {
-                // Cách chuẩn nhất: Lấy mọi thứ nhỏ hơn ngày hôm sau
                 DateTime endLimit = toDate.Value.Date.AddDays(1);
                 query = query.Where(i => i.PaymentDate < endLimit);
             }
 
-            // 3. Lọc theo trạng thái
             if (status.HasValue)
             {
                 query = query.Where(i => i.Status == status.Value);
@@ -193,10 +175,8 @@ namespace ClothesStore.DAL.Repository
         {
             var query = _context.Invoices.AsQueryable();
 
-            // 1. Tính tổng số bản ghi
             int totalRecords = query.Count();
 
-            // 2. Lấy dữ liệu và ép kiểu hiển thị cho Status
             var data = query.OrderByDescending(i => i.PaymentDate)
                             .Skip((pageNumber - 1) * pageSize)
                             .Take(pageSize)

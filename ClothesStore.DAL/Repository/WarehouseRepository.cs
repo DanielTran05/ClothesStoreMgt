@@ -1,11 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
+﻿using ClothesStore.DAL.Context;
 using Helper;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ClothesStore.DAL.Repository
 {
     public class WarehouseRepository
     {
+        private readonly ClothesStoreContext _context = new ClothesStoreContext();
+
         public int CreateReceipt(int supplierId, Guid employeeId)
         {
             using var conn = DbHelper.GetConnection();
@@ -94,6 +98,27 @@ namespace ClothesStore.DAL.Repository
             da.Fill(dt);
 
             return dt;
+        }
+
+        public bool UpdateWarehouseStock(int variantId, int quantitySold)
+        {
+            try
+            {
+                var stockDetail = _context.WarehouseReceiptDetails
+                                          .FirstOrDefault(wd => wd.VariantId == variantId);
+
+                if (stockDetail != null)
+                {
+                    stockDetail.Quantity -= quantitySold;
+
+                    return _context.SaveChanges() > 0;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

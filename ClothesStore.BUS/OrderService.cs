@@ -28,7 +28,6 @@ namespace ClothesStore.BUS
         {
             if (string.IsNullOrWhiteSpace(paymentMethod)) return "Vui lòng chọn phương thức thanh toán!";
 
-            // Chuyển tiếp tham số xuống DAL
             bool success = _orderRepo.AddOrderWithInvoice(order, paymentMethod);
 
             return success ? "Thêm thành công!" : "Lỗi hệ thống!";
@@ -38,7 +37,6 @@ namespace ClothesStore.BUS
         {
             if (order.OrderId <= 0) return "Mã đơn hàng không hợp lệ!";
 
-            // Gọi xuống DAL để xử lý cập nhật
             bool result = _orderRepo.UpdateOrderAndInvoice(order, paymentMethod);
 
             return result ? "Cập nhật đơn hàng thành công!" : "Cập nhật thất bại!";
@@ -51,6 +49,30 @@ namespace ClothesStore.BUS
                 return "Xóa đơn hàng thành công!";
             else
                 return "Không thể xóa đơn hàng này (Đơn hàng không tồn tại hoặc đã có dữ liệu liên quan)!";
+        }
+        public List<object> GetOrdersFiltered(DateTime from, DateTime to, int? status, string key)
+        {
+            return _orderRepo.GetOrdersFiltered(from, to, status, key);
+        }
+        public bool ConfirmOrder(Order order, string paymentMethod)
+        {
+            Invoice invoice = new Invoice
+            {
+                Amount = order.TotalMoney ?? 0,
+                PaymentDate = DateTime.Now,
+                PaymentMethod = paymentMethod,
+                Status = 2 
+            };
+
+            return _orderRepo.CreateFullOrder(order, invoice);
+        }
+        public Order GetOrderById(int orderId)
+        {
+            return _orderRepo.GetOrderById(orderId);
+        }
+        public bool UpdateFullOrder(Order order, string paymentMethod)
+        {
+            return _orderRepo.UpdateFullOrder(order, paymentMethod);
         }
     }
 }

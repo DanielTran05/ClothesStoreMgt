@@ -13,18 +13,7 @@ namespace ClothesStore.GUI
         {
             ApplicationConfiguration.Initialize();
 
-            //MOCK DATA USER
-            //var userRepo = new UserRepository(new ClothesStoreContext());
-            //try
-            //{
-            //    userRepo.MockDataUser();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Du lieu co san hoac khong the tao do bi connectionString cua DB: " + ex.Message);
-            //}
-
-            Application.Run(new AdminMainForm());
+            Application.Run(new SaleMainForm());
         }
     }
 }

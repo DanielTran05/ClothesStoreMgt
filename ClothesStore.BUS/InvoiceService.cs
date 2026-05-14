@@ -29,7 +29,6 @@ namespace ClothesStore.BUS
             int pageSize = 20;
             var result = _invoiceRepo.GetInvoicePaged(page, pageSize);
 
-            // Tính tổng số trang (Ví dụ: 41 bản ghi -> 3 trang)
             int totalPages = (int)Math.Ceiling((double)result.TotalRecords / pageSize);
 
             return (result.Data, totalPages);
@@ -37,7 +36,6 @@ namespace ClothesStore.BUS
 
         public string UpdateInvoiceStatus(int id, int status)
         {
-            // Kiểm tra ràng buộc Status (0: Chờ thanh toán, 1: Đã thanh toán, 2: Hoàn tiền, 3: Hủy)
             if (status < 0 || status > 3)
                 return "Trạng thái không hợp lệ!";
 
@@ -62,7 +60,6 @@ namespace ClothesStore.BUS
             int pageSize = 20;
             var result = _invoiceRepo.GetInvoiceHistory(start, end, status, page, pageSize);
 
-            // Tính tổng số trang (ví dụ 41 records / 20 = 3 trang)
             int totalPages = (int)Math.Ceiling((double)result.TotalRecords / pageSize);
 
             return (result.Data, totalPages);

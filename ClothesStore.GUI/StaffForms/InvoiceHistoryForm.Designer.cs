@@ -36,6 +36,7 @@
             btnNext = new Button();
             btnPrev = new Button();
             dgvInvoices = new DataGridView();
+            back = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInvoices).BeginInit();
             SuspendLayout();
@@ -66,6 +67,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(back);
             panel1.Controls.Add(lblPageInfo);
             panel1.Controls.Add(btnNext);
             panel1.Controls.Add(btnPrev);
@@ -113,6 +115,16 @@
             dgvInvoices.Size = new Size(1419, 483);
             dgvInvoices.TabIndex = 0;
             // 
+            // back
+            // 
+            back.Location = new Point(9, 501);
+            back.Name = "back";
+            back.Size = new Size(94, 29);
+            back.TabIndex = 3;
+            back.Text = "Quay lại";
+            back.UseVisualStyleBackColor = true;
+            back.Click += back_Click;
+            // 
             // InvoiceHistoryForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -140,5 +152,6 @@
         private Button btnNext;
         private Button btnPrev;
         private DataGridView dgvInvoices;
+        private Button back;
     }
 }
