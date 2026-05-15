@@ -73,7 +73,7 @@
             // btnLogout
             // 
             btnLogout.BackColor = Color.LemonChiffon;
-            btnLogout.Location = new Point(1334, 8);
+            btnLogout.Location = new Point(1848, 8);
             btnLogout.Margin = new Padding(4);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(140, 45);
@@ -91,7 +91,7 @@
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            pnlHeader.Size = new Size(1478, 60);
+            pnlHeader.Size = new Size(1992, 60);
             pnlHeader.TabIndex = 2;
             // 
             // pnlMain
@@ -110,7 +110,7 @@
             pnlMain.ShadowDecoration.Color = Color.LightGray;
             pnlMain.ShadowDecoration.CustomizableEdges = customizableEdges4;
             pnlMain.ShadowDecoration.Enabled = true;
-            pnlMain.Size = new Size(1248, 1084);
+            pnlMain.Size = new Size(1762, 1104);
             pnlMain.TabIndex = 4;
             // 
             // pnlSidebar
@@ -125,7 +125,7 @@
             pnlSidebar.Location = new Point(0, 60);
             pnlSidebar.Name = "pnlSidebar";
             pnlSidebar.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlSidebar.Size = new Size(230, 1084);
+            pnlSidebar.Size = new Size(230, 1104);
             pnlSidebar.TabIndex = 3;
             // 
             // btnStat
@@ -154,7 +154,7 @@
             btnStat.TabIndex = 0;
             btnStat.Text = "Thống kê";
             btnStat.TextAlign = HorizontalAlignment.Left;
-            btnStat.Click += btnQuanLyDanhMuc_Click;
+            btnStat.Click += btnStat_Click;
             // 
             // gtnCustManagement
             // 
@@ -273,7 +273,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(238, 240, 246);
-            ClientSize = new Size(1478, 1144);
+            ClientSize = new Size(1992, 1164);
             Controls.Add(pnlMain);
             Controls.Add(pnlSidebar);
             Controls.Add(pnlHeader);
