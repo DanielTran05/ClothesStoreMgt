@@ -46,7 +46,7 @@ public partial class ClothesstoremgtContext : DbContext
     public virtual DbSet<WarehouseReceiptDetail> WarehouseReceiptDetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-CIC0GCH;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -517,5 +517,20 @@ namespace ClothesStore.GUI.StaffForms
 
             SetupHistoryColumn();
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbSupplier1_SelectedIndexChanged(
+            object? sender,
+            EventArgs e)
+        {
+            if (cbFilterType.SelectedIndex == 1)
+            {
+                FilterHistory();
+            }
+        }
     }
 }

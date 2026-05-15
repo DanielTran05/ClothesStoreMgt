@@ -37,7 +37,7 @@
             // lblTitle
             // 
             lblTitle.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.Location = new Point(12, 9);
+            lblTitle.Location = new Point(12, 18);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(241, 36);
             lblTitle.TabIndex = 0;
@@ -48,27 +48,27 @@
             lblTotal.BackColor = SystemColors.ControlLight;
             lblTotal.Location = new Point(259, 17);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(235, 25);
+            lblTotal.Size = new Size(366, 41);
             lblTotal.TabIndex = 1;
             // 
             // dgvStatistic
             // 
             dgvStatistic.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStatistic.Location = new Point(12, 48);
+            dgvStatistic.Location = new Point(12, 71);
             dgvStatistic.Name = "dgvStatistic";
             dgvStatistic.RowHeadersWidth = 51;
-            dgvStatistic.Size = new Size(482, 169);
+            dgvStatistic.Size = new Size(1408, 570);
             dgvStatistic.TabIndex = 2;
             // 
-            // StatisticForm
+            // StatisticTodayForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(506, 229);
+            ClientSize = new Size(1432, 653);
             Controls.Add(dgvStatistic);
             Controls.Add(lblTotal);
             Controls.Add(lblTitle);
-            Name = "StatisticForm";
+            Name = "StatisticTodayForm";
             Text = "StatisticForm";
             ((System.ComponentModel.ISupportInitialize)dgvStatistic).EndInit();
             ResumeLayout(false);
