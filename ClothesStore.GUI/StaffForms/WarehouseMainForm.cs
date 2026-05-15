@@ -40,7 +40,7 @@ namespace ClothesStore.GUI.StaffForms
 
         private void btnStatistic_Click(object sender, EventArgs e)
         {
-            new StatisticForm().Show();
+            new StatisticTodayForm().Show();
         }
     }
 }

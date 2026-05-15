@@ -31,6 +31,10 @@
             txtSearch = new TextBox();
             btnSearch = new Button();
             dgvResult = new DataGridView();
+            cboSearchType = new ComboBox();
+            btnNext = new Button();
+            btnPrev = new Button();
+            lblPage = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvResult).BeginInit();
             SuspendLayout();
             // 
@@ -57,14 +61,55 @@
             dgvResult.Location = new Point(12, 67);
             dgvResult.Name = "dgvResult";
             dgvResult.RowHeadersWidth = 51;
-            dgvResult.Size = new Size(776, 283);
+            dgvResult.Size = new Size(776, 230);
             dgvResult.TabIndex = 2;
+            // 
+            // cboSearchType
+            // 
+            cboSearchType.FormattingEnabled = true;
+            cboSearchType.Location = new Point(256, 13);
+            cboSearchType.Name = "cboSearchType";
+            cboSearchType.Size = new Size(151, 28);
+            cboSearchType.TabIndex = 3;
+            // 
+            // btnNext
+            // 
+            btnNext.Location = new Point(657, 306);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(94, 47);
+            btnNext.TabIndex = 4;
+            btnNext.Text = ">>";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
+            // 
+            // btnPrev
+            // 
+            btnPrev.Location = new Point(557, 306);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(94, 47);
+            btnPrev.TabIndex = 4;
+            btnPrev.Text = "<<";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
+            // 
+            // lblPage
+            // 
+            lblPage.AutoSize = true;
+            lblPage.Location = new Point(757, 333);
+            lblPage.Name = "lblPage";
+            lblPage.Size = new Size(31, 20);
+            lblPage.TabIndex = 5;
+            lblPage.Text = "1/1";
             // 
             // ProductSearchForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 362);
+            Controls.Add(lblPage);
+            Controls.Add(btnPrev);
+            Controls.Add(btnNext);
+            Controls.Add(cboSearchType);
             Controls.Add(dgvResult);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
@@ -80,5 +125,9 @@
         private TextBox txtSearch;
         private Button btnSearch;
         private DataGridView dgvResult;
+        private ComboBox cboSearchType;
+        private Button btnNext;
+        private Button btnPrev;
+        private Label lblPage;
     }
 }

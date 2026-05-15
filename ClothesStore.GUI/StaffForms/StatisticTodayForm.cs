@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace ClothesStore.GUI.StaffForms
 {
-    public partial class StatisticForm : Form
+    public partial class StatisticTodayForm : Form
     {
         private WarehouseService service = new WarehouseService();
 
-        public StatisticForm()
+        public StatisticTodayForm()
         {
             InitializeComponent();
 
