@@ -35,19 +35,20 @@
             btnNext = new Button();
             btnPrev = new Button();
             lblPage = new Label();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvResult).BeginInit();
             SuspendLayout();
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(526, 12);
+            txtSearch.Location = new Point(353, 17);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(262, 27);
             txtSearch.TabIndex = 0;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(413, 12);
+            btnSearch.Location = new Point(240, 17);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(94, 29);
             btnSearch.TabIndex = 1;
@@ -61,20 +62,20 @@
             dgvResult.Location = new Point(12, 67);
             dgvResult.Name = "dgvResult";
             dgvResult.RowHeadersWidth = 51;
-            dgvResult.Size = new Size(776, 230);
+            dgvResult.Size = new Size(1369, 506);
             dgvResult.TabIndex = 2;
             // 
             // cboSearchType
             // 
             cboSearchType.FormattingEnabled = true;
-            cboSearchType.Location = new Point(256, 13);
+            cboSearchType.Location = new Point(83, 18);
             cboSearchType.Name = "cboSearchType";
             cboSearchType.Size = new Size(151, 28);
             cboSearchType.TabIndex = 3;
             // 
             // btnNext
             // 
-            btnNext.Location = new Point(657, 306);
+            btnNext.Location = new Point(1287, 594);
             btnNext.Name = "btnNext";
             btnNext.Size = new Size(94, 47);
             btnNext.TabIndex = 4;
@@ -84,7 +85,7 @@
             // 
             // btnPrev
             // 
-            btnPrev.Location = new Point(557, 306);
+            btnPrev.Location = new Point(1187, 594);
             btnPrev.Name = "btnPrev";
             btnPrev.Size = new Size(94, 47);
             btnPrev.TabIndex = 4;
@@ -95,17 +96,27 @@
             // lblPage
             // 
             lblPage.AutoSize = true;
-            lblPage.Location = new Point(757, 333);
+            lblPage.Location = new Point(1387, 621);
             lblPage.Name = "lblPage";
             lblPage.Size = new Size(31, 20);
             lblPage.TabIndex = 5;
             lblPage.Text = "1/1";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 21);
+            label1.Name = "label1";
+            label1.Size = new Size(65, 20);
+            label1.TabIndex = 6;
+            label1.Text = "Filter by:";
+            // 
             // ProductSearchForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 362);
+            ClientSize = new Size(1432, 653);
+            Controls.Add(label1);
             Controls.Add(lblPage);
             Controls.Add(btnPrev);
             Controls.Add(btnNext);
@@ -129,5 +140,6 @@
         private Button btnNext;
         private Button btnPrev;
         private Label lblPage;
+        private Label label1;
     }
 }

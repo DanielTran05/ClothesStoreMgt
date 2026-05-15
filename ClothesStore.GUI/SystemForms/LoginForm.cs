@@ -2,6 +2,7 @@
 using ClothesStore.DAL.Enums;
 using ClothesStore.DTO.UserDto;
 using ClothesStore.GUI.StaffForms;
+using ClothesStore.GUI.SystemForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace ClothesStore.GUI
 {
-    public partial class    LoginForm : Form
+    public partial class LoginForm : Form
     {
         AuthService AuthService;
 
@@ -20,6 +21,7 @@ namespace ClothesStore.GUI
         {
             InitializeComponent();
             AuthService = new AuthService();
+            txtPassword.UseSystemPasswordChar = true;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -33,7 +35,7 @@ namespace ClothesStore.GUI
                 return;
             }
 
-            UserLoginRequest userLoginRequest  = new UserLoginRequest();
+            UserLoginRequest userLoginRequest = new UserLoginRequest();
             userLoginRequest.Username = username;
             userLoginRequest.Password = pass;
 
@@ -57,7 +59,8 @@ namespace ClothesStore.GUI
 
                     UserRole role = (UserRole)loggedInUser.Role;
 
-                    switch (role){
+                    switch (role)
+                    {
                         case UserRole.Admin:
                             new AdminMainForm().ShowDialog();
                             break;
@@ -73,14 +76,31 @@ namespace ClothesStore.GUI
                             break;
                     }
 
-                    this.Close(); 
+                    if (GlobalSession.CurrentUser == null)
+                    {
+                        txtPassword.Clear();
+                        this.Show();
+                    }
+                    else
+                    {
+                        this.Close();
+                    }
                 }
-                else{
-                        MessageBox.Show("Incorrect username and password!");
+                else
+                {
+                    MessageBox.Show("Incorrect username and password!");
                 }
-            } catch (Exception ex){
-                    MessageBox.Show("System connection error: " + ex.Message);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("System connection error: " + ex.Message);
+            }
+        }
+
+        private void llbChangePassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ChangePasswordForm changePassForm = new ChangePasswordForm();
+            changePassForm.ShowDialog();
         }
     }
 }

@@ -49,7 +49,7 @@
             txtResponse.Multiline = true;
             txtResponse.Name = "txtResponse";
             txtResponse.ScrollBars = ScrollBars.Vertical;
-            txtResponse.Size = new Size(428, 27);
+            txtResponse.Size = new Size(1227, 27);
             txtResponse.TabIndex = 1;
             // 
             // btnConfirm
@@ -76,7 +76,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 147);
+            ClientSize = new Size(1432, 653);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
             Controls.Add(txtResponse);

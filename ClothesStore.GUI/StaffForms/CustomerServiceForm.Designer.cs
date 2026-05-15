@@ -39,6 +39,7 @@
             cbStatus = new ComboBox();
             lblResponse = new Label();
             txtResponse = new TextBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).BeginInit();
             SuspendLayout();
             // 
@@ -80,13 +81,13 @@
             dgvCustomerService.Location = new Point(12, 120);
             dgvCustomerService.Name = "dgvCustomerService";
             dgvCustomerService.RowHeadersWidth = 51;
-            dgvCustomerService.Size = new Size(860, 280);
+            dgvCustomerService.Size = new Size(1408, 470);
             dgvCustomerService.TabIndex = 4;
             dgvCustomerService.CellClick += dgvCustomerService_CellClick;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(772, 424);
+            btnLoad.Location = new Point(1320, 596);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(100, 45);
             btnLoad.TabIndex = 0;
@@ -96,7 +97,7 @@
             // 
             // btnHandle
             // 
-            btnHandle.Location = new Point(560, 424);
+            btnHandle.Location = new Point(1108, 596);
             btnHandle.Name = "btnHandle";
             btnHandle.Size = new Size(100, 45);
             btnHandle.TabIndex = 2;
@@ -106,7 +107,7 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(454, 424);
+            btnAdd.Location = new Point(1002, 596);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(100, 45);
             btnAdd.TabIndex = 3;
@@ -116,7 +117,7 @@
             // 
             // btnReject
             // 
-            btnReject.Location = new Point(666, 424);
+            btnReject.Location = new Point(1214, 596);
             btnReject.Name = "btnReject";
             btnReject.Size = new Size(100, 45);
             btnReject.TabIndex = 1;
@@ -157,11 +158,21 @@
             txtResponse.Size = new Size(235, 28);
             txtResponse.TabIndex = 5;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 97);
+            label1.Name = "label1";
+            label1.Size = new Size(120, 20);
+            label1.TabIndex = 13;
+            label1.Text = "All reports forms";
+            // 
             // CustomerServiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(884, 481);
+            ClientSize = new Size(1432, 653);
+            Controls.Add(label1);
             Controls.Add(btnLoad);
             Controls.Add(btnReject);
             Controls.Add(btnHandle);
@@ -204,5 +215,6 @@
         private Label lblResponse;
 
         private TextBox txtResponse;
+        private Label label1;
     }
 }

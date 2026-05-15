@@ -34,6 +34,7 @@
             txtPassword = new TextBox();
             LOGIN = new Label();
             btnLogin = new Button();
+            llbChangePassword = new LinkLabel();
             SuspendLayout();
             // 
             // txtUsername
@@ -88,11 +89,23 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
+            // llbChangePassword
+            // 
+            llbChangePassword.AutoSize = true;
+            llbChangePassword.Location = new Point(304, 304);
+            llbChangePassword.Name = "llbChangePassword";
+            llbChangePassword.Size = new Size(126, 20);
+            llbChangePassword.TabIndex = 6;
+            llbChangePassword.TabStop = true;
+            llbChangePassword.Text = "Change password";
+            llbChangePassword.LinkClicked += llbChangePassword_LinkClicked;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(llbChangePassword);
             Controls.Add(btnLogin);
             Controls.Add(LOGIN);
             Controls.Add(label2);
@@ -113,5 +126,6 @@
         private TextBox txtPassword;
         private Label LOGIN;
         private Button btnLogin;
+        private LinkLabel llbChangePassword;
     }
 }
