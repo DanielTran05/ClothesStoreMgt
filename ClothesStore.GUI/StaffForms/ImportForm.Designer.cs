@@ -45,6 +45,7 @@
             lblFilterType = new Label();
             label1 = new Label();
             label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvDetail).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvHistory).BeginInit();
             SuspendLayout();
@@ -195,11 +196,22 @@
             label2.TabIndex = 11;
             label2.Text = "Supplier:";
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 20F);
+            label3.Location = new Point(1102, 22);
+            label3.Name = "label3";
+            label3.Size = new Size(318, 46);
+            label3.TabIndex = 12;
+            label3.Text = "IMPORT PRODUCTS";
+            // 
             // ImportForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(lblVariant);
@@ -244,5 +256,6 @@
         private Label lblFilterType;
         private Label label1;
         private Label label2;
+        private Label label3;
     }
 }

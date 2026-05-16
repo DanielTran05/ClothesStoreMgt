@@ -141,7 +141,7 @@ namespace ClothesStore.GUI.StaffForms
             }
 
             service.Add(
-                GlobalSession.CurrentUser.UserId,   
+                GlobalSession.CurrentUser.UserId,
                 txtReason.Text
             );
 
@@ -235,6 +235,11 @@ namespace ClothesStore.GUI.StaffForms
         private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
