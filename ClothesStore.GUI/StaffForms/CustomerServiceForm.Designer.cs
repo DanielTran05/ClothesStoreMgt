@@ -40,6 +40,8 @@
             lblResponse = new Label();
             txtResponse = new TextBox();
             label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).BeginInit();
             SuspendLayout();
             // 
@@ -127,7 +129,7 @@
             // 
             // dtpFilterDate
             // 
-            dtpFilterDate.Location = new Point(520, 9);
+            dtpFilterDate.Location = new Point(1200, 87);
             dtpFilterDate.Name = "dtpFilterDate";
             dtpFilterDate.Size = new Size(220, 27);
             dtpFilterDate.TabIndex = 8;
@@ -135,7 +137,7 @@
             // cbStatus
             // 
             cbStatus.FormattingEnabled = true;
-            cbStatus.Location = new Point(12, 50);
+            cbStatus.Location = new Point(110, 55);
             cbStatus.Name = "cbStatus";
             cbStatus.Size = new Size(150, 28);
             cbStatus.TabIndex = 7;
@@ -144,7 +146,7 @@
             // lblResponse
             // 
             lblResponse.AutoSize = true;
-            lblResponse.Location = new Point(180, 54);
+            lblResponse.Location = new Point(278, 59);
             lblResponse.Name = "lblResponse";
             lblResponse.Size = new Size(75, 20);
             lblResponse.TabIndex = 6;
@@ -152,7 +154,7 @@
             // 
             // txtResponse
             // 
-            txtResponse.Location = new Point(265, 50);
+            txtResponse.Location = new Point(363, 55);
             txtResponse.Multiline = true;
             txtResponse.Name = "txtResponse";
             txtResponse.Size = new Size(235, 28);
@@ -167,11 +169,33 @@
             label1.TabIndex = 13;
             label1.Text = "All reports forms";
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 20F);
+            label2.Location = new Point(1096, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(324, 46);
+            label2.TabIndex = 14;
+            label2.Text = "CUSTOMER SERVICE";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 55);
+            label3.Name = "label3";
+            label3.Size = new Size(65, 20);
+            label3.TabIndex = 15;
+            label3.Text = "Filter by:";
+            label3.Click += label3_Click;
+            // 
             // CustomerServiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
+            Controls.Add(label3);
+            Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(btnLoad);
             Controls.Add(btnReject);
@@ -216,5 +240,7 @@
 
         private TextBox txtResponse;
         private Label label1;
+        private Label label2;
+        private Label label3;
     }
 }
