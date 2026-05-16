@@ -7,7 +7,7 @@ namespace ClothesStore.DAL.Enums
     public enum CustomerServiceStatus
     {
         New = 1,
-        Processing = 2,         
-        Solved = 3,    
+        Processing = 2,
+        Solved = 3,   
     }
 }

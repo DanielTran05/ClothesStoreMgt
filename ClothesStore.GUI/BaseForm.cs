@@ -10,10 +10,13 @@ namespace ClothesStore.GUI
 {
     public partial class BaseForm : Form
     {
+        protected bool isLoggingOut = false;
+
         public BaseForm()
         {
             InitializeComponent();
         }
+
         protected void HandleLogout()
         {
             var result = MessageBox.Show("Are you sure to logout", "Confirm",
@@ -23,10 +26,7 @@ namespace ClothesStore.GUI
             {
                 GlobalSession.Clear();
 
-                this.Hide();
-
-                LoginForm login = new LoginForm();
-                login.Show();
+                isLoggingOut = true;
 
                 this.Close();
             }
@@ -34,7 +34,10 @@ namespace ClothesStore.GUI
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-           Application.Exit();
+            if (!isLoggingOut)
+            {
+                Application.Exit();
+            }
         }
     }
 }

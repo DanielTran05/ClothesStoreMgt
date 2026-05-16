@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -60,6 +60,13 @@ namespace ClothesStore.GUI
             ucCustomer.BringToFront();
         }
 
-      
+        private void btnStat_Click(object sender, EventArgs e)
+        {
+            ucStatistic_Admin uc = new ucStatistic_Admin();
+            uc.Dock = DockStyle.Fill;
+            pnlMain.Controls.Clear();
+            pnlMain.Controls.Add(uc);
+            uc.BringToFront();
+        }
     }
 }

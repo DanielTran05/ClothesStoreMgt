@@ -144,8 +144,8 @@
             splitContainer.Panel2.Controls.Add(dgvVariants);
             splitContainer.Panel2.Controls.Add(pnlInputSideProVar);
             splitContainer.Panel2.Controls.Add(guna2Panel1);
-            splitContainer.Size = new Size(1248, 1084);
-            splitContainer.SplitterDistance = 547;
+            splitContainer.Size = new Size(1762, 1104);
+            splitContainer.SplitterDistance = 557;
             splitContainer.TabIndex = 0;
             // 
             // dgvProducts
@@ -176,7 +176,7 @@
             dgvProducts.Name = "dgvProducts";
             dgvProducts.RowHeadersVisible = false;
             dgvProducts.RowHeadersWidth = 62;
-            dgvProducts.Size = new Size(902, 492);
+            dgvProducts.Size = new Size(1416, 502);
             dgvProducts.TabIndex = 5;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -213,10 +213,10 @@
             pnlInputSidePro.Dock = DockStyle.Right;
             pnlInputSidePro.FillColor = Color.Bisque;
             pnlInputSidePro.ForeColor = SystemColors.ActiveCaption;
-            pnlInputSidePro.Location = new Point(902, 55);
+            pnlInputSidePro.Location = new Point(1416, 55);
             pnlInputSidePro.Name = "pnlInputSidePro";
             pnlInputSidePro.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            pnlInputSidePro.Size = new Size(346, 492);
+            pnlInputSidePro.Size = new Size(346, 502);
             pnlInputSidePro.TabIndex = 6;
             pnlInputSidePro.Visible = false;
             // 
@@ -329,7 +329,7 @@
             pnlToolBar.Location = new Point(0, 0);
             pnlToolBar.Name = "pnlToolBar";
             pnlToolBar.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            pnlToolBar.Size = new Size(1248, 55);
+            pnlToolBar.Size = new Size(1762, 55);
             pnlToolBar.TabIndex = 4;
             // 
             // txtSearchPro
@@ -459,7 +459,7 @@
             dgvVariants.Name = "dgvVariants";
             dgvVariants.RowHeadersVisible = false;
             dgvVariants.RowHeadersWidth = 62;
-            dgvVariants.Size = new Size(902, 478);
+            dgvVariants.Size = new Size(1416, 488);
             dgvVariants.TabIndex = 7;
             dgvVariants.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvVariants.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -500,10 +500,10 @@
             pnlInputSideProVar.Dock = DockStyle.Right;
             pnlInputSideProVar.FillColor = Color.Bisque;
             pnlInputSideProVar.ForeColor = SystemColors.ActiveCaption;
-            pnlInputSideProVar.Location = new Point(902, 55);
+            pnlInputSideProVar.Location = new Point(1416, 55);
             pnlInputSideProVar.Name = "pnlInputSideProVar";
             pnlInputSideProVar.ShadowDecoration.CustomizableEdges = customizableEdges38;
-            pnlInputSideProVar.Size = new Size(346, 478);
+            pnlInputSideProVar.Size = new Size(346, 488);
             pnlInputSideProVar.TabIndex = 6;
             pnlInputSideProVar.Visible = false;
             // 
@@ -691,7 +691,7 @@
             guna2Panel1.Location = new Point(0, 0);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges48;
-            guna2Panel1.Size = new Size(1248, 55);
+            guna2Panel1.Size = new Size(1762, 55);
             guna2Panel1.TabIndex = 5;
             // 
             // txtSearchVar
@@ -799,7 +799,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitContainer);
             Name = "ucProductManagement";
-            Size = new Size(1248, 1084);
+            Size = new Size(1762, 1104);
             splitContainer.Panel1.ResumeLayout(false);
             splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();

@@ -40,36 +40,38 @@
             txtSearch = new TextBox();
             lblSearch = new Label();
             cboSearchType = new ComboBox();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvSuppliers).BeginInit();
             SuspendLayout();
             // 
             // dgvSuppliers
             // 
             dgvSuppliers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvSuppliers.Location = new Point(12, 45);
+            dgvSuppliers.Location = new Point(12, 77);
             dgvSuppliers.Name = "dgvSuppliers";
             dgvSuppliers.RowHeadersWidth = 51;
-            dgvSuppliers.Size = new Size(776, 188);
+            dgvSuppliers.Size = new Size(1408, 491);
             dgvSuppliers.TabIndex = 0;
             dgvSuppliers.CellClick += dgvSuppliers_CellClick;
             // 
             // txtName
             // 
-            txtName.Location = new Point(463, 12);
+            txtName.Location = new Point(475, 605);
             txtName.Name = "txtName";
-            txtName.Size = new Size(125, 27);
+            txtName.Size = new Size(278, 27);
             txtName.TabIndex = 1;
             // 
             // txtPhone
             // 
-            txtPhone.Location = new Point(663, 12);
+            txtPhone.Location = new Point(828, 604);
             txtPhone.Name = "txtPhone";
-            txtPhone.Size = new Size(125, 27);
+            txtPhone.Size = new Size(167, 27);
             txtPhone.TabIndex = 1;
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(394, 261);
+            btnAdd.Location = new Point(1023, 592);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(94, 50);
             btnAdd.TabIndex = 2;
@@ -79,7 +81,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(494, 261);
+            btnUpdate.Location = new Point(1126, 591);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(94, 50);
             btnUpdate.TabIndex = 2;
@@ -89,7 +91,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(594, 261);
+            btnDelete.Location = new Point(1226, 591);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 50);
             btnDelete.TabIndex = 2;
@@ -99,7 +101,7 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(694, 261);
+            btnLoad.Location = new Point(1326, 591);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(94, 50);
             btnLoad.TabIndex = 2;
@@ -109,15 +111,15 @@
             // 
             // lbPhone
             // 
-            lbPhone.Location = new Point(595, 15);
+            lbPhone.Location = new Point(768, 607);
             lbPhone.Name = "lbPhone";
-            lbPhone.Size = new Size(62, 25);
+            lbPhone.Size = new Size(54, 25);
             lbPhone.TabIndex = 3;
             lbPhone.Text = "Phone:";
             // 
             // lbName
             // 
-            lbName.Location = new Point(395, 14);
+            lbName.Location = new Point(416, 608);
             lbName.Name = "lbName";
             lbName.Size = new Size(62, 25);
             lbName.TabIndex = 3;
@@ -125,7 +127,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(264, 9);
+            txtSearch.Location = new Point(343, 44);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(125, 27);
             txtSearch.TabIndex = 4;
@@ -133,7 +135,7 @@
             // 
             // lblSearch
             // 
-            lblSearch.Location = new Point(180, 11);
+            lblSearch.Location = new Point(270, 47);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new Size(78, 25);
             lblSearch.TabIndex = 3;
@@ -142,16 +144,36 @@
             // cboSearchType
             // 
             cboSearchType.FormattingEnabled = true;
-            cboSearchType.Location = new Point(12, 8);
+            cboSearchType.Location = new Point(85, 44);
             cboSearchType.Name = "cboSearchType";
             cboSearchType.Size = new Size(151, 28);
             cboSearchType.TabIndex = 5;
+            // 
+            // label1
+            // 
+            label1.Location = new Point(12, 46);
+            label1.Name = "label1";
+            label1.Size = new Size(67, 25);
+            label1.TabIndex = 6;
+            label1.Text = "Filter by:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 20F);
+            label2.Location = new Point(528, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(400, 46);
+            label2.TabIndex = 7;
+            label2.Text = "SUPPLIER MANAGEMENT";
             // 
             // SupplierForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 325);
+            ClientSize = new Size(1432, 653);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(cboSearchType);
             Controls.Add(txtSearch);
             Controls.Add(lblSearch);
@@ -185,5 +207,7 @@
         private TextBox txtSearch;
         private Label lblSearch;
         private ComboBox cboSearchType;
+        private Label label1;
+        private Label label2;
     }
 }

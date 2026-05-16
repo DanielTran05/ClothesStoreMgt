@@ -116,6 +116,15 @@ namespace ClothesStore.GUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            string errors = ValidateInputs(!_isEditMode);
+            if (!string.IsNullOrEmpty(errors))
+            {
+                MessageBox.Show("Vui lòng kiểm tra lại thông tin:\n\n" + errors,
+                    "Thông tin không hợp lệ",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return; 
+            }
             try
             {
                 if (!_isEditMode)
@@ -248,6 +257,52 @@ namespace ClothesStore.GUI
                 var filteredList = data.Where(u => u.Username.ToLower().Contains(keyword)).ToList();
                 dgvUsers.DataSource = filteredList;
             }
+        }
+        private string ValidateInputs(bool isAddMode)
+        {
+            var sb = new System.Text.StringBuilder();
+            string fullName = txtFullName.Text.Trim();
+            if (string.IsNullOrEmpty(fullName))
+                sb.AppendLine("• Họ và tên không được để trống.");
+            else if (fullName.Length < 2 || fullName.Length > 100)
+                sb.AppendLine("• Họ và tên phải từ 2 đến 100 ký tự.");
+
+            string email = txtEmail.Text.Trim();
+            if (!string.IsNullOrEmpty(email))
+            {
+                var emailRegex = new System.Text.RegularExpressions.Regex(
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!emailRegex.IsMatch(email))
+                    sb.AppendLine("• Email không đúng định dạng (vd: abc@gmail.com).");
+            }
+
+            string phone = txtPhone.Text.Trim();
+            if (!string.IsNullOrEmpty(phone))
+            {
+                var phoneRegex = new System.Text.RegularExpressions.Regex(
+                    @"^(0[3|5|7|8|9])[0-9]{8}$");
+                if (!phoneRegex.IsMatch(phone))
+                    sb.AppendLine("• Số điện thoại không đúng định dạng.\n  (Phải là 10 số, bắt đầu bằng 03x/05x/07x/08x/09x)");
+            }
+
+            if (isAddMode)
+            {
+                string username = txtUsername.Text.Trim();
+                if (string.IsNullOrEmpty(username))
+                    sb.AppendLine("• Tên đăng nhập không được để trống.");
+                else if (username.Length < 4 || username.Length > 50)
+                    sb.AppendLine("• Tên đăng nhập phải từ 4 đến 50 ký tự.");
+                else if (!System.Text.RegularExpressions.Regex.IsMatch(username, @"^[a-zA-Z0-9_]+$"))
+                    sb.AppendLine("• Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới.");
+
+                string password = txtPassword.Text;
+                if (string.IsNullOrEmpty(password))
+                    sb.AppendLine("• Mật khẩu không được để trống.");
+                else if (password.Length < 6)
+                    sb.AppendLine("• Mật khẩu phải có ít nhất 6 ký tự.");
+            }
+
+            return sb.ToString();
         }
     }
 }

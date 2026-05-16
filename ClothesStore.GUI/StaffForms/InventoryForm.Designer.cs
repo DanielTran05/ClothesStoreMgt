@@ -32,21 +32,23 @@
             txtSearch = new TextBox();
             cboSearchType = new ComboBox();
             lblSearch = new Label();
+            label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
             SuspendLayout();
             // 
             // dgvInventory
             // 
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInventory.Location = new Point(6, 45);
+            dgvInventory.Location = new Point(6, 94);
             dgvInventory.Name = "dgvInventory";
             dgvInventory.RowHeadersWidth = 51;
-            dgvInventory.Size = new Size(688, 279);
+            dgvInventory.Size = new Size(1414, 547);
             dgvInventory.TabIndex = 0;
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(564, 12);
+            txtSearch.Location = new Point(327, 61);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(125, 27);
             txtSearch.TabIndex = 1;
@@ -55,7 +57,7 @@
             // cboSearchType
             // 
             cboSearchType.FormattingEnabled = true;
-            cboSearchType.Location = new Point(316, 11);
+            cboSearchType.Location = new Point(79, 60);
             cboSearchType.Name = "cboSearchType";
             cboSearchType.Size = new Size(147, 28);
             cboSearchType.TabIndex = 2;
@@ -63,17 +65,38 @@
             // lblSearch
             // 
             lblSearch.AutoSize = true;
-            lblSearch.Location = new Point(486, 14);
+            lblSearch.Location = new Point(249, 63);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new Size(56, 20);
             lblSearch.TabIndex = 3;
             lblSearch.Text = "Search:";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(8, 60);
+            label1.Name = "label1";
+            label1.Size = new Size(65, 20);
+            label1.TabIndex = 7;
+            label1.Text = "Filter by:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 20F);
+            label2.Location = new Point(531, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(376, 46);
+            label2.TabIndex = 8;
+            label2.Text = "PRODUCTS SEARCHING";
+            // 
             // InventoryForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(701, 336);
+            ClientSize = new Size(1432, 653);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(lblSearch);
             Controls.Add(cboSearchType);
             Controls.Add(txtSearch);
@@ -91,5 +114,7 @@
         private TextBox txtSearch;
         private ComboBox cboSearchType;
         private Label lblSearch;
+        private Label label1;
+        private Label label2;
     }
 }

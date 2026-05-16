@@ -1,4 +1,4 @@
-﻿namespace ClothesStore.GUI.StaffForms
+namespace ClothesStore.GUI.StaffForms
 {
     partial class SaleMainForm
     {
@@ -28,44 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button2 = new Button();
-            button1 = new Button();
+            label1 = new Label();
+            btnLogout = new Button();
+            btnSearchProduct = new Button();
+            btnCustomerService = new Button();
             SuspendLayout();
             // 
-            // button2
+            // label1
             // 
-            button2.Location = new Point(189, 35);
-            button2.Name = "button2";
-            button2.Size = new Size(108, 56);
-            button2.TabIndex = 0;
-            button2.Text = "order management";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 20F);
+            label1.Location = new Point(1, 3);
+            label1.Name = "label1";
+            label1.Size = new Size(513, 46);
+            label1.TabIndex = 0;
+            label1.Text = "WELCOME TO SALE STAFF FORM";
             // 
-            // button1
+            // btnLogout
             // 
-            button1.Location = new Point(50, 35);
-            button1.Name = "button1";
-            button1.Size = new Size(97, 56);
-            button1.TabIndex = 0;
-            button1.Text = "search Product";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnLogout.Location = new Point(1343, 12);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(67, 28);
+            btnLogout.TabIndex = 1;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
+            // 
+            // btnSearchProduct
+            // 
+            btnSearchProduct.Location = new Point(12, 52);
+            btnSearchProduct.Name = "btnSearchProduct";
+            btnSearchProduct.Size = new Size(94, 69);
+            btnSearchProduct.TabIndex = 2;
+            btnSearchProduct.Text = "Search Product";
+            btnSearchProduct.UseVisualStyleBackColor = true;
+            btnSearchProduct.Click += btnSearchProduct_Click;
+            // 
+            // btnCustomerService
+            // 
+            btnCustomerService.Location = new Point(116, 52);
+            btnCustomerService.Name = "btnCustomerService";
+            btnCustomerService.Size = new Size(93, 70);
+            btnCustomerService.TabIndex = 3;
+            btnCustomerService.Text = "Customer Service";
+            btnCustomerService.UseVisualStyleBackColor = true;
+            btnCustomerService.Click += btnCustomerService_Click;
             // 
             // SaleMainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
-            Controls.Add(button1);
-            Controls.Add(button2);
+            Controls.Add(btnCustomerService);
+            Controls.Add(btnSearchProduct);
+            Controls.Add(btnLogout);
+            Controls.Add(label1);
             Name = "SaleMainForm";
             Text = "SaleMainForm";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-        private Button button2;
-        private Button button1;
+
+        private Label label1;
+        private Button btnLogout;
+        private Button btnSearchProduct;
+        private Button btnCustomerService;
     }
 }
