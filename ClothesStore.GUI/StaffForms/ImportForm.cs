@@ -24,19 +24,22 @@ namespace ClothesStore.GUI.StaffForms
         {
             InitializeComponent();
 
+            dtImportDate.Value =
+                DateTime.Today;
+
             SetupUI();
 
             SetupGrid();
-
-            SetupFilter();
 
             LoadSupplier();
 
             LoadVariant();
 
             LoadImportHistory();
+
         }
 
+        // ================= UI =================
         private void SetupUI()
         {
             BackColor =
@@ -45,10 +48,43 @@ namespace ClothesStore.GUI.StaffForms
             StartPosition =
                 FormStartPosition.CenterScreen;
 
+            FormBorderStyle =
+                FormBorderStyle.FixedSingle;
+
+            MaximizeBox =
+                false;
+
             SetupDataGridView(dgvDetail);
 
             SetupDataGridView(dgvHistory);
 
+            // KHÓA GRID HISTORY
+            dgvHistory.ReadOnly =
+                true;
+
+            dgvHistory.AllowUserToDeleteRows =
+                false;
+
+            dgvHistory.AllowUserToResizeRows =
+                false;
+
+            dgvHistory.EditMode =
+                DataGridViewEditMode.EditProgrammatically;
+
+            // KHÓA GRID DETAIL
+            dgvDetail.ReadOnly =
+                true;
+
+            dgvDetail.AllowUserToDeleteRows =
+                false;
+
+            dgvDetail.AllowUserToResizeRows =
+                false;
+
+            dgvDetail.EditMode =
+                DataGridViewEditMode.EditProgrammatically;
+
+            // BUTTON CREATE
             btnCreateReceipt.BackColor =
                 Color.FromArgb(46, 204, 113);
 
@@ -61,6 +97,14 @@ namespace ClothesStore.GUI.StaffForms
             btnCreateReceipt.FlatAppearance.BorderSize =
                 0;
 
+            btnCreateReceipt.Font =
+                new Font(
+                    "Segoe UI",
+                    10,
+                    FontStyle.Bold
+                );
+
+            // BUTTON ADD
             btnAddDetail.BackColor =
                 Color.FromArgb(52, 152, 219);
 
@@ -73,6 +117,34 @@ namespace ClothesStore.GUI.StaffForms
             btnAddDetail.FlatAppearance.BorderSize =
                 0;
 
+            btnAddDetail.Font =
+                new Font(
+                    "Segoe UI",
+                    10,
+                    FontStyle.Bold
+                );
+
+            // BUTTON VIEW DETAIL
+            btnViewDetail.BackColor =
+                Color.FromArgb(155, 89, 182);
+
+            btnViewDetail.ForeColor =
+                Color.White;
+
+            btnViewDetail.FlatStyle =
+                FlatStyle.Flat;
+
+            btnViewDetail.FlatAppearance.BorderSize =
+                0;
+
+            btnViewDetail.Font =
+                new Font(
+                    "Segoe UI",
+                    10,
+                    FontStyle.Bold
+                );
+
+            // COMBOBOX
             cbSupplier.DropDownStyle =
                 ComboBoxStyle.DropDownList;
 
@@ -81,8 +153,35 @@ namespace ClothesStore.GUI.StaffForms
 
             cbFilterType.DropDownStyle =
                 ComboBoxStyle.DropDownList;
+
+            // TEXTBOX
+            txtSearch.Enabled =
+                false;
+
+            txtSearch.BackColor =
+                Color.Gainsboro;
+
+            // DATE
+            dtImportDate.Format =
+                DateTimePickerFormat.Custom;
+
+            dtImportDate.CustomFormat =
+                "dd/MM/yyyy";
+
+            // FILTER
+            cbFilterType.Items.Clear();
+
+            cbFilterType.Items.Add(
+                "Theo ngày nhập");
+
+            cbFilterType.Items.Add(
+                "Theo công ty");
+
+            cbFilterType.SelectedIndex =
+                0;
         }
 
+        // ================= DATAGRIDVIEW =================
         private void SetupDataGridView(
             DataGridView dgv)
         {
@@ -119,31 +218,21 @@ namespace ClothesStore.GUI.StaffForms
             dgv.ColumnHeadersDefaultCellStyle.ForeColor =
                 Color.White;
 
-            dgv.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(41, 128, 185);
+            dgv.ColumnHeadersHeight =
+                40;
 
-            dgv.DefaultCellStyle.SelectionForeColor =
-                Color.White;
+            dgv.RowTemplate.Height =
+                35;
         }
 
-        private void SetupFilter()
-        {
-            cbFilterType.Items.Add(
-                "Theo ngày nhập");
-
-            cbFilterType.Items.Add(
-                "Theo công ty");
-
-            cbFilterType.SelectedIndex = 1;
-        }
-
+        // ================= GRID =================
         private void SetupGrid()
         {
             detailsTable.Columns.Add(
                 "VariantID");
 
             detailsTable.Columns.Add(
-                "SKU");
+                "Product");
 
             detailsTable.Columns.Add(
                 "Quantity");
@@ -160,6 +249,7 @@ namespace ClothesStore.GUI.StaffForms
             SetupDetailColumn();
         }
 
+        // ================= DETAIL COLUMN =================
         private void SetupDetailColumn()
         {
             if (dgvDetail.Columns["VariantID"] != null)
@@ -167,51 +257,16 @@ namespace ClothesStore.GUI.StaffForms
                 dgvDetail.Columns["VariantID"]
                     .Visible = false;
             }
-
-            if (dgvDetail.Columns["SKU"] != null)
-            {
-                dgvDetail.Columns["SKU"]
-                    .HeaderText =
-                    "SKU";
-            }
-
-            if (dgvDetail.Columns["Quantity"] != null)
-            {
-                dgvDetail.Columns["Quantity"]
-                    .HeaderText =
-                    "Số Lượng";
-            }
-
-            if (dgvDetail.Columns["ImportPrice"] != null)
-            {
-                dgvDetail.Columns["ImportPrice"]
-                    .HeaderText =
-                    "Giá Nhập";
-
-                dgvDetail.Columns["ImportPrice"]
-                    .DefaultCellStyle.Format =
-                    "N0";
-            }
-
-            if (dgvDetail.Columns["Total"] != null)
-            {
-                dgvDetail.Columns["Total"]
-                    .HeaderText =
-                    "Thành Tiền";
-
-                dgvDetail.Columns["Total"]
-                    .DefaultCellStyle.Format =
-                    "N0";
-            }
         }
 
+        // ================= LOAD SUPPLIER =================
         private void LoadSupplier()
         {
             DataTable dt =
                 supplierService.GetAll();
 
             cbSupplier.DataSource =
-                null;
+                dt;
 
             cbSupplier.DisplayMember =
                 "SupplierName";
@@ -219,13 +274,11 @@ namespace ClothesStore.GUI.StaffForms
             cbSupplier.ValueMember =
                 "SupplierID";
 
-            cbSupplier.DataSource =
-                dt;
-
             cbSupplier.SelectedIndex =
                 -1;
         }
 
+        // ================= LOAD VARIANT =================
         private void LoadVariant()
         {
             DataTable dt =
@@ -233,138 +286,109 @@ namespace ClothesStore.GUI.StaffForms
                 .SearchProductForStaff("");
 
             cbVariant.DataSource =
-                null;
+                dt;
 
-            if (dt != null &&
-                dt.Rows.Count > 0)
-            {
-                cbVariant.DisplayMember =
-                    "SKU";
+            cbVariant.DisplayMember =
+                "SKU";
 
-                cbVariant.ValueMember =
-                    "VariantID";
+            cbVariant.ValueMember =
+                "VariantID";
 
-                cbVariant.DataSource =
-                    dt;
-
-                cbVariant.SelectedIndex =
-                    -1;
-            }
+            cbVariant.SelectedIndex =
+                -1;
         }
 
+        // ================= LOAD HISTORY =================
         private void LoadImportHistory()
         {
             dgvHistory.DataSource =
                 warehouseService
-                .GetImportHistory("");
+                .GetImportHistory();
 
             SetupHistoryColumn();
+
+            FilterHistory();
         }
 
+        // ================= HISTORY COLUMN =================
         private void SetupHistoryColumn()
         {
-            if (dgvHistory.Columns["ReceiptID"] != null)
+            if (dgvHistory.Columns["SupplierID"] != null)
             {
-                dgvHistory.Columns["ReceiptID"]
-                    .HeaderText =
-                    "Mã Phiếu";
+                dgvHistory.Columns["SupplierID"]
+                    .Visible = false;
             }
 
-            if (dgvHistory.Columns["SupplierName"] != null)
+            if (dgvHistory.Columns["EmployeeID"] != null)
             {
-                dgvHistory.Columns["SupplierName"]
-                    .HeaderText =
-                    "Công Ty";
+                dgvHistory.Columns["EmployeeID"]
+                    .Visible = false;
             }
 
-            if (dgvHistory.Columns["ImportDate"] != null)
+            if (dgvHistory.Columns["Status"] != null)
             {
-                dgvHistory.Columns["ImportDate"]
-                    .HeaderText =
-                    "Ngày Nhập";
+                dgvHistory.Columns["Status"]
+                    .Visible = false;
             }
 
-            if (dgvHistory.Columns["ProductName"] != null)
+            if (dgvHistory.Columns["StatusText"] != null)
             {
-                dgvHistory.Columns["ProductName"]
+                dgvHistory.Columns["StatusText"]
                     .HeaderText =
-                    "Sản Phẩm";
-            }
-
-            if (dgvHistory.Columns["SKU"] != null)
-            {
-                dgvHistory.Columns["SKU"]
-                    .HeaderText =
-                    "SKU";
-            }
-
-            if (dgvHistory.Columns["Quantity"] != null)
-            {
-                dgvHistory.Columns["Quantity"]
-                    .HeaderText =
-                    "Số Lượng";
-            }
-
-            if (dgvHistory.Columns["ImportPrice"] != null)
-            {
-                dgvHistory.Columns["ImportPrice"]
-                    .HeaderText =
-                    "Giá Nhập";
-
-                dgvHistory.Columns["ImportPrice"]
-                    .DefaultCellStyle.Format =
-                    "N0";
-            }
-
-            if (dgvHistory.Columns["Total"] != null)
-            {
-                dgvHistory.Columns["Total"]
-                    .HeaderText =
-                    "Thành Tiền";
-
-                dgvHistory.Columns["Total"]
-                    .DefaultCellStyle.Format =
-                    "N0";
+                    "Trạng Thái";
             }
         }
 
+        // ================= ADD DETAIL =================
         private void btnAddDetail_Click(
             object? sender,
             EventArgs e)
         {
-            if (cbVariant.SelectedValue == null ||
-                string.IsNullOrWhiteSpace(
-                    txtQuantity.Text) ||
-                string.IsNullOrWhiteSpace(
-                    txtPrice.Text))
+            if (cbVariant.SelectedValue == null)
             {
                 MessageBox.Show(
-                    "Vui lòng nhập đầy đủ thông tin!");
+                    "Vui lòng chọn sản phẩm!");
 
                 return;
             }
 
-            int variantId =
-                Convert.ToInt32(
-                    cbVariant.SelectedValue);
+            if (!int.TryParse(
+                txtQuantity.Text,
+                out int quantity))
+            {
+                MessageBox.Show(
+                    "Số lượng không hợp lệ!");
 
-            string sku =
-                cbVariant.Text;
+                return;
+            }
 
-            int quantity =
-                Convert.ToInt32(
-                    txtQuantity.Text);
+            if (!decimal.TryParse(
+                txtPrice.Text,
+                out decimal price))
+            {
+                MessageBox.Show(
+                    "Giá nhập không hợp lệ!");
 
-            decimal price =
-                Convert.ToDecimal(
-                    txtPrice.Text);
+                return;
+            }
+
+            DataRowView row =
+                (DataRowView)
+                cbVariant.SelectedItem!;
+
+            string product =
+                row["ProductName"]
+                .ToString()
+                + " - "
+                + row["SKU"]
+                .ToString();
 
             decimal total =
                 quantity * price;
 
             detailsTable.Rows.Add(
-                variantId,
-                sku,
+                cbVariant.SelectedValue,
+                product,
                 quantity,
                 price,
                 total
@@ -378,6 +402,7 @@ namespace ClothesStore.GUI.StaffForms
                 -1;
         }
 
+        // ================= CREATE RECEIPT =================
         private void btnCreateReceipt_Click(
             object? sender,
             EventArgs e)
@@ -385,7 +410,7 @@ namespace ClothesStore.GUI.StaffForms
             if (cbSupplier.SelectedValue == null)
             {
                 MessageBox.Show(
-                    "Vui lòng chọn nhà cung cấp!");
+                    "Vui lòng chọn công ty!");
 
                 return;
             }
@@ -393,7 +418,7 @@ namespace ClothesStore.GUI.StaffForms
             if (detailsTable.Rows.Count == 0)
             {
                 MessageBox.Show(
-                    "Vui lòng thêm sản phẩm nhập!");
+                    "Chưa có sản phẩm!");
 
                 return;
             }
@@ -412,31 +437,24 @@ namespace ClothesStore.GUI.StaffForms
             foreach (DataRow row
                 in detailsTable.Rows)
             {
-                int variantId =
-                    Convert.ToInt32(
-                        row["VariantID"]);
-
-                int quantity =
-                    Convert.ToInt32(
-                        row["Quantity"]);
-
-                decimal price =
-                    Convert.ToDecimal(
-                        row["ImportPrice"]);
-
                 warehouseService
                     .AddReceiptDetail(
                         receiptId,
-                        variantId,
-                        quantity,
-                        price
+                        Convert.ToInt32(
+                            row["VariantID"]),
+                        Convert.ToInt32(
+                            row["Quantity"]),
+                        Convert.ToDecimal(
+                            row["ImportPrice"])
                     );
 
                 warehouseService
                     .AddInventoryTransaction(
-                        variantId,
+                        Convert.ToInt32(
+                            row["VariantID"]),
                         "IMPORT",
-                        quantity,
+                        Convert.ToInt32(
+                            row["Quantity"]),
                         receiptId
                     );
             }
@@ -446,90 +464,166 @@ namespace ClothesStore.GUI.StaffForms
 
             detailsTable.Clear();
 
-            cbSupplier.SelectedIndex =
-                -1;
-
+            // RELOAD LIỀN
             LoadImportHistory();
+
+            // AUTO CHỌN DÒNG MỚI
+            if (dgvHistory.Rows.Count > 0)
+            {
+                dgvHistory.ClearSelection();
+
+                dgvHistory.Rows[0].Selected =
+                    true;
+            }
         }
 
+        // ================= VIEW DETAIL =================
+        private void btnViewDetail_Click(
+            object? sender,
+            EventArgs e)
+        {
+            if (dgvHistory.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Vui lòng chọn phiếu!");
+
+                return;
+            }
+
+            DataGridViewRow row =
+                dgvHistory.SelectedRows[0];
+
+            int receiptId =
+                Convert.ToInt32(
+                    row.Cells["ReceiptID"]
+                    .Value);
+
+            ReceiptDetailForm form =
+                new ReceiptDetailForm(
+                    receiptId);
+
+            form.ShowDialog();
+        }
+
+        // ================= FILTER TYPE =================
         private void cbFilterType_SelectedIndexChanged(
             object? sender,
             EventArgs e)
         {
+            bool isDateFilter =
+                cbFilterType.SelectedIndex == 0;
+
+            dtImportDate.Enabled =
+                isDateFilter;
+
+            txtSearch.Enabled =
+                !isDateFilter;
+
+            txtSearch.BackColor =
+                isDateFilter
+                ? Color.Gainsboro
+                : Color.White;
+
             FilterHistory();
         }
 
-        private void dtImportDate_ValueChanged(
-            object? sender,
-            EventArgs e)
-        {
-            if (cbFilterType.SelectedIndex == 0)
-            {
-                FilterHistory();
-            }
-        }
-
-        private void cbSupplier_SelectedIndexChanged(
-            object? sender,
-            EventArgs e)
-        {
-            if (cbFilterType.SelectedIndex == 1)
-            {
-                FilterHistory();
-            }
-        }
-
+        // ================= FILTER =================
         private void FilterHistory()
         {
             DataTable dt =
                 warehouseService
-                .GetImportHistory("");
-
-            DataView dv =
-                dt.DefaultView;
+                .GetImportHistory();
 
             if (cbFilterType.SelectedIndex == 0)
             {
                 DateTime selectedDate =
                     dtImportDate.Value.Date;
 
-                dv.RowFilter =
-                    $"ImportDate >= #{selectedDate:MM/dd/yyyy}# " +
-                    $"AND ImportDate < #{selectedDate.AddDays(1):MM/dd/yyyy}#";
+                DataRow[] rows =
+                    dt.Select(
+                        $"ImportDate >= '#{selectedDate:MM/dd/yyyy}#' " +
+                        $"AND ImportDate < '#{selectedDate.AddDays(1):MM/dd/yyyy}#'"
+                    );
+
+                dgvHistory.DataSource =
+                    rows.Length > 0
+                    ? rows.CopyToDataTable()
+                    : dt.Clone();
             }
             else
             {
-                string supplier =
-                    cbSupplier.Text?.Trim() ?? "";
+                string keyword =
+                    txtSearch.Text.Trim();
 
-                if (!string.IsNullOrWhiteSpace(supplier))
+                if (string.IsNullOrWhiteSpace(keyword))
                 {
-                    supplier =
-                        supplier.Replace("'", "''");
+                    dgvHistory.DataSource =
+                        dt;
+                }
+                else
+                {
+                    keyword =
+                        keyword.Replace("'", "''");
 
-                    dv.RowFilter =
-                        $"SupplierName LIKE '%{supplier}%'";
+                    DataRow[] rows =
+                        dt.Select(
+                            $"SupplierName LIKE '%{keyword}%'"
+                        );
+
+                    dgvHistory.DataSource =
+                        rows.Length > 0
+                        ? rows.CopyToDataTable()
+                        : dt.Clone();
                 }
             }
-
-            dgvHistory.DataSource =
-                dv.ToTable();
 
             SetupHistoryColumn();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cbSupplier1_SelectedIndexChanged(
+        // ================= SEARCH =================
+        private void txtSearch_TextChanged(
             object? sender,
             EventArgs e)
         {
-            if (cbFilterType.SelectedIndex == 1)
+            FilterHistory();
+        }
+
+        // ================= DATE =================
+        private void dtImportDate_ValueChanged(
+            object? sender,
+            EventArgs e)
+        {
+            FilterHistory();
+        }
+
+        // ================= KEY PRESS =================
+        private void txtQuantity_KeyPress(
+            object? sender,
+            KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+                && !char.IsDigit(e.KeyChar))
             {
-                FilterHistory();
+                e.Handled = true;
+            }
+        }
+
+        private void txtPrice_KeyPress(
+            object? sender,
+            KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar)
+                && !char.IsDigit(e.KeyChar)
+                && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+
+            if (sender is TextBox txt
+                && e.KeyChar == '.'
+                && txt.Text.Contains("."))
+            {
+                e.Handled = true;
             }
         }
     }

@@ -57,10 +57,16 @@ namespace ClothesStore.BUS
                 quantityChange,
                 receiptId);
         }
-        public DataTable GetImportHistory(string filterType)
+        public DataTable GetImportHistory()
         {
-            return repo.GetImportHistory(
-                filterType);
+            return repo.GetImportHistory();
+        }
+
+        public DataTable GetReceiptDetails(
+            int receiptId)
+        {
+            return repo.GetReceiptDetails(
+                receiptId);
         }
     }
 }

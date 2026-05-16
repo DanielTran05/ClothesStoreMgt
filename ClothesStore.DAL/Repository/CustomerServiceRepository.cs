@@ -27,8 +27,8 @@ namespace ClothesStore.DAL.Repository
         }
 
         public void Add(
-    Guid customerId,
-    string reason)
+            Guid customerId,
+            string reason)
         {
             using var conn = DbHelper.GetConnection();
 
@@ -81,8 +81,8 @@ namespace ClothesStore.DAL.Repository
         }
 
         public void Reject(
-    int customerServiceId,
-    Guid employeeId)
+            int customerServiceId,
+            Guid employeeId)
         {
             using var conn = DbHelper.GetConnection();
 
@@ -103,6 +103,28 @@ namespace ClothesStore.DAL.Repository
             cmd.Parameters.AddWithValue(
                 "@EmployeeID",
                 employeeId);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        // RESET PROCESSING -> NEW
+        public void Reset(int customerServiceId)
+        {
+            using var conn = DbHelper.GetConnection();
+
+            conn.Open();
+
+            SqlCommand cmd =
+                new SqlCommand(
+                    "sp_ResetCustomerService",
+                    conn);
+
+            cmd.CommandType =
+                CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue(
+                "@CustomerServiceID",
+                customerServiceId);
 
             cmd.ExecuteNonQuery();
         }
