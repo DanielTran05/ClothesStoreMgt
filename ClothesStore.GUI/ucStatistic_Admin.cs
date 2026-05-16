@@ -121,21 +121,47 @@ namespace ClothesStore.GUI
                 chartOrderStatus.Series[0].IsXValueIndexed = true;
                 chartOrderStatus.Series[0].Points.Clear();
                 chartOrderStatus.Series[0].IsValueShownAsLabel = true;
+
                 foreach (var item in statusData)
                 {
-                    chartOrderStatus.Series[0].Points.AddXY(item.StatusName, item.OrderCount);
+                    int pointIndex = chartOrderStatus.Series[0].Points.AddXY(item.StatusName, item.OrderCount);
+                    var currentPoint = chartOrderStatus.Series[0].Points[pointIndex];
+                    switch (item.StatusName)
+                    {
+                        case "Chờ duyệt":
+                            currentPoint.Color = Color.Orange; 
+                            break;
+                        case "Đã thanh toán":
+                            currentPoint.Color = Color.DeepSkyBlue; 
+                            break;
+                        case "Đang giao":
+                            currentPoint.Color = Color.MediumPurple; 
+                            break;
+                        case "Thành công":
+                            currentPoint.Color = Color.MediumSeaGreen; 
+                            break;
+                        case "Đã hủy":
+                            currentPoint.Color = Color.Crimson; 
+                            break;
+                        case "Trả hàng":
+                            currentPoint.Color = Color.SlateGray; 
+                            break;
+                        default:
+                            currentPoint.Color = Color.DarkGray; 
+                            break;
+                    }
                 }
-
                 chartCategory.Series[0].Points.Clear();
                 chartCategory.Series[0].IsValueShownAsLabel = true;
                 foreach (var item in await taskCategory)
                 {
                     if (item.TotalVariants > 0)
                     {
-                        chartCategory.Series[0].Points.AddXY(item.CategoryName, item.TotalVariants);
+                        int pIndex = chartCategory.Series[0].Points.AddXY(item.CategoryName, item.TotalVariants);
+                        chartCategory.Series[0].Points[pIndex].LegendText = item.CategoryName;
+                        chartCategory.Series[0].Points[pIndex].Label = "#PERCENT{P0}";
                     }
                 }
-
                 dgvTopStaff.DataSource = await taskStaff;
                 FormatStaffGrid();
 
