@@ -41,6 +41,7 @@
             lblSearch = new Label();
             cboSearchType = new ComboBox();
             label1 = new Label();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvSuppliers).BeginInit();
             SuspendLayout();
             // 
@@ -56,21 +57,21 @@
             // 
             // txtName
             // 
-            txtName.Location = new Point(74, 603);
+            txtName.Location = new Point(475, 605);
             txtName.Name = "txtName";
-            txtName.Size = new Size(125, 27);
+            txtName.Size = new Size(278, 27);
             txtName.TabIndex = 1;
             // 
             // txtPhone
             // 
-            txtPhone.Location = new Point(282, 603);
+            txtPhone.Location = new Point(828, 604);
             txtPhone.Name = "txtPhone";
-            txtPhone.Size = new Size(125, 27);
+            txtPhone.Size = new Size(167, 27);
             txtPhone.TabIndex = 1;
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(440, 591);
+            btnAdd.Location = new Point(1023, 592);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(94, 50);
             btnAdd.TabIndex = 2;
@@ -118,7 +119,7 @@
             // 
             // lbName
             // 
-            lbName.Location = new Point(14, 605);
+            lbName.Location = new Point(416, 608);
             lbName.Name = "lbName";
             lbName.Size = new Size(62, 25);
             lbName.TabIndex = 3;
@@ -155,6 +156,16 @@
             label1.Size = new Size(67, 25);
             label1.TabIndex = 6;
             label1.Text = "Filter by:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 20F);
+            label2.Location = new Point(528, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(400, 46);
+            label2.TabIndex = 7;
+            label2.Text = "SUPPLIER MANAGEMENT";
             // 
             // SupplierForm
             // 
@@ -196,5 +207,6 @@
         private Label lblSearch;
         private ComboBox cboSearchType;
         private Label label1;
+        private Label label2;
     }
 }
