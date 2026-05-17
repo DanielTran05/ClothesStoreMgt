@@ -49,23 +49,39 @@ namespace ClothesStore.GUI.StaffForms
             txtResponse.Size = new Size(580, 180);
             txtResponse.Location = new Point(20, 80);
 
+            // Confirm
             btnConfirm.BackColor = Color.FromArgb(52, 152, 219);
             btnConfirm.ForeColor = Color.White;
             btnConfirm.FlatStyle = FlatStyle.Flat;
             btnConfirm.FlatAppearance.BorderSize = 0;
             btnConfirm.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnConfirm.Size = new Size(120, 40);
-            btnConfirm.Location = new Point(170, 300);
+            btnConfirm.Location = new Point(90, 300);
 
+            // Pending
+
+            btnPending.BackColor = Color.FromArgb(241, 196, 15);
+            btnPending.ForeColor = Color.White;
+            btnPending.FlatStyle = FlatStyle.Flat;
+            btnPending.FlatAppearance.BorderSize = 0;
+            btnPending.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            btnPending.Size = new Size(140, 40);
+            btnPending.Location = new Point(240, 300);
+
+
+            Controls.Add(btnPending);
+
+            // Cancel
             btnCancel.BackColor = Color.FromArgb(231, 76, 60);
             btnCancel.ForeColor = Color.White;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.Font = new Font("Segoe UI", 10, FontStyle.Bold);
             btnCancel.Size = new Size(120, 40);
-            btnCancel.Location = new Point(340, 300);
+            btnCancel.Location = new Point(410, 300);
         }
 
+        // SOLVED
         private void btnConfirm_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtResponse.Text))
@@ -87,6 +103,15 @@ namespace ClothesStore.GUI.StaffForms
             Close();
         }
 
+        // GIỮ PROCESSING
+        private void btnPending_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Retry;
+
+            Close();
+        }
+
+        // QUAY VỀ NEW
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

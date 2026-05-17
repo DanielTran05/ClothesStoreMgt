@@ -22,6 +22,8 @@ namespace ClothesStore.BUS
 
         public void Reject(int id, Guid employeeId)
             => repo.Reject(id, employeeId);
+        public void Reset(int id)
+            => repo.Reset(id);
 
         public void Solve(int id, string response, Guid employeeId)
         {

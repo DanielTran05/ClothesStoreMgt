@@ -176,8 +176,8 @@ namespace ClothesStore.DAL.Repository
             return dt;
         }
 
-        public DataTable GetImportHistory(
-    string filterType)
+        // ================= IMPORT HISTORY =================
+        public DataTable GetImportHistory()
         {
             using var conn =
                 DbHelper.GetConnection();
@@ -190,9 +190,32 @@ namespace ClothesStore.DAL.Repository
             da.SelectCommand.CommandType =
                 CommandType.StoredProcedure;
 
+            DataTable dt =
+                new DataTable();
+
+            da.Fill(dt);
+
+            return dt;
+        }
+
+        // ================= RECEIPT DETAIL =================
+        public DataTable GetReceiptDetails(
+            int receiptId)
+        {
+            using var conn =
+                DbHelper.GetConnection();
+
+            SqlDataAdapter da =
+                new SqlDataAdapter(
+                    "sp_GetReceiptDetails",
+                    conn);
+
+            da.SelectCommand.CommandType =
+                CommandType.StoredProcedure;
+
             da.SelectCommand.Parameters.AddWithValue(
-                "@FilterType",
-                filterType);
+                "@ReceiptID",
+                receiptId);
 
             DataTable dt =
                 new DataTable();

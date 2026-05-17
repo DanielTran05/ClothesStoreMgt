@@ -26,56 +26,15 @@
 
         private void InitializeComponent()
         {
-            lblCustomerId = new Label();
-            lblReason = new Label();
-            txtCustomerId = new TextBox();
-            txtReason = new TextBox();
             dgvCustomerService = new DataGridView();
             btnLoad = new Button();
             btnHandle = new Button();
-            btnAdd = new Button();
             btnReject = new Button();
             dtpFilterDate = new DateTimePicker();
             cbStatus = new ComboBox();
-            lblResponse = new Label();
-            txtResponse = new TextBox();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            lblAllreportsforms = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).BeginInit();
             SuspendLayout();
-            // 
-            // lblCustomerId
-            // 
-            lblCustomerId.AutoSize = true;
-            lblCustomerId.Location = new Point(12, 12);
-            lblCustomerId.Name = "lblCustomerId";
-            lblCustomerId.Size = new Size(92, 20);
-            lblCustomerId.TabIndex = 12;
-            lblCustomerId.Text = "Customer Id:";
-            // 
-            // lblReason
-            // 
-            lblReason.AutoSize = true;
-            lblReason.Location = new Point(250, 12);
-            lblReason.Name = "lblReason";
-            lblReason.Size = new Size(60, 20);
-            lblReason.TabIndex = 10;
-            lblReason.Text = "Reason:";
-            // 
-            // txtCustomerId
-            // 
-            txtCustomerId.Location = new Point(110, 9);
-            txtCustomerId.Name = "txtCustomerId";
-            txtCustomerId.Size = new Size(120, 27);
-            txtCustomerId.TabIndex = 11;
-            // 
-            // txtReason
-            // 
-            txtReason.Location = new Point(320, 9);
-            txtReason.Name = "txtReason";
-            txtReason.Size = new Size(180, 27);
-            txtReason.TabIndex = 9;
             // 
             // dgvCustomerService
             // 
@@ -107,16 +66,6 @@
             btnHandle.UseVisualStyleBackColor = true;
             btnHandle.Click += btnHandle_Click;
             // 
-            // btnAdd
-            // 
-            btnAdd.Location = new Point(1002, 596);
-            btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(100, 45);
-            btnAdd.TabIndex = 3;
-            btnAdd.Text = "Add";
-            btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
-            // 
             // btnReject
             // 
             btnReject.Location = new Point(1214, 596);
@@ -143,73 +92,47 @@
             cbStatus.TabIndex = 7;
             cbStatus.SelectedIndexChanged += cbStatus_SelectedIndexChanged;
             // 
-            // lblResponse
+            // lblAllreportsforms
             // 
-            lblResponse.AutoSize = true;
-            lblResponse.Location = new Point(278, 59);
-            lblResponse.Name = "lblResponse";
-            lblResponse.Size = new Size(75, 20);
-            lblResponse.TabIndex = 6;
-            lblResponse.Text = "Response:";
-            // 
-            // txtResponse
-            // 
-            txtResponse.Location = new Point(363, 55);
-            txtResponse.Multiline = true;
-            txtResponse.Name = "txtResponse";
-            txtResponse.Size = new Size(235, 28);
-            txtResponse.TabIndex = 5;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 97);
-            label1.Name = "label1";
-            label1.Size = new Size(120, 20);
-            label1.TabIndex = 13;
-            label1.Text = "All reports forms";
+            lblAllreportsforms.AutoSize = true;
+            lblAllreportsforms.Location = new Point(12, 97);
+            lblAllreportsforms.Name = "lblAllreportsforms";
+            lblAllreportsforms.Size = new Size(120, 20);
+            lblAllreportsforms.TabIndex = 13;
+            lblAllreportsforms.Text = "All reports forms";
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 20F);
-            label2.Location = new Point(1096, 9);
-            label2.Name = "label2";
-            label2.Size = new Size(324, 46);
-            label2.TabIndex = 14;
-            label2.Text = "CUSTOMER SERVICE";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 55);
-            label3.Name = "label3";
-            label3.Size = new Size(65, 20);
-            label3.TabIndex = 15;
-            label3.Text = "Filter by:";
-            label3.Click += label3_Click;
+            //label2.AutoSize = true;
+            //label2.Font = new Font("Segoe UI", 20F);
+            //label2.Location = new Point(1096, 9);
+            //label2.Name = "label2";
+            //label2.Size = new Size(324, 46);
+            //label2.TabIndex = 14;
+            //label2.Text = "CUSTOMER SERVICE";
+            //// 
+            //// label3
+            //// 
+            //label3.AutoSize = true;
+            //label3.Location = new Point(12, 55);
+            //label3.Name = "label3";
+            //label3.Size = new Size(65, 20);
+            //label3.TabIndex = 15;
+            //label3.Text = "Filter by:";
+            //label3.Click += label3_Click;
             // 
             // CustomerServiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(lblAllreportsforms);
             Controls.Add(btnLoad);
             Controls.Add(btnReject);
             Controls.Add(btnHandle);
-            Controls.Add(btnAdd);
             Controls.Add(dgvCustomerService);
-            Controls.Add(txtResponse);
-            Controls.Add(lblResponse);
             Controls.Add(cbStatus);
             Controls.Add(dtpFilterDate);
-            Controls.Add(txtReason);
-            Controls.Add(lblReason);
-            Controls.Add(txtCustomerId);
-            Controls.Add(lblCustomerId);
             Name = "CustomerServiceForm";
             Text = "CustomerServiceForm";
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).EndInit();
@@ -219,28 +142,15 @@
 
         #endregion
 
-        private Label lblCustomerId;
-        private Label lblReason;
-
-        private TextBox txtCustomerId;
-        private TextBox txtReason;
-
         private DataGridView dgvCustomerService;
 
         private Button btnLoad;
         private Button btnHandle;
-        private Button btnAdd;
         private Button btnReject;
 
         private DateTimePicker dtpFilterDate;
 
         private ComboBox cbStatus;
-
-        private Label lblResponse;
-
-        private TextBox txtResponse;
-        private Label label1;
-        private Label label2;
-        private Label label3;
+        private Label lblAllreportsforms;
     }
 }

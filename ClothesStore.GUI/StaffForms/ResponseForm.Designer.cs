@@ -32,6 +32,7 @@
             txtResponse = new TextBox();
             btnConfirm = new Button();
             btnCancel = new Button();
+            btnPending = new Button();
             SuspendLayout();
             // 
             // lblResponseTitle
@@ -64,7 +65,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(478, 67);
+            btnCancel.Location = new Point(601, 67);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(94, 58);
             btnCancel.TabIndex = 2;
@@ -72,11 +73,22 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // btnPending
+            // 
+            btnPending.Location = new Point(489, 67);
+            btnPending.Name = "btnPending";
+            btnPending.Size = new Size(94, 58);
+            btnPending.TabIndex = 2;
+            btnPending.Text = "Pending";
+            btnPending.UseVisualStyleBackColor = true;
+            btnPending.Click += btnPending_Click;
+            // 
             // ResponseForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
+            Controls.Add(btnPending);
             Controls.Add(btnCancel);
             Controls.Add(btnConfirm);
             Controls.Add(txtResponse);
@@ -93,5 +105,6 @@
         private TextBox txtResponse;
         private Button btnConfirm;
         private Button btnCancel;
+        private Button btnPending;
     }
 }

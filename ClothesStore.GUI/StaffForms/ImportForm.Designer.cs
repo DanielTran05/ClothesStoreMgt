@@ -43,9 +43,11 @@
             lblVariant = new Label();
             cbFilterType = new ComboBox();
             lblFilterType = new Label();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            lblDate = new Label();
+            lblSupplier = new Label();
+            txtSearch = new TextBox();
+            lblSearch = new Label();
+            btnViewDetail = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvDetail).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvHistory).BeginInit();
             SuspendLayout();
@@ -79,21 +81,23 @@
             // 
             // txtQuantity
             // 
-            txtQuantity.Location = new Point(306, 56);
+            txtQuantity.Location = new Point(340, 60);
             txtQuantity.Name = "txtQuantity";
             txtQuantity.Size = new Size(125, 27);
             txtQuantity.TabIndex = 3;
+            txtQuantity.KeyPress += txtQuantity_KeyPress;
             // 
             // txtPrice
             // 
-            txtPrice.Location = new Point(503, 55);
+            txtPrice.Location = new Point(553, 59);
             txtPrice.Name = "txtPrice";
             txtPrice.Size = new Size(140, 27);
             txtPrice.TabIndex = 3;
+            txtPrice.KeyPress += txtPrice_KeyPress;
             // 
             // btnAddDetail
             // 
-            btnAddDetail.Location = new Point(680, 56);
+            btnAddDetail.Location = new Point(703, 56);
             btnAddDetail.Name = "btnAddDetail";
             btnAddDetail.Size = new Size(94, 28);
             btnAddDetail.TabIndex = 4;
@@ -103,7 +107,7 @@
             // 
             // lbPrice
             // 
-            lbPrice.Location = new Point(448, 56);
+            lbPrice.Location = new Point(489, 60);
             lbPrice.Name = "lbPrice";
             lbPrice.Size = new Size(49, 27);
             lbPrice.TabIndex = 5;
@@ -111,16 +115,16 @@
             // 
             // lbQuantity
             // 
-            lbQuantity.Location = new Point(234, 56);
+            lbQuantity.Location = new Point(246, 59);
             lbQuantity.Name = "lbQuantity";
-            lbQuantity.Size = new Size(75, 27);
+            lbQuantity.Size = new Size(88, 27);
             lbQuantity.TabIndex = 5;
             lbQuantity.Text = "Quantity:";
             // 
             // cbVariant
             // 
             cbVariant.FormattingEnabled = true;
-            cbVariant.Location = new Point(77, 56);
+            cbVariant.Location = new Point(77, 59);
             cbVariant.Name = "cbVariant";
             cbVariant.Size = new Size(151, 28);
             cbVariant.TabIndex = 6;
@@ -145,7 +149,7 @@
             // 
             // dtImportDate
             // 
-            dtImportDate.Location = new Point(365, 384);
+            dtImportDate.Location = new Point(603, 386);
             dtImportDate.Name = "dtImportDate";
             dtImportDate.Size = new Size(262, 27);
             dtImportDate.TabIndex = 8;
@@ -154,7 +158,7 @@
             // lblVariant
             // 
             lblVariant.AutoSize = true;
-            lblVariant.Location = new Point(13, 59);
+            lblVariant.Location = new Point(13, 62);
             lblVariant.Name = "lblVariant";
             lblVariant.Size = new Size(58, 20);
             lblVariant.TabIndex = 9;
@@ -177,48 +181,65 @@
             lblFilterType.TabIndex = 5;
             lblFilterType.Text = "Filter by:";
             // 
-            // label1
+            // lblDate
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(316, 386);
-            label1.Name = "label1";
-            label1.Size = new Size(44, 20);
-            label1.TabIndex = 10;
-            label1.Text = "Date:";
-            label1.Click += label1_Click;
+            lblDate.AutoSize = true;
+            lblDate.Location = new Point(553, 391);
+            lblDate.Name = "lblDate";
+            lblDate.Size = new Size(44, 20);
+            lblDate.TabIndex = 10;
+            lblDate.Text = "Date:";
             // 
-            // label2
+            // lblSupplier
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(15, 25);
-            label2.Name = "label2";
-            label2.Size = new Size(67, 20);
-            label2.TabIndex = 11;
-            label2.Text = "Supplier:";
+            lblSupplier.AutoSize = true;
+            lblSupplier.Location = new Point(15, 25);
+            lblSupplier.Name = "lblSupplier";
+            lblSupplier.Size = new Size(67, 20);
+            lblSupplier.TabIndex = 11;
+            lblSupplier.Text = "Supplier:";
             // 
-            // label3
+            // txtSearch
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 20F);
-            label3.Location = new Point(1102, 22);
-            label3.Name = "label3";
-            label3.Size = new Size(318, 46);
-            label3.TabIndex = 12;
-            label3.Text = "IMPORT PRODUCTS";
+            txtSearch.Location = new Point(413, 385);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(125, 27);
+            txtSearch.TabIndex = 12;
+            txtSearch.TextChanged += txtSearch_TextChanged;
+            // 
+            // lblSearch
+            // 
+            lblSearch.Location = new Point(340, 385);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(67, 27);
+            lblSearch.TabIndex = 5;
+            lblSearch.Text = "Search:";
+            // 
+            // btnViewDetail
+            // 
+            btnViewDetail.Location = new Point(1252, 650);
+            btnViewDetail.Name = "btnViewDetail";
+            btnViewDetail.Size = new Size(168, 43);
+            btnViewDetail.TabIndex = 13;
+            btnViewDetail.Text = "View Detail";
+            btnViewDetail.UseVisualStyleBackColor = true;
+            btnViewDetail.Click += btnViewDetail_Click;
             // 
             // ImportForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1432, 653);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
+            ClientSize = new Size(1432, 699);
+            Controls.Add(btnViewDetail);
+            Controls.Add(txtSearch);
+            Controls.Add(lblSupplier);
+            Controls.Add(lblDate);
             Controls.Add(lblVariant);
             Controls.Add(dtImportDate);
             Controls.Add(lblHistory);
             Controls.Add(cbFilterType);
             Controls.Add(cbVariant);
+            Controls.Add(lblSearch);
             Controls.Add(lblFilterType);
             Controls.Add(lbQuantity);
             Controls.Add(lbPrice);
@@ -254,8 +275,10 @@
         private Label lblVariant;
         private ComboBox cbFilterType;
         private Label lblFilterType;
-        private Label label1;
-        private Label label2;
-        private Label label3;
+        private Label lblDate;
+        private Label lblSupplier;
+        private TextBox txtSearch;
+        private Label lblSearch;
+        private Button btnViewDetail;
     }
 }

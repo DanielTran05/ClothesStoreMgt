@@ -111,9 +111,9 @@
             // 
             // lbPhone
             // 
-            lbPhone.Location = new Point(768, 607);
+            lbPhone.Location = new Point(217, 606);
             lbPhone.Name = "lbPhone";
-            lbPhone.Size = new Size(54, 25);
+            lbPhone.Size = new Size(59, 25);
             lbPhone.TabIndex = 3;
             lbPhone.Text = "Phone:";
             // 
@@ -171,8 +171,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1432, 653);
-            Controls.Add(label2);
+            ClientSize = new Size(1432, 677);
             Controls.Add(label1);
             Controls.Add(cboSearchType);
             Controls.Add(txtSearch);

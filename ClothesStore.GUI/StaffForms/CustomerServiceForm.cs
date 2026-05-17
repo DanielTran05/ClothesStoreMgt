@@ -51,12 +51,10 @@ namespace ClothesStore.GUI.StaffForms
 
             dgvCustomerService.RowTemplate.Height = 35;
 
-            btnAdd.BackColor = Color.FromArgb(52, 152, 219);
             btnHandle.BackColor = Color.FromArgb(241, 196, 15);
             btnReject.BackColor = Color.FromArgb(231, 76, 60);
             btnLoad.BackColor = Color.FromArgb(52, 73, 94);
 
-            btnAdd.ForeColor = Color.White;
             btnHandle.ForeColor = Color.White;
             btnReject.ForeColor = Color.White;
             btnLoad.ForeColor = Color.White;
@@ -132,25 +130,6 @@ namespace ClothesStore.GUI.StaffForms
                 dgvCustomerService.Columns[col].Visible = false;
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtReason.Text))
-            {
-                MessageBox.Show("Vui lòng nhập lý do!");
-                return;
-            }
-
-            service.Add(
-                GlobalSession.CurrentUser.UserId,
-                txtReason.Text
-            );
-
-            MessageBox.Show("Gửi khiếu nại thành công!");
-
-            LoadData();
-            txtReason.Clear();
-        }
-
         private void dgvCustomerService_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -160,6 +139,55 @@ namespace ClothesStore.GUI.StaffForms
                 .Cells["CustomerServiceID"].Value
             );
         }
+
+        //private void btnHandle_Click(object sender, EventArgs e)
+        //{
+        //    if (selectedId == -1)
+        //    {
+        //        MessageBox.Show("Vui lòng chọn khiếu nại!");
+        //        return;
+        //    }
+
+        //    int status = Convert.ToInt32(
+        //        dgvCustomerService.CurrentRow.Cells["Status"].Value
+        //    );
+
+        //    // NEW -> PROCESSING
+        //    if (status == 0)
+        //    {
+        //        service.Handle(
+        //            selectedId,
+        //            GlobalSession.CurrentUser.UserId
+        //        );
+
+        //        MessageBox.Show("Processing...");
+        //        LoadData();
+        //        return;
+        //    }
+
+        //    // PROCESSING -> SOLVED
+        //    if (status == 1)
+        //    {
+        //        using (var frm = new ResponseForm())
+        //        {
+        //            if (frm.ShowDialog() == DialogResult.OK)
+        //            {
+        //                service.Solve(
+        //                    selectedId,
+        //                    frm.ResponseText,
+        //                    GlobalSession.CurrentUser.UserId
+        //                );
+
+        //                MessageBox.Show("Solved!");
+        //                LoadData();
+        //            }
+        //        }
+
+        //        return;
+        //    }
+
+        //    MessageBox.Show("Trạng thái không hợp lệ!");
+        //}
 
         private void btnHandle_Click(object sender, EventArgs e)
         {
@@ -173,36 +201,61 @@ namespace ClothesStore.GUI.StaffForms
                 dgvCustomerService.CurrentRow.Cells["Status"].Value
             );
 
-            if (status == 0)
+            if (status == 2 || status == 3)
             {
-                service.Handle(selectedId, GlobalSession.CurrentUser.UserId);
-                MessageBox.Show("Processing...");
-                LoadData();
+                MessageBox.Show("Không thể xử lý!");
                 return;
             }
 
-            if (status == 1)
-            {
-                using (var frm = new ResponseForm())
-                {
-                    if (frm.ShowDialog() == DialogResult.OK)
-                    {
-                        service.Solve(
-                            selectedId,
-                            frm.ResponseText,
-                            GlobalSession.CurrentUser.UserId
-                        );
+            bool wasNew = (status == 0);
 
-                        MessageBox.Show("Solved!");
-                        LoadData();
+            // NEW -> PROCESSING
+            if (wasNew)
+            {
+                service.Handle(
+                    selectedId,
+                    GlobalSession.CurrentUser.UserId
+                );
+
+                LoadData();
+            }
+
+            using (var frm = new ResponseForm())
+            {
+                DialogResult result = frm.ShowDialog();
+
+                // SOLVED
+                if (result == DialogResult.OK)
+                {
+                    service.Solve(
+                        selectedId,
+                        frm.ResponseText,
+                        GlobalSession.CurrentUser.UserId
+                    );
+
+                    MessageBox.Show("Solved!");
+                }
+
+                // CANCEL -> quay lại NEW
+                else if (result == DialogResult.Cancel)
+                {
+                    // chỉ reset nếu ban đầu là NEW
+                    if (wasNew)
+                    {
+                        service.Reset(selectedId);
                     }
                 }
-                return;
+
+                // Retry = Đang xử lý
+                // giữ nguyên PROCESSING
+                else if (result == DialogResult.Retry)
+                {
+                    MessageBox.Show("Đã lưu trạng thái Processing!");
+                }
+
+                LoadData();
             }
-
-            MessageBox.Show("Trạng thái không hợp lệ!");
         }
-
         private void btnReject_Click(object sender, EventArgs e)
         {
             if (selectedId == -1)
