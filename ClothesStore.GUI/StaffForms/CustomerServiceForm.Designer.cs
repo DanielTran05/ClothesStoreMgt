@@ -103,23 +103,23 @@
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 20F);
-            label2.Location = new Point(1096, 9);
-            label2.Name = "label2";
-            label2.Size = new Size(324, 46);
-            label2.TabIndex = 14;
-            label2.Text = "CUSTOMER SERVICE";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 55);
-            label3.Name = "label3";
-            label3.Size = new Size(65, 20);
-            label3.TabIndex = 15;
-            label3.Text = "Filter by:";
-            label3.Click += label3_Click;
+            //label2.AutoSize = true;
+            //label2.Font = new Font("Segoe UI", 20F);
+            //label2.Location = new Point(1096, 9);
+            //label2.Name = "label2";
+            //label2.Size = new Size(324, 46);
+            //label2.TabIndex = 14;
+            //label2.Text = "CUSTOMER SERVICE";
+            //// 
+            //// label3
+            //// 
+            //label3.AutoSize = true;
+            //label3.Location = new Point(12, 55);
+            //label3.Name = "label3";
+            //label3.Size = new Size(65, 20);
+            //label3.TabIndex = 15;
+            //label3.Text = "Filter by:";
+            //label3.Click += label3_Click;
             // 
             // CustomerServiceForm
             // 
