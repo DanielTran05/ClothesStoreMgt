@@ -1,18 +1,20 @@
-﻿using ClothesStore.DTO;
+﻿using ClothesStore.DAL.Context;
+using ClothesStore.DTO;
 using ClothesStore.DTO.ProductDto;
+using Helper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using Helper;
 namespace ClothesStore.DAL.Repository
 {
     public class ProductVariantRepository
     {
         private readonly string _connectionString = "Server=.;Database=clothesstoremgt;Trusted_Connection=True;TrustServerCertificate=True;";
-
+        private readonly ClothesStoreContext _context = new ClothesStoreContext();
         public List<ProductVariantDTO> GetVariantsByProductID(int productId)
         {
             var list = new List<ProductVariantDTO>();
@@ -99,6 +101,17 @@ namespace ClothesStore.DAL.Repository
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+        public ProductVariantDTO GetVariantBySKU(string sku)
+        {
+            return _context.ProductVariants
+                .Where(v => v.Sku == sku)
+                .Select(v => new ProductVariantDTO
+                {
+                    VariantID = v.VariantId,
+                    SKU = v.Sku
+                })
+                .FirstOrDefault();
         }
     }
 }

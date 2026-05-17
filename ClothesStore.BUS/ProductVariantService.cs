@@ -48,5 +48,10 @@ namespace ClothesStore.BUS
             if (!string.IsNullOrWhiteSpace(variant.SKU))
                 variant.SKU = variant.SKU.Trim();
         }
+        public ProductVariantDTO GetVariantBySKU(string sku)
+        {
+            if (string.IsNullOrWhiteSpace(sku)) return null;
+            return _variantRepository.GetVariantBySKU(sku);
+        }
     }
 }

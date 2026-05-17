@@ -1,4 +1,5 @@
-﻿using ClothesStore.DAL.Repository;
+﻿using ClothesStore.DAL.Models;
+using ClothesStore.DAL.Repository;
 using Helper;
 using Microsoft.Data.SqlClient;
 using System;
@@ -10,6 +11,7 @@ namespace ClothesStore.BUS
     {
         private CustomerServiceRepository repo =
             new CustomerServiceRepository();
+        private CustomerRepository _repo = new CustomerRepository();
 
         public DataTable GetAll()
             => repo.GetAll();
@@ -43,6 +45,10 @@ namespace ClothesStore.BUS
 
                 cmd.ExecuteNonQuery();
             }
+        }
+        public Order? GetCustomerByPhone(string phone)
+        {
+            return _repo.GetCustomerByPhone(phone);
         }
     }
 }
