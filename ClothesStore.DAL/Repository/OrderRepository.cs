@@ -31,7 +31,6 @@ namespace ClothesStore.DAL.Repository
                             o.TotalMoney
                         };
 
-            // Kéo về RAM bằng AsEnumerable để gọi hàm GetStatusName đọc từ Enum và sắp xếp tăng dần
             return query.OrderBy(o => o.OrderDate)
                         .AsEnumerable()
                         .Select(o => new
@@ -47,7 +46,6 @@ namespace ClothesStore.DAL.Repository
                         }).ToList<object>();
         }
 
-        // Hàm xử lý trạng thái tự động đọc từ Enum (Bù trừ lệch pha index DB từ 0, Enum từ 1)
         private static string GetStatusName(int? status)
         {
             if (status == null) return "Unknown";

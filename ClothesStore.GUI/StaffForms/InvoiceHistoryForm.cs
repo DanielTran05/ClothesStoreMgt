@@ -16,7 +16,7 @@ namespace ClothesStore.GUI.StaffForms
         {
             InitializeComponent();
             _parentForm = parentForm;
-
+                
             LoadStatusSimple();
             LoadHistory();   // Load trang 1 ban đầu
         }

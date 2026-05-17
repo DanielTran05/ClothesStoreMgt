@@ -164,7 +164,7 @@ namespace ClothesStore.GUI
             InvoiceHistoryForm form = new InvoiceHistoryForm(mainForm);
 
             mainForm.Hide();
-            form.Show();
+            form.ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
