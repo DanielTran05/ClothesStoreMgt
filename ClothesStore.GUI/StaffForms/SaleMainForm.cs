@@ -29,5 +29,16 @@ namespace ClothesStore.GUI.StaffForms
         {
             new CustomerServiceForm().ShowDialog();
         }
+
+        private void btnSaleManagament_Click(object sender, EventArgs e)
+        {
+            ucOrderManagement ucOrder = new ucOrderManagement(this);
+
+            ucOrder.Dock = DockStyle.Fill;
+
+            this.Controls.Add(ucOrder);
+
+            ucOrder.BringToFront();
+        }
     }
 }
