@@ -94,6 +94,7 @@ namespace ClothesStore.GUI.StaffForms
 
                 ResetInputFields(false);
             }
+            checkPhone.Enabled = false;
         }
 
         private void ResetInputFields(bool isUserExists)
