@@ -403,77 +403,81 @@ namespace ClothesStore.GUI.StaffForms
         }
 
         // ================= CREATE RECEIPT =================
-        private void btnCreateReceipt_Click(
-            object? sender,
-            EventArgs e)
+        private void btnCreateReceipt_Click(object? sender, EventArgs e)
         {
+            // 1. Chốt chặn bảo vệ Session: Tránh lỗi NullReferenceException
+            if (GlobalSession.CurrentUser == null)
+            {
+                MessageBox.Show("Phiên đăng nhập đã hết hạn hoặc không tìm thấy thông tin nhân viên. Vui lòng đăng nhập lại!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Có thể gọi lệnh đẩy về màn hình Login ở đây
+                return;
+            }
+
             if (cbSupplier.SelectedValue == null)
             {
-                MessageBox.Show(
-                    "Vui lòng chọn công ty!");
-
+                MessageBox.Show("Vui lòng chọn công ty!");
                 return;
             }
 
-            if (detailsTable.Rows.Count == 0)
+            if (detailsTable.Rows.Count == 0) // Lưu ý: Nếu lấy từ DataGridView thì phải check dgvDetail.Rows
             {
-                MessageBox.Show(
-                    "Chưa có sản phẩm!");
-
+                MessageBox.Show("Chưa có sản phẩm!");
                 return;
             }
 
-            int receiptId =
-                warehouseService
-                .CreateReceipt(
-                    Convert.ToInt32(
-                        cbSupplier.SelectedValue),
+            // 2. Tính tổng tiền
+            decimal totalAmount = 0;
+            foreach (DataGridViewRow row in dgvDetail.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    int qty = Convert.ToInt32(row.Cells["Quantity"].Value);
+                    decimal price = Convert.ToDecimal(row.Cells["ImportPrice"].Value);
+                    totalAmount += (qty * price);
+                }
+            }
 
-                    GlobalSession
-                    .CurrentUser
-                    .UserId
+            try
+            {
+                // 3. Đã đảo lại thứ tự tham số cho khớp với WarehouseService (SupplierId, EmployeeId, TotalAmount)
+                int receiptId = warehouseService.CreateReceipt(
+                    Convert.ToInt32(cbSupplier.SelectedValue),
+                    GlobalSession.CurrentUser.UserId,
+                    totalAmount
                 );
 
-            foreach (DataRow row
-                in detailsTable.Rows)
-            {
-                warehouseService
-                    .AddReceiptDetail(
+                foreach (DataRow row in detailsTable.Rows)
+                {
+                    warehouseService.AddReceiptDetail(
                         receiptId,
-                        Convert.ToInt32(
-                            row["VariantID"]),
-                        Convert.ToInt32(
-                            row["Quantity"]),
-                        Convert.ToDecimal(
-                            row["ImportPrice"])
+                        Convert.ToInt32(row["VariantID"]),
+                        Convert.ToInt32(row["Quantity"]),
+                        Convert.ToDecimal(row["ImportPrice"])
                     );
 
-                warehouseService
-                    .AddInventoryTransaction(
-                        Convert.ToInt32(
-                            row["VariantID"]),
+                    // Ghi nhận lịch sử giao dịch (Nhập kho)
+                    warehouseService.AddInventoryTransaction(
+                        Convert.ToInt32(row["VariantID"]),
                         "IMPORT",
-                        Convert.ToInt32(
-                            row["Quantity"]),
+                        Convert.ToInt32(row["Quantity"]),
                         receiptId
                     );
+                }
+
+                MessageBox.Show("Tạo phiếu nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                detailsTable.Clear();
+                LoadImportHistory();
+
+                if (dgvHistory.Rows.Count > 0)
+                {
+                    dgvHistory.ClearSelection();
+                    dgvHistory.Rows[0].Selected = true;
+                }
             }
-
-            MessageBox.Show(
-                "Tạo phiếu nhập thành công!");
-
-            detailsTable.Clear();
-
-            // RELOAD LIỀN
-            LoadImportHistory();
-
-            // AUTO CHỌN DÒNG MỚI
-            if (dgvHistory.Rows.Count > 0)
+            catch (Exception ex)
             {
-                dgvHistory.ClearSelection();
-
-                dgvHistory.Rows[0].Selected =
-                    true;
+                MessageBox.Show("Có lỗi xảy ra trong quá trình lưu dữ liệu: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

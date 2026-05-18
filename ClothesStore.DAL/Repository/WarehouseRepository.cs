@@ -8,7 +8,8 @@ namespace ClothesStore.DAL.Repository
     {
         public int CreateReceipt(
             int supplierId,
-            Guid employeeId)
+            Guid employeeId,
+            decimal totalAmount)
         {
             using var conn =
                 DbHelper.GetConnection();
@@ -30,6 +31,10 @@ namespace ClothesStore.DAL.Repository
             cmd.Parameters.AddWithValue(
                 "@EmployeeId",
                 employeeId);
+
+            cmd.Parameters.AddWithValue(
+                "@TotalAmount",
+                totalAmount);
 
             return Convert.ToInt32(
                 cmd.ExecuteScalar());

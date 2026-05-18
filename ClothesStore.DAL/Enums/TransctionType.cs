@@ -9,6 +9,7 @@ namespace ClothesStore.DAL.Enums
         NHAP_KHO,
         BAN_HANG, 
         TRA_HANG,
+        HUY,
         KIEM_KE
     }
 }

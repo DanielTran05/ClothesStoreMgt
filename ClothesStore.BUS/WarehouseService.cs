@@ -10,11 +10,13 @@ namespace ClothesStore.BUS
 
         public int CreateReceipt(
             int supplierId,
-            Guid employeeId)
+            Guid employeeId,
+            decimal totalAmount)
         {
             return repo.CreateReceipt(
                 supplierId,
-                employeeId);
+                employeeId,
+                totalAmount);
         }
 
         public void AddReceiptDetail(
