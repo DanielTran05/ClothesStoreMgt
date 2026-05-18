@@ -50,7 +50,6 @@ namespace ClothesStore.GUI.StaffForms
                 if (order.ShippingProviderId.HasValue)
                     cboShipping.SelectedValue = order.ShippingProviderId.Value;
 
-                // Xử lý an toàn cho ComboBox Payment có chứa DataSource
                 var invoice = order.Invoices?.FirstOrDefault();
                 if (invoice != null && !string.IsNullOrWhiteSpace(invoice.PaymentMethod))
                 {
@@ -360,7 +359,7 @@ namespace ClothesStore.GUI.StaffForms
             MessageBox.Show("Đã lưu thay đổi đơn hàng!", "Thành công");
         }
 
-        private void button3_Click(object sender, EventArgs e) // NÚT XÁC NHẬN SỬA ĐƠN HÀNG
+        private void button3_Click(object sender, EventArgs e)
         {
             try
             {
@@ -377,7 +376,7 @@ namespace ClothesStore.GUI.StaffForms
                     return;
                 }
 
-                if (order.OrderStatus != 0) // Trạng thái khác Pending (0) thì chặn
+                if (order.OrderStatus != 0) 
                 {
                     MessageBox.Show("Chỉ đơn hàng ở trạng thái Pending mới được sửa!", "Không cho phép");
                     return;
@@ -388,7 +387,6 @@ namespace ClothesStore.GUI.StaffForms
                 order.ShippingProviderId = cboShipping.SelectedValue as int? ?? order.ShippingProviderId;
                 order.TotalMoney = CalculateTotalFromGrid();
 
-                // 1. Dọn sạch chi tiết cũ tránh dồn dữ liệu khi loop add đồ mới từ Grid
                 order.OrderDetails.Clear();
 
                 foreach (DataGridViewRow row in dgvOrderDetails.Rows)
@@ -423,23 +421,21 @@ namespace ClothesStore.GUI.StaffForms
                 string paymentMethod = cboPayment.Text.Trim();
                 string shippingMethod = cboShipping.Text.Trim();
 
-                // 2. Tích hợp ràng buộc kiểm tra trạng thái tự động cập nhật
                 if (paymentMethod.Equals("CASH", StringComparison.OrdinalIgnoreCase) &&
                     shippingMethod.Equals("Direct", StringComparison.OrdinalIgnoreCase))
                 {
-                    order.OrderStatus = 1; // Chuyển trạng thái đơn sang Paid (Đã thanh toán)
+                    order.OrderStatus = 1;
                 }
                 else
                 {
-                    order.OrderStatus = 2; // Các trường hợp khác chuyển sang Shipping (Đang giao hàng)
+                    order.OrderStatus = 2;
                 }
 
-                // 3. Gọi Service cập nhật xuống cơ sở dữ liệu
                 bool success = _orderService.UpdateFullOrder(order, paymentMethod);
 
                 if (success)
                 {
-                    MessageBox.Show("✅ Cập nhật đơn hàng thành công!", "Thành công",
+                    MessageBox.Show("Cập nhật đơn hàng thành công!", "Thành công",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();

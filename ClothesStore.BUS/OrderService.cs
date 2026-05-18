@@ -44,11 +44,12 @@ namespace ClothesStore.BUS
 
         public string RemoveOrder(int id)
         {
-            bool result = _orderRepo.Delete(id);
-            if (result)
-                return "Xóa đơn hàng thành công!";
-            else
-                return "Không thể xóa đơn hàng này (Đơn hàng không tồn tại hoặc đã có dữ liệu liên quan)!";
+            bool isSuccess = _orderRepo.Cancel(id);
+            if (isSuccess)
+            {
+                return $"Hủy đơn hàng #{id} thành công!";
+            }
+            return $"Hủy đơn hàng #{id} thất bại! Đơn hàng có thể đang ở trạng thái Shipping hoặc xảy ra lỗi hệ thống.";
         }
         public List<object> GetOrdersFiltered(DateTime from, DateTime to, int? status, string key)
         {
@@ -61,7 +62,7 @@ namespace ClothesStore.BUS
                 Amount = order.TotalMoney ?? 0,
                 PaymentDate = DateTime.Now,
                 PaymentMethod = paymentMethod,
-                Status = 2 
+                Status = 2
             };
 
             return _orderRepo.CreateFullOrder(order, invoice);
@@ -76,7 +77,6 @@ namespace ClothesStore.BUS
         }
         public string ReturnOrder(int orderId)
         {
-            // Gọi xuống Repository để xử lý database
             bool isSuccess = _orderRepo.Return(orderId);
 
             if (isSuccess)
@@ -84,6 +84,11 @@ namespace ClothesStore.BUS
                 return $"Xử lý trả hàng cho đơn hàng #{orderId} thành công!";
             }
             return "Xử lý trả hàng thất bại, vui lòng kiểm tra lại hệ thống!";
+        }
+
+        public object? GetOrdersByCustomer(Guid? customerId)
+        {
+            return _orderRepo.GetFirstOrderByCustomerId(customerId);
         }
     }
 }

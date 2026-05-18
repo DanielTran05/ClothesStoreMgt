@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnReset = new Button();
+            btnFilller = new Button();
             cboFilterStatus = new ComboBox();
             dtpToDate = new DateTimePicker();
             dtpFromDate = new DateTimePicker();
@@ -36,6 +38,7 @@
             label2 = new Label();
             txtSearchOrder = new TextBox();
             panel4 = new Panel();
+            btnReturn = new Button();
             viewOrderDetail = new Button();
             btnCancelOrder = new Button();
             btnUpdateOrder = new Button();
@@ -43,7 +46,6 @@
             panel5 = new Panel();
             button1 = new Button();
             dgvOrders = new DataGridView();
-            btnReturn = new Button();
             panel1.SuspendLayout();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
@@ -53,6 +55,8 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 192, 128);
+            panel1.Controls.Add(btnReset);
+            panel1.Controls.Add(btnFilller);
             panel1.Controls.Add(cboFilterStatus);
             panel1.Controls.Add(dtpToDate);
             panel1.Controls.Add(dtpFromDate);
@@ -61,8 +65,28 @@
             panel1.Controls.Add(txtSearchOrder);
             panel1.Location = new Point(3, 85);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1444, 42);
+            panel1.Size = new Size(1427, 42);
             panel1.TabIndex = 0;
+            // 
+            // btnReset
+            // 
+            btnReset.Location = new Point(1168, 8);
+            btnReset.Name = "btnReset";
+            btnReset.Size = new Size(94, 29);
+            btnReset.TabIndex = 7;
+            btnReset.Text = "Reset";
+            btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
+            // 
+            // btnFilller
+            // 
+            btnFilller.Location = new Point(1048, 7);
+            btnFilller.Name = "btnFilller";
+            btnFilller.Size = new Size(94, 29);
+            btnFilller.TabIndex = 6;
+            btnFilller.Text = "Lọc";
+            btnFilller.UseVisualStyleBackColor = true;
+            btnFilller.Click += btnFilller_Click;
             // 
             // cboFilterStatus
             // 
@@ -91,7 +115,7 @@
             // 
             // InvoiceHistory
             // 
-            InvoiceHistory.Location = new Point(1347, 7);
+            InvoiceHistory.Location = new Point(1314, 7);
             InvoiceHistory.Name = "InvoiceHistory";
             InvoiceHistory.Size = new Size(94, 29);
             InvoiceHistory.TabIndex = 3;
@@ -126,8 +150,18 @@
             panel4.Controls.Add(btnCreateOrder);
             panel4.Location = new Point(3, 3);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1444, 74);
+            panel4.Size = new Size(1427, 74);
             panel4.TabIndex = 3;
+            // 
+            // btnReturn
+            // 
+            btnReturn.Location = new Point(750, 6);
+            btnReturn.Name = "btnReturn";
+            btnReturn.Size = new Size(96, 61);
+            btnReturn.TabIndex = 2;
+            btnReturn.Text = "Trả";
+            btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
             // 
             // viewOrderDetail
             // 
@@ -175,7 +209,7 @@
             panel5.Controls.Add(dgvOrders);
             panel5.Location = new Point(3, 142);
             panel5.Name = "panel5";
-            panel5.Size = new Size(1444, 555);
+            panel5.Size = new Size(1427, 555);
             panel5.TabIndex = 4;
             // 
             // button1
@@ -195,18 +229,8 @@
             dgvOrders.Location = new Point(3, 3);
             dgvOrders.Name = "dgvOrders";
             dgvOrders.RowHeadersWidth = 51;
-            dgvOrders.Size = new Size(1438, 457);
+            dgvOrders.Size = new Size(1421, 457);
             dgvOrders.TabIndex = 0;
-            // 
-            // btnReturn
-            // 
-            btnReturn.Location = new Point(750, 6);
-            btnReturn.Name = "btnReturn";
-            btnReturn.Size = new Size(96, 61);
-            btnReturn.TabIndex = 2;
-            btnReturn.Text = "Trả";
-            btnReturn.UseVisualStyleBackColor = true;
-            btnReturn.Click += btnReturn_Click;
             // 
             // ucOrderManagement
             // 
@@ -243,5 +267,7 @@
         private DateTimePicker dtpToDate;
         private DateTimePicker dtpFromDate;
         private Button btnReturn;
+        private Button btnReset;
+        private Button btnFilller;
     }
 }

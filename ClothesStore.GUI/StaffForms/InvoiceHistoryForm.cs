@@ -16,9 +16,9 @@ namespace ClothesStore.GUI.StaffForms
         {
             InitializeComponent();
             _parentForm = parentForm;
-                
+
             LoadStatusSimple();
-            LoadHistory();   // Load trang 1 ban đầu
+            LoadHistory();
         }
 
         private void LoadHistory()
@@ -48,7 +48,7 @@ namespace ClothesStore.GUI.StaffForms
                 int? status = null;
                 if (cboStatus.SelectedIndex > 0)
                 {
-                    status = cboStatus.SelectedIndex;   // tùy theo mapping của bạn
+                    status = cboStatus.SelectedIndex;
                 }
 
                 var result = _invoiceService.GetHistory(fromDate, toDate, status, currentPage);
@@ -64,7 +64,6 @@ namespace ClothesStore.GUI.StaffForms
             }
         }
 
-        // Cập nhật giao diện phân trang (quan trọng)
         private void UpdatePaginationUI()
         {
             lblPageInfo.Text = $"Trang {currentPage} / {totalPages}";
@@ -97,10 +96,21 @@ namespace ClothesStore.GUI.StaffForms
             }
         }
 
-        // Các event filter
-        private void dtpFrom_ValueChanged(object sender, EventArgs e) => ResetAndLoad();
-        private void dtpTo_ValueChanged(object sender, EventArgs e) => ResetAndLoad();
-        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e) => ResetAndLoad();
+
+        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpTo_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ResetAndLoad();
+        }
 
         private void LoadStatusSimple()
         {
@@ -116,6 +126,26 @@ namespace ClothesStore.GUI.StaffForms
         {
             _parentForm?.Show();
             this.Close();
+        }
+
+        private void btnFiller_Click(object sender, EventArgs e)
+        {
+            ResetAndLoad();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            dtpFrom.Value = DateTime.Now.AddMonths(-1);
+            dtpTo.Value = DateTime.Now;
+
+            if (cboStatus.Items.Count > 0)
+            {
+                cboStatus.SelectedIndex = 0;
+            }
+
+            currentPage = 1;
+
+            LoadHistory();
         }
     }
 }

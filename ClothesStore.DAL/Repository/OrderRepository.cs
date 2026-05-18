@@ -4,7 +4,7 @@ using ClothesStore.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq; // Bắt buộc phải có để chạy OrderBy và AsEnumerable
+using System.Linq;
 using System.Text;
 
 namespace ClothesStore.DAL.Repository
@@ -78,7 +78,6 @@ namespace ClothesStore.DAL.Repository
                             o.ReceiverName
                         };
 
-            // Đồng bộ đọc trạng thái qua hàm Enum chung và đổi sang sắp xếp tăng dần OrderBy
             return query.OrderBy(o => o.OrderDate)
                         .AsEnumerable()
                         .Select(o => new
@@ -166,8 +165,30 @@ namespace ClothesStore.DAL.Repository
             }
         }
 
-        public bool Delete(int orderId)
+        public bool Cancel(int orderId)
         {
+            try
+            {
+                var currentStatus = _context.Orders
+                    .Where(o => o.OrderId == orderId)
+                    .Select(o => o.OrderStatus)
+                    .FirstOrDefault();
+
+                int dbShippingStatus = (int)OrderStatusEnum.Shipping - 1;
+
+                if (currentStatus == dbShippingStatus)
+                {
+                    Console.WriteLine($"[WARNING] Không thể hủy đơn hàng #{orderId} vì đơn hàng đang ở trạng thái Shipping!");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("=== LỖI Khi Kiểm Tra Trạng Thái Đơn Hàng ===");
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -178,21 +199,22 @@ namespace ClothesStore.DAL.Repository
                         .Where(od => od.OrderId == orderId)
                         .ToList();
 
-                    // ==================== 1. HOÀN TRẢ TỒN KHO ====================
                     foreach (var detail in orderDetails)
                     {
                         _context.Database.ExecuteSqlRaw(
                             "UPDATE ProductVariants SET AmountInStock = ISNULL(AmountInStock, 0) + {0} WHERE VariantId = {1}",
                             detail.Quantity, detail.VariantId);
-
-                        _context.Database.ExecuteSqlRaw(
-                            "UPDATE WarehouseReceiptDetails SET Quantity = ISNULL(Quantity, 0) + {0} WHERE VariantId = {1}",
-                            detail.Quantity, detail.VariantId);
                     }
 
-                    // ==================== 2. CẬP NHẬT TRẠNG THÁI VÀ XÓA LỊCH SỬ KHO ====================
+                    string dbHuyTransactionName = TransctionType.HUY.ToString();
 
-                    _context.Database.ExecuteSqlRaw("DELETE FROM InventoryTransactions WHERE OrderId = {0}", orderId);
+                    _context.Database.ExecuteSqlRaw(
+                        @"UPDATE InventoryTransactions 
+                  SET TransactionType = {0}, QuantityChange = 0 
+                  WHERE OrderId = {1}",
+                        dbHuyTransactionName,
+                        orderId
+                    );
 
                     int dbCanceledStatus = (int)OrderStatusEnum.Canceled - 1;
 
@@ -206,7 +228,7 @@ namespace ClothesStore.DAL.Repository
 
                     transaction.Commit();
 
-                    Console.WriteLine($"[SUCCESS] Đã hủy đơn hàng và hóa đơn {orderId} thành công!");
+                    Console.WriteLine($"[SUCCESS] Đã hủy đơn hàng và cập nhật lịch sử kho cho đơn #{orderId} thành công!");
                     return true;
                 }
                 catch (Exception ex)
@@ -265,7 +287,6 @@ namespace ClothesStore.DAL.Repository
                 o.TotalMoney
             });
 
-            // Đổi OrderByDescending sang OrderBy (Tăng dần), đồng bộ đọc trạng thái qua Enum
             return rawData.OrderBy(o => o.OrderDate)
                           .AsEnumerable()
                           .Select(o => new {
@@ -284,15 +305,14 @@ namespace ClothesStore.DAL.Repository
             {
                 try
                 {
-                    // 1. Lưu Order 
+
                     _context.Orders.Add(order);
                     _context.SaveChanges();
 
-                    // 2. Lưu Invoice 
+
                     invoice.OrderId = order.OrderId;
                     _context.Invoices.Add(invoice);
 
-                    // 3. Cập nhật số lượng tại các bảng liên quan và GHI NHẬN LỊCH SỬ
                     foreach (var detail in order.OrderDetails)
                     {
                         var variant = _context.ProductVariants.Find(detail.VariantId);
@@ -309,7 +329,7 @@ namespace ClothesStore.DAL.Repository
                         }
 
                         _context.Database.ExecuteSqlRaw(
-                            @"INSERT INTO InventoryTransactions (VariantID, TransactionType, QuantityChange, OrderID, CreatedAt)
+                            @"INSERT INTO InventoryTransactions (VariantID, TransactionType, QuantityChange, OrderID, CreatedAt)              
                       VALUES ({0}, {1}, {2}, {3}, {4})",
                             detail.VariantId ?? 0,
                             "SALE",
@@ -334,7 +354,6 @@ namespace ClothesStore.DAL.Repository
             }
         }
 
-        // 🔥 ĐÃ KHÔI PHỤC LẠI HÀM NÀY CHO BẠN:
         public Order? GetOrderById(int orderId)
         {
             return _context.Orders
@@ -471,42 +490,31 @@ namespace ClothesStore.DAL.Repository
                 {
                     Console.WriteLine($"[INFO] Bắt đầu xử lý trả đơn hàng ID = {orderId}");
 
-                    // Lấy chi tiết sản phẩm của đơn hàng để làm thủ tục hoàn trả kho
                     var orderDetails = _context.OrderDetails
                         .Where(od => od.OrderId == orderId)
                         .ToList();
 
-                    // ==================== 1. HOÀN TRẢ TỒN KHO ====================
                     foreach (var detail in orderDetails)
                     {
-                        // Cộng lại số lượng vào bảng ProductVariants
                         _context.Database.ExecuteSqlRaw(
                             "UPDATE ProductVariants SET AmountInStock = ISNULL(AmountInStock, 0) + {0} WHERE VariantId = {1}",
                             detail.Quantity, detail.VariantId);
 
-                        // Cộng lại số lượng vào bảng WarehouseReceiptDetails
                         _context.Database.ExecuteSqlRaw(
                             "UPDATE WarehouseReceiptDetails SET Quantity = ISNULL(Quantity, 0) + {0} WHERE VariantId = {1}",
                             detail.Quantity, detail.VariantId);
                     }
 
-                    // ==================== 2. CẬP NHẬT TRẠNG THÁI & NHẬT KÝ KHO ====================
-
-                    // Gỡ bỏ bản ghi xuất kho SALE cũ của đơn này vì hàng đã được trả lại vị trí cũ
                     _context.Database.ExecuteSqlRaw("DELETE FROM InventoryTransactions WHERE OrderId = {0}", orderId);
 
-                    // 🔥 XỬ LÝ LỆCH PHA INDEX: 
-                    // Trạng thái Returned trong Enum là số 6 => Lưu xuống Database trừ đi 1 đơn vị sẽ thành số 5
                     int dbReturnedStatus = (int)OrderStatusEnum.Returned - 1;
 
-                    // Cập nhật Orders thành trạng thái Returned (Số 5 trong DB)
                     _context.Database.ExecuteSqlRaw(
                         "UPDATE Orders SET OrderStatus = {0} WHERE OrderId = {1}",
                         dbReturnedStatus,
                         orderId
                     );
 
-                    // Cập nhật hóa đơn Invoices sang trạng thái Hủy/Hoàn tiền (Số 2 giống đơn hủy của bạn)
                     _context.Database.ExecuteSqlRaw("UPDATE Invoices SET Status = 2 WHERE OrderId = {0}", orderId);
 
                     transaction.Commit();
@@ -521,6 +529,40 @@ namespace ClothesStore.DAL.Repository
                     return false;
                 }
             }
+        }
+        public object? GetFirstOrderByCustomerId(Guid? customerId)
+        {
+            var query = from o in _context.Orders
+                        join s in _context.ShippingProviders on o.ShippingProviderId equals s.ShippingProviderId into shippings
+                        from s in shippings.DefaultIfEmpty()
+                        where o.CustomerId == customerId
+                        select new
+                        {
+                            o.OrderId,
+                            o.OrderDate,
+                            State = o.OrderStatus,
+                            o.ReceiverName,
+                            o.ReceiverPhone,
+                            o.ShippingAddress,
+                            ShippingName = s != null ? s.Name : "Chưa chọn",
+                            o.TotalMoney
+                        };
+
+            return query.OrderByDescending(o => o.OrderDate)
+                        .AsEnumerable()
+                        .Select(o => new
+                        {
+                            o.OrderId,
+                            o.OrderDate,
+                            State = o.State,
+                            StatusName = GetStatusName(o.State),
+                            o.ReceiverName,
+                            o.ReceiverPhone,
+                            ShippingAddress = o.ShippingAddress,
+                            o.ShippingName,
+                            o.TotalMoney
+                        })
+                        .FirstOrDefault();
         }
     }
 }
