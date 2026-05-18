@@ -31,30 +31,38 @@ namespace ClothesStore.GUI
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(pass))
             {
-                MessageBox.Show("Please fill all fields!");
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin!");
                 return;
             }
 
-            UserLoginRequest userLoginRequest = new UserLoginRequest();
-            userLoginRequest.Username = username;
-            userLoginRequest.Password = pass;
+            UserLoginRequest userLoginRequest = new UserLoginRequest
+            {
+                Username = username,
+                Password = pass
+            };
 
             try
             {
-                var loggedInUser = AuthService.logIn(userLoginRequest);
+                var userInDb = AuthService.getUserByUsername(username); 
 
-                GlobalSession.CurrentUser = loggedInUser;
+                if (userInDb == null)
+                {
+                    MessageBox.Show("Tên đăng nhập hoặc mật khẩu không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (userInDb.IsActive == false)
+                {
+                    MessageBox.Show("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ Admin!", "Từ chối truy cập", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var loggedInUser = AuthService.logIn(userLoginRequest);
 
                 if (loggedInUser != null)
                 {
-                    if (loggedInUser.IsActive == false)
-                    {
-                        MessageBox.Show("Your account has been baned, pls contact with admin");
-                        return;
-                    }
-
                     this.Hide();
-
+                    GlobalSession.CurrentUser = loggedInUser;
                     UserRole role = (UserRole)loggedInUser.Role;
 
                     switch (role)
@@ -69,11 +77,10 @@ namespace ClothesStore.GUI
                             new WarehouseMainForm().ShowDialog();
                             break;
                         default:
-                            MessageBox.Show("Invalid role!");
+                            MessageBox.Show("Vai trò không hợp lệ!");
                             this.Show();
-                            break;
+                            return;
                     }
-
                     if (GlobalSession.CurrentUser == null)
                     {
                         txtPassword.Clear();
@@ -86,15 +93,14 @@ namespace ClothesStore.GUI
                 }
                 else
                 {
-                    MessageBox.Show("Incorrect username and password!");
+                    MessageBox.Show("Tên đăng nhập hoặc mật khẩu không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("System connection error: " + ex.Message);
+                MessageBox.Show("Lỗi kết nối hệ thống: " + ex.Message);
             }
         }
-
         private void llbChangePassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ChangePasswordForm changePassForm = new ChangePasswordForm();

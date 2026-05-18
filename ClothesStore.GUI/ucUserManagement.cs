@@ -84,6 +84,7 @@ namespace ClothesStore.GUI
             txtFullName.Clear();
             txtEmail.Clear();
             txtPhone.Clear();
+            txtAddress.Clear();
             txtUsername.Enabled = true;
             txtPassword.Enabled = true;
             lblTitle.Text = "THÊM NHÂN VIÊN MỚI";
@@ -105,6 +106,7 @@ namespace ClothesStore.GUI
             txtFullName.Text = selectedUser.FullName;
             txtEmail.Text = selectedUser.Email;
             txtPhone.Text = selectedUser.PhoneNumber;
+            txtAddress.Text = selectedUser.Address;
             cbRole.SelectedValue = selectedUser.Role;
 
             txtUsername.Enabled = false;
@@ -136,6 +138,7 @@ namespace ClothesStore.GUI
                         FullName = txtFullName.Text.Trim(),
                         Email = txtEmail.Text.Trim(),
                         PhoneNumber = txtPhone.Text.Trim(),
+                        Address = txtAddress.Text.Trim(),
                         Role = (int)cbRole.SelectedValue,
                         IsActive = true
                     };
@@ -150,6 +153,7 @@ namespace ClothesStore.GUI
                         FullName = txtFullName.Text.Trim(),
                         Email = txtEmail.Text.Trim(),
                         PhoneNumber = txtPhone.Text.Trim(),
+                        Address = txtAddress.Text.Trim(),
                         Role = (int)cbRole.SelectedValue
                     };
                     _userService.UpdateEmployee(request);
@@ -301,7 +305,9 @@ namespace ClothesStore.GUI
                 else if (password.Length < 6)
                     sb.AppendLine("• Mật khẩu phải có ít nhất 6 ký tự.");
             }
-
+            string address = txtAddress.Text.Trim();
+            if (string.IsNullOrEmpty(address))
+                sb.AppendLine("• Địa chỉ không được để trống.");
             return sb.ToString();
         }
     }

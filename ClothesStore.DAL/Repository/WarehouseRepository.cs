@@ -181,7 +181,6 @@ namespace ClothesStore.DAL.Repository
             return dt;
         }
 
-        // ================= IMPORT HISTORY =================
         public DataTable GetImportHistory()
         {
             using var conn =
@@ -203,7 +202,6 @@ namespace ClothesStore.DAL.Repository
             return dt;
         }
 
-        // ================= RECEIPT DETAIL =================
         public DataTable GetReceiptDetails(
             int receiptId)
         {

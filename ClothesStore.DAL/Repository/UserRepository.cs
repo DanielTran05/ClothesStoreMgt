@@ -1,13 +1,14 @@
 ﻿using ClothesStore.DAL.Context;
 using ClothesStore.DAL.Enums;
 using ClothesStore.DAL.Models;
+using ClothesStore.DTO.UserDto;
 using Helper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using ClothesStore.DTO.UserDto;
 
 namespace ClothesStore.DAL.Repository
 {
@@ -22,7 +23,7 @@ namespace ClothesStore.DAL.Repository
 
         public User getUserByUsername(String userName)
         {
-            return clothesStoreContext.Users.FirstOrDefault(u => u.Username == userName);
+            return clothesStoreContext.Users.AsNoTracking().FirstOrDefault(u => u.Username == userName);
         }
 
         public void MockDataUser()

@@ -76,7 +76,6 @@ namespace ClothesStore.BUS
         }
         public string ReturnOrder(int orderId)
         {
-            // Gọi xuống Repository để xử lý database
             bool isSuccess = _orderRepo.Return(orderId);
 
             if (isSuccess)
