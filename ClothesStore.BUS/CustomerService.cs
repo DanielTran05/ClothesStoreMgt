@@ -46,7 +46,7 @@ namespace ClothesStore.BUS
                 cmd.ExecuteNonQuery();
             }
         }
-        public Order? GetCustomerByPhone(string phone)
+        public User? GetCustomerByPhone(string phone)
         {
             return _repo.GetCustomerByPhone(phone);
         }

@@ -59,13 +59,6 @@ namespace ClothesStore.GUI
                 MessageBox.Show("Lỗi tải đơn hàng: " + ex.Message, "Thông báo");
             }
         }
-        private void LoadShippingComboBox()
-        {
-        }
-
-        private void LoadPaymentMethodComboBox()
-        {
-        }
 
         private void txtSearchOrder_TextChanged(object sender, EventArgs e)
         {
@@ -76,18 +69,13 @@ namespace ClothesStore.GUI
         {
             Form mainForm = this.FindForm();
 
-            // 1. Ẩn form chính đi
             mainForm.Hide();
 
-            // 2. Mở form tạo đơn hàng
             using (CreateOrderForm form = new CreateOrderForm())
             {
-                // Dùng ShowDialog thay vì Show
-                // Code sẽ TẠM DỪNG ở dòng này cho đến khi người dùng tắt CreateOrderForm
                 form.ShowDialog();
             }
 
-            // 3. Khi CreateOrderForm tắt, code sẽ chạy tiếp xuống dòng này và hiện lại form chính
             mainForm.Show();
         }
 
@@ -101,6 +89,17 @@ namespace ClothesStore.GUI
             }
 
             int orderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
+
+            string currentStatusName = dgvOrders.CurrentRow.Cells["StatusName"].Value?.ToString() ?? "";
+
+            if (currentStatusName != "Pending")
+            {
+                MessageBox.Show($"Không thể hủy đơn hàng #{orderId} vì đơn hàng đang không ở trạng thái Pending!",
+                                "Thông báo chặn",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
 
             DialogResult confirm = MessageBox.Show(
                 $"Bạn có chắc chắn muốn xóa đơn hàng #{orderId}?\n\n" +
@@ -236,12 +235,12 @@ namespace ClothesStore.GUI
 
         private void dtpFromDate_ValueChanged(object sender, EventArgs e)
         {
-            ExecuteAutoFilter();
+
         }
 
         private void dtpToDate_ValueChanged(object sender, EventArgs e)
         {
-            ExecuteAutoFilter();
+
         }
 
         private void cboFilterStatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -258,10 +257,8 @@ namespace ClothesStore.GUI
                 return;
             }
 
-            // Lấy Mã đơn hàng đang chọn
             int orderId = Convert.ToInt32(dgvOrders.CurrentRow.Cells["OrderId"].Value);
 
-            // 2. Hiện hộp thoại xác nhận nghiệp vụ Trả hàng
             DialogResult confirm = MessageBox.Show(
                 $"Bạn có chắc chắn muốn xử lý TRẢ HÀNG cho đơn hàng #{orderId}?\n\n" +
                 "Hệ thống sẽ cập nhật trạng thái đơn hàng thành Returned,\n" +
@@ -272,21 +269,38 @@ namespace ClothesStore.GUI
 
             if (confirm == DialogResult.Yes)
             {
-                // 3. Gọi hàm xử lý trả hàng ở tầng Service (Hàm ReturnOrder ta sẽ viết ở bước sau)
                 string result = _orderService.ReturnOrder(orderId);
 
-                // 4. Hiển thị thông báo kết quả trả về cho nhân viên
                 MessageBox.Show(result,
                                 "Kết quả",
                                 MessageBoxButtons.OK,
                                 result.Contains("thành công") ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 
-                // 5. Nếu thành công thì làm mới lại lưới hiển thị đơn hàng
                 if (result.Contains("thành công"))
                 {
                     LoadOrderData();
                 }
             }
+        }
+
+        private void btnFilller_Click(object sender, EventArgs e)
+        {
+            ExecuteAutoFilter();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            txtSearchOrder.Clear();
+
+            if (cboFilterStatus.Items.Count > 0)
+            {
+                cboFilterStatus.SelectedIndex = 0;
+            }
+
+            dtpFromDate.Value = DateTime.Now.AddMonths(-2);
+            dtpToDate.Value = DateTime.Now;
+
+            ExecuteAutoFilter();
         }
     }
 }

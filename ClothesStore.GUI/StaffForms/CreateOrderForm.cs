@@ -41,56 +41,73 @@ namespace ClothesStore.GUI.StaffForms
         {
             string phone = Phone.Text.Trim();
 
-            // Validate: Kiểm tra rỗng, kiểm tra độ dài phải bằng 10, và tất cả ký tự phải là số
-            if (string.IsNullOrEmpty(phone) || phone.Length != 10 || !phone.All(char.IsDigit))
+            if (string.IsNullOrEmpty(phone) || phone.Length != 10 || !phone.StartsWith("0") || !phone.All(char.IsDigit))
             {
-                MessageBox.Show("Vui lòng nhập số điện thoại hợp lệ (bao gồm đúng 10 chữ số)!");
+                MessageBox.Show("Vui lòng nhập số điện thoại hợp lệ (bao gồm đúng 10 chữ số và bắt đầu bằng số 0)!",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            Order customerOrder = _customerService.GetCustomerByPhone(phone);
+            User customer = _customerService.GetCustomerByPhone(phone);
 
             cboShipping.Enabled = true;
             cboPayment.Enabled = true;
 
-            if (customerOrder != null)
+            if (customer != null)
             {
-                // --- TRƯỜNG HỢP KHÁCH HÀNG CŨ ---
-                txtReceiverName.Text = customerOrder.ReceiverName;
-                txtAddress.Text = customerOrder.ShippingAddress;
+                object rawOrder = _orderService.GetOrdersByCustomer(customer.UserId);
 
-                if (customerOrder.ShippingProviderId != null)
+                if (rawOrder != null)
                 {
-                    cboShipping.SelectedValue = customerOrder.ShippingProviderId;
-                }
+                    string receiverName = rawOrder.GetType().GetProperty("ReceiverName")?.GetValue(rawOrder, null)?.ToString() ?? "";
+                    string shippingAddress = rawOrder.GetType().GetProperty("ShippingAddress")?.GetValue(rawOrder, null)?.ToString() ?? "";
+                    string shippingName = rawOrder.GetType().GetProperty("ShippingName")?.GetValue(rawOrder, null)?.ToString() ?? "Chưa chọn";
 
-                if (customerOrder.Invoices != null && customerOrder.Invoices.Any())
+                    txtReceiverName.Text = receiverName;
+                    txtAddress.Text = shippingAddress;
+
+                    if (shippingName != "Chưa chọn")
+                    {
+                        cboShipping.Text = shippingName;
+                    }
+
+                    if (cboPayment.Items.Count > 0) cboPayment.SelectedIndex = 0;
+
+                    txtReceiverName.ReadOnly = true;
+                    txtAddress.ReadOnly = true;
+
+                    MessageBox.Show("Đã tìm thấy thông tin và lịch sử giao hàng của khách hàng cũ.",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
                 {
-                    var lastMethod = customerOrder.Invoices.OrderByDescending(i => i.PaymentDate).First().PaymentMethod;
-                    cboPayment.Text = lastMethod;
+                    MessageBox.Show("Tài khoản thành viên tồn tại nhưng chưa có đơn hàng cũ! Vui lòng nhập thông tin nhận hàng.",
+                                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    ResetInputFields(true);
                 }
-
-                txtReceiverName.ReadOnly = true;
-                txtAddress.ReadOnly = true;
-
-                MessageBox.Show("Đã tìm thấy thông tin khách hàng cũ.");
             }
             else
             {
-                // --- TRƯỜNG HỢP KHÁCH HÀNG MỚI ---
-                MessageBox.Show("Khách hàng mới! Vui lòng nhập họ tên và địa chỉ.");
+                MessageBox.Show("Khách hàng mới hoàn toàn! Vui lòng nhập họ tên và địa chỉ để tạo đơn.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                txtReceiverName.Clear();
-                txtAddress.Clear();
-
-                txtReceiverName.ReadOnly = false;
-                txtAddress.ReadOnly = false;
-                txtReceiverName.Enabled = true;
-                txtAddress.Enabled = true;
-
-                if (cboShipping.Items.Count > 0) cboShipping.SelectedIndex = 0;
-                if (cboPayment.Items.Count > 0) cboPayment.SelectedIndex = 0;
+                ResetInputFields(false);
             }
+        }
+
+        private void ResetInputFields(bool isUserExists)
+        {
+            txtReceiverName.Clear();
+            txtAddress.Clear();
+
+            txtReceiverName.ReadOnly = false;
+            txtAddress.ReadOnly = false;
+            txtReceiverName.Enabled = true;
+            txtAddress.Enabled = true;
+
+            if (cboShipping.Items.Count > 0) cboShipping.SelectedIndex = 0;
+            if (cboPayment.Items.Count > 0) cboPayment.SelectedIndex = 0;
         }
 
         private void LoadPaymentMethods()
@@ -297,14 +314,15 @@ namespace ClothesStore.GUI.StaffForms
 
             try
             {
-                // 1. Kiểm tra dữ liệu đầu vào
                 if (string.IsNullOrWhiteSpace(txtReceiverName.Text) || string.IsNullOrWhiteSpace(txtAddress.Text))
                 {
                     MessageBox.Show("Vui lòng nhập đầy đủ Họ tên và Địa chỉ nhận hàng!", "Cảnh báo");
                     return;
                 }
 
-                // 2. Tính lại tổng tiền trực tiếp từ GridView (An toàn)
+                string phone = Phone.Text.Trim();
+                User customer = _customerService.GetCustomerByPhone(phone);
+
                 decimal totalMoney = 0;
                 foreach (DataGridViewRow row in dgvCart.Rows)
                 {
@@ -314,30 +332,29 @@ namespace ClothesStore.GUI.StaffForms
                     }
                 }
 
-                // 3. Logic: Tự động đổi trạng thái đơn hàng (CASH + Direct = Paid)
                 string paymentMethod = cboPayment.Text.Trim();
                 string shippingMethod = cboShipping.Text.Trim();
-                int statusId = 2; // Mặc định là Shipping (3 trong DB, tương ứng số 2 của Enum)
+                int statusId = 2;
 
                 if (paymentMethod.Equals("CASH", StringComparison.OrdinalIgnoreCase) &&
                     shippingMethod.Equals("Direct", StringComparison.OrdinalIgnoreCase))
                 {
-                    statusId = 1; // Paid (2 trong DB, tương ứng số 1 của Enum)
+                    statusId = 1;
                 }
 
-                // 4. Khởi tạo đối tượng Order (KHÔNG CÓ CUSTOMER ID)
                 Order newOrder = new Order
                 {
                     OrderDate = DateTime.Now,
                     ReceiverName = txtReceiverName.Text.Trim(),
-                    ReceiverPhone = Phone.Text.Trim(),
+                    ReceiverPhone = phone,
                     ShippingAddress = txtAddress.Text.Trim(),
-                    ShippingProviderId = Convert.ToInt32(cboShipping.SelectedValue), // Ép kiểu an toàn
+                    ShippingProviderId = Convert.ToInt32(cboShipping.SelectedValue),
                     OrderStatus = statusId,
-                    TotalMoney = totalMoney
+                    TotalMoney = totalMoney,
+
+                    CustomerId = customer != null ? customer.UserId : (Guid?)null
                 };
 
-                // 5. Thêm chi tiết đơn hàng
                 newOrder.OrderDetails = new List<OrderDetail>();
                 foreach (DataGridViewRow row in dgvCart.Rows)
                 {
@@ -352,19 +369,17 @@ namespace ClothesStore.GUI.StaffForms
                     }
                 }
 
-                // 6. Gọi Service lưu xuống CSDL
                 if (_orderService.ConfirmOrder(newOrder, paymentMethod))
                 {
-                    MessageBox.Show("✅ Tạo đơn hàng và cập nhật kho thành công!", "Thành công",
+                    MessageBox.Show("Tạo đơn hàng và cập nhật kho thành công!", "Thành công",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Làm sạch Form sau khi thêm thành công
                     dgvCart.Rows.Clear();
                     lbTotalPrice.Text = "0 VNĐ";
                     txtReceiverName.Clear();
                     txtAddress.Clear();
                     Phone.Clear();
-                    LoadInventory(); // Refresh lại kho
+                    LoadInventory();
                 }
                 else
                 {
@@ -373,7 +388,6 @@ namespace ClothesStore.GUI.StaffForms
             }
             catch (Exception ex)
             {
-                // Hiển thị lỗi gốc từ CSDL lên màn hình để dễ bắt bệnh nếu phát sinh lỗi SQL
                 string error = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                 MessageBox.Show("Lỗi hệ thống chi tiết:\n" + error, "Lỗi Nghiêm Trọng",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);

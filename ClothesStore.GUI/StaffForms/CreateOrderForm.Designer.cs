@@ -225,7 +225,7 @@
             // count
             // 
             count.Location = new Point(721, 11);
-            count.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            count.Minimum = new decimal(new int[] { 100, 0, 0, int.MinValue });
             count.Name = "count";
             count.Size = new Size(150, 27);
             count.TabIndex = 6;

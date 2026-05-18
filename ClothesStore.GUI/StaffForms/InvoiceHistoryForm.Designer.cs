@@ -32,11 +32,13 @@
             dtpTo = new DateTimePicker();
             cboStatus = new ComboBox();
             panel1 = new Panel();
+            back = new Button();
             lblPageInfo = new Label();
             btnNext = new Button();
             btnPrev = new Button();
             dgvInvoices = new DataGridView();
-            back = new Button();
+            btnFiller = new Button();
+            btnReset = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInvoices).BeginInit();
             SuspendLayout();
@@ -47,6 +49,7 @@
             dtpFrom.Name = "dtpFrom";
             dtpFrom.Size = new Size(250, 27);
             dtpFrom.TabIndex = 0;
+            dtpFrom.Value = new DateTime(2026, 4, 1, 14, 18, 0, 0);
             dtpFrom.ValueChanged += dtpFrom_ValueChanged;
             // 
             // dtpTo
@@ -76,6 +79,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1425, 541);
             panel1.TabIndex = 2;
+            // 
+            // back
+            // 
+            back.Location = new Point(9, 501);
+            back.Name = "back";
+            back.Size = new Size(94, 29);
+            back.TabIndex = 3;
+            back.Text = "Quay lại";
+            back.UseVisualStyleBackColor = true;
+            back.Click += back_Click;
             // 
             // lblPageInfo
             // 
@@ -115,21 +128,33 @@
             dgvInvoices.Size = new Size(1419, 483);
             dgvInvoices.TabIndex = 0;
             // 
-            // back
+            // btnFiller
             // 
-            back.Location = new Point(9, 501);
-            back.Name = "back";
-            back.Size = new Size(94, 29);
-            back.TabIndex = 3;
-            back.Text = "Quay lại";
-            back.UseVisualStyleBackColor = true;
-            back.Click += back_Click;
+            btnFiller.Location = new Point(906, 44);
+            btnFiller.Name = "btnFiller";
+            btnFiller.Size = new Size(94, 29);
+            btnFiller.TabIndex = 3;
+            btnFiller.Text = "Lọc";
+            btnFiller.UseVisualStyleBackColor = true;
+            btnFiller.Click += btnFiller_Click;
+            // 
+            // btnReset
+            // 
+            btnReset.Location = new Point(1049, 46);
+            btnReset.Name = "btnReset";
+            btnReset.Size = new Size(94, 29);
+            btnReset.TabIndex = 4;
+            btnReset.Text = "Reset";
+            btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += btnReset_Click;
             // 
             // InvoiceHistoryForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
+            Controls.Add(btnReset);
+            Controls.Add(btnFiller);
             Controls.Add(panel1);
             Controls.Add(cboStatus);
             Controls.Add(dtpTo);
@@ -153,5 +178,7 @@
         private Button btnPrev;
         private DataGridView dgvInvoices;
         private Button back;
+        private Button btnFiller;
+        private Button btnReset;
     }
 }
