@@ -45,8 +45,6 @@ namespace ClothesStore.GUI
 
                 GlobalSession.CurrentUser = loggedInUser;
 
-                this.Hide();
-
                 if (loggedInUser != null)
                 {
                     if (loggedInUser.IsActive == false)
