@@ -57,14 +57,14 @@
             // 
             // txtName
             // 
-            txtName.Location = new Point(475, 605);
+            txtName.Location = new Point(70, 614);
             txtName.Name = "txtName";
             txtName.Size = new Size(278, 27);
             txtName.TabIndex = 1;
             // 
             // txtPhone
             // 
-            txtPhone.Location = new Point(828, 604);
+            txtPhone.Location = new Point(430, 614);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(167, 27);
             txtPhone.TabIndex = 1;
@@ -111,7 +111,7 @@
             // 
             // lbPhone
             // 
-            lbPhone.Location = new Point(217, 606);
+            lbPhone.Location = new Point(368, 617);
             lbPhone.Name = "lbPhone";
             lbPhone.Size = new Size(59, 25);
             lbPhone.TabIndex = 3;
@@ -119,7 +119,7 @@
             // 
             // lbName
             // 
-            lbName.Location = new Point(416, 608);
+            lbName.Location = new Point(11, 617);
             lbName.Name = "lbName";
             lbName.Size = new Size(62, 25);
             lbName.TabIndex = 3;

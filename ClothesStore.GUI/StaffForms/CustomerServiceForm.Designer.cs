@@ -33,13 +33,15 @@
             dtpFilterDate = new DateTimePicker();
             cbStatus = new ComboBox();
             lblAllreportsforms = new Label();
+            filterLabel = new Label();
+            cusServLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomerService).BeginInit();
             SuspendLayout();
             // 
             // dgvCustomerService
             // 
             dgvCustomerService.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCustomerService.Location = new Point(12, 120);
+            dgvCustomerService.Location = new Point(12, 90);
             dgvCustomerService.Name = "dgvCustomerService";
             dgvCustomerService.RowHeadersWidth = 51;
             dgvCustomerService.Size = new Size(1408, 470);
@@ -48,7 +50,7 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1320, 596);
+            btnLoad.Location = new Point(1320, 566);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(100, 45);
             btnLoad.TabIndex = 0;
@@ -58,7 +60,7 @@
             // 
             // btnHandle
             // 
-            btnHandle.Location = new Point(1108, 596);
+            btnHandle.Location = new Point(1108, 566);
             btnHandle.Name = "btnHandle";
             btnHandle.Size = new Size(100, 45);
             btnHandle.TabIndex = 2;
@@ -68,7 +70,7 @@
             // 
             // btnReject
             // 
-            btnReject.Location = new Point(1214, 596);
+            btnReject.Location = new Point(1214, 566);
             btnReject.Name = "btnReject";
             btnReject.Size = new Size(100, 45);
             btnReject.TabIndex = 1;
@@ -78,7 +80,7 @@
             // 
             // dtpFilterDate
             // 
-            dtpFilterDate.Location = new Point(1200, 87);
+            dtpFilterDate.Location = new Point(1200, 57);
             dtpFilterDate.Name = "dtpFilterDate";
             dtpFilterDate.Size = new Size(220, 27);
             dtpFilterDate.TabIndex = 8;
@@ -86,7 +88,7 @@
             // cbStatus
             // 
             cbStatus.FormattingEnabled = true;
-            cbStatus.Location = new Point(110, 55);
+            cbStatus.Location = new Point(1031, 57);
             cbStatus.Name = "cbStatus";
             cbStatus.Size = new Size(150, 28);
             cbStatus.TabIndex = 7;
@@ -95,37 +97,38 @@
             // lblAllreportsforms
             // 
             lblAllreportsforms.AutoSize = true;
-            lblAllreportsforms.Location = new Point(12, 97);
+            lblAllreportsforms.Location = new Point(12, 67);
             lblAllreportsforms.Name = "lblAllreportsforms";
             lblAllreportsforms.Size = new Size(120, 20);
             lblAllreportsforms.TabIndex = 13;
             lblAllreportsforms.Text = "All reports forms";
             // 
-            // label2
+            // filterLabel
             // 
-            //label2.AutoSize = true;
-            //label2.Font = new Font("Segoe UI", 20F);
-            //label2.Location = new Point(1096, 9);
-            //label2.Name = "label2";
-            //label2.Size = new Size(324, 46);
-            //label2.TabIndex = 14;
-            //label2.Text = "CUSTOMER SERVICE";
-            //// 
-            //// label3
-            //// 
-            //label3.AutoSize = true;
-            //label3.Location = new Point(12, 55);
-            //label3.Name = "label3";
-            //label3.Size = new Size(65, 20);
-            //label3.TabIndex = 15;
-            //label3.Text = "Filter by:";
-            //label3.Click += label3_Click;
+            filterLabel.AutoSize = true;
+            filterLabel.Location = new Point(960, 60);
+            filterLabel.Name = "filterLabel";
+            filterLabel.Size = new Size(65, 20);
+            filterLabel.TabIndex = 14;
+            filterLabel.Text = "Filter by:";
+            // 
+            // cusServLabel
+            // 
+            cusServLabel.AutoSize = true;
+            cusServLabel.Font = new Font("Segoe UI", 20F);
+            cusServLabel.Location = new Point(540, 9);
+            cusServLabel.Name = "cusServLabel";
+            cusServLabel.Size = new Size(324, 46);
+            cusServLabel.TabIndex = 15;
+            cusServLabel.Text = "CUSTOMER SERVICE";
             // 
             // CustomerServiceForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1432, 653);
+            Controls.Add(cusServLabel);
+            Controls.Add(filterLabel);
             Controls.Add(lblAllreportsforms);
             Controls.Add(btnLoad);
             Controls.Add(btnReject);
@@ -152,5 +155,7 @@
 
         private ComboBox cbStatus;
         private Label lblAllreportsforms;
+        private Label filterLabel;
+        private Label cusServLabel;
     }
 }
